@@ -1,6 +1,8 @@
 # uniArchives
 
-*UNI* = University docs
+*UNI* :
++ University docs
++ University code
 
 *Scripts* :
 + Uploading to GitHub
