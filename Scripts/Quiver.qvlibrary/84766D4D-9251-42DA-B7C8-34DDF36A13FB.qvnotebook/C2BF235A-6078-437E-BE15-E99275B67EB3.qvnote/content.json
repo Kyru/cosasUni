@@ -1,0 +1,201 @@
+{
+  "title": "Chapter 4 - Transport Layer ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 4.1 Transport-layer services \n### Transport services and protocols\n+ Provide *logical communication* between app processes running on different hosts\n+ Tansport protocols run in end systems\n    + send side: break app messages into *segments*, passes to network layer\n    + rcv side: reassembles segments into messages, passes to app layer \n+ More than one transport protocol available to apps: \n    + Internet: TCP and UDP  "
+    },
+    {
+      "type": "markdown",
+      "data": "**Transport vs. Network layer** \n+ Network layer: logical communication between hosts\n+ Transport layer: logical communication between processes\n    + Relies on, ehances, network layer services  "
+    },
+    {
+      "type": "markdown",
+      "data": "**Internet transport-layer protocols** \n+ Reliable, in-order delivery (TCP = Transmission Control Protocol)\n    + Congestion control \n    + Flow control \n    + Connection setup \n+ Unreliable, unordered delivery (UDP = User Datagram Protocol) \n    + no-frills extension of \"best-efford\" IP \n+ Services not available: \n    + Delay guarantees \n    + Bandwidth guarantess "
+    },
+    {
+      "type": "markdown",
+      "data": "# 4.2 Multiplexing and demultiplexing"
+    },
+    {
+      "type": "markdown",
+      "data": "### Addressing of Transport-Layer \n![Captura de pantalla 2016-12-06 a las 19.32.35.png](quiver-image-url/11381590D39C95C7D5CF72C976C01207.png)\n\n+ Source/ Destination Port:\n    + 16-bits number \n        + There are 65,535 possible port numbers (2 to the power of 16 minus 1) \n![Captura de pantalla 2016-12-06 a las 19.49.43.png](quiver-image-url/F84F62D8DCFEC31B7CF4638D9D6E4534.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Multiplexing/demultiplexing \n![Captura de pantalla 2016-12-06 a las 19.51.25.png](quiver-image-url/D36359D3422532FC79E564A0F865EE34.png)\n\n**How demultiplexing work**\n+ Host receives IP datagrams\n    + Each datagram has source IP address, destination IP address\n    + Each datagram carries one transport-layer segment\n    + Each segment has source, destination port number \n+ Host uses IP addresses & port numbers to direct segment to appropriate socket "
+    },
+    {
+      "type": "markdown",
+      "data": "**Connectionless demultiplexing** \n+ Created socket has host-local port #\n+ `DatagramSocket mySocket1 = new DatagramSocket (12345);`\n+ When creating datagram to send into UPD socket, must specify:\n    + Destination IP address\n    + Destination Port #\n+ When host receives UDP segment:\n    + Checks destination port # in segment\n    + Directs UDP segment to socket with that port #\n    + > IP datagrams with same dest.port #, but different source IP addresses and/or source port numbers will be directed to *same socket* at destination \n+ Example:\n\n### ![Captura de pantalla 2016-12-06 a las 20.19.48.png](quiver-image-url/70C387B610D02519E1962AC4366DDEF9.png)\n\n`remember Dest = destination`\n\n**Connection-oriented demux** \n+ TCP socket identified by **4-tuple**:\n    + Source IP address\n    + Source port number\n    + Dest IP address\n    + Dest port number\n+ Demux: receiver uses all four values to direct segment to appropriate socket\n+ Server host may support many simultaneous TCP sockets: \n    + Each socket identified by its own 4-tuple \n+ Web servers have different sockets for each connecting client\n    + Non-persistent HTTP will have different socket for each request \n+ Example: \n\n![Captura de pantalla 2016-12-06 a las 20.54.42.png](quiver-image-url/82731D57B31B32BA0C8FEF01A44309A3.png)\n\n`P4, P5 and P6 can be joint into a threaded server, which contains all of them`\n\n![Captura de pantalla 2016-12-06 a las 20.56.10.png](quiver-image-url/13AC9DF9A9187F8D563CED3A7C5EF75C.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "# 4.3 Connectionless transport: UDP \n### UPD: User Datagram Protocol \n+ \"no frills\", \"bare bones\" Internet transport protocol\n+ \"Best effort\" servide, UDP segments may be: \n    + Lost\n    + Delivered out-of-order to app\n+ Connectionless:\n    + No handshaking between UDP sender, receiver\n    + Each UDP sender handled independently from others\n+ UDP use: \n    + Streaming multimedia apss (less tolerant, rate sensitive) \n    + DNS\n    + SNMP\n+ Reliable transfer over UDP: \n    + Add reliability at application layer \n    + Application-specific error recovery!\n\n### UDP: Segment header \n![Captura de pantalla 2016-12-07 a las 12.52.23.png](quiver-image-url/EDC2F2BC47C6B1F089EA8A4CDA5B67B6.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### UDP Checksum \n*Goal:* detect \"errors\" (eg. flipped bits) in transmitted segment \n**Sender:**\n+ Treat segment contents, including header fields, as a sequence of 16-bit integers\n+ Checksum: addition (one's complement sum) of segment contents\n+ Sender puts checksum value into UDP checksum field\n\n**Receiver:**\n+ Compute checksum of received segment\n+ Check if computed checksum equals checksum field value \n    + NO - error detected\n    + YES - no errors detected\n    \nExample:\n![Captura de pantalla 2016-12-07 a las 13.12.15.png](quiver-image-url/7F5D1AD78E4558D4794F602995FFE63D.png)\n`note: when adding numbers, a carryout from the most significant bit needs to be added to the result`"
+    },
+    {
+      "type": "markdown",
+      "data": "# 4.4 Principles of reliable data transfer \n**Principles** \nReliable data transfer is a problem that appears in application , transport and link layers\n+ **Problem:** How can we achieve a reliable data transfer over unreliable networks?\n    + Undelying layer can loss packets or may flip bits in transmitted packet\n+ **Solution:** \n    + Detection \n        + Checksum to detect bit errors\n    + Retransmission "
+    },
+    {
+      "type": "markdown",
+      "data": "### Perfect Channel and Real Channel \n+ **Perfect Channel:** \n    + Underlying channel perfectly reliable \n        + No bit erros\n        + No loss of packets\n+ **Real Channel:**\n    + Transmission error, congestion, routing errors...\n    + Receiver: \n        + Is the received packt correct? \n        + What can the receiver do if the packet isn't correct? \n    + Sender: \n        + Was the packet correctly received? \n\n**Solution: ARQ (Automatic Repear reQuest)**\n+ error detection \n+ feedback:: control msgs (ACK) from receiver to sender\n+ Retransmission in case of failure\n    + If ACK is not received before RTO (Retransmission time-out) the packet is *retransmitted* \n\n### ACK \n+ <u> Sender: </u> \n+ What happens if ACK doesn't arrive? \n    + Packet loss?  \n    + ACK loss? \n    + Sender doesn't know what happened at receiver! \n+ <u> Receiver: </u>\n+ Must check if received packet is corrupted\n    + Error detection (Check-sum) "
+    },
+    {
+      "type": "markdown",
+      "data": "### Packet loss\n+ Sender waits \"reasonable\" amount of time for ACK \n+ Retransmits if no ACK received in this time \n\n![Captura de pantalla 2016-12-07 a las 14.04.59.png](quiver-image-url/44F848592C58189EB51D6CAC0E6E1CFC.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Duplicates \n**Handling Duplicates:**\n+ <u> Sender: </u> \n+ if pkt (or ACK) just delayed (not lost): \n    + Retransmission will be duplicate\n    + Sender adds sequence number to each pkt \n    + Receiver discards (doen't deliver up) duplicate pkt \n+ <u> Receiver: </u> \n+ Receiver must specify seq # of pkt it is waiting \n\n![Captura de pantalla 2016-12-07 a las 14.08.52.png](quiver-image-url/38723E316BE4D29DED1A13A51EE2C807.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "**Stop and Wait** \n+ Sender sends one packet, then waits for receiver response\n+ Simple but inefficient!! \n+ Network protocol limits use of physical resources! \n\n![Captura de pantalla 2016-12-07 a las 14.09.49.png](quiver-image-url/DD14ACB845FC15A2D7A5F31ED577E13C.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Pipeline Protocols \n**pipelining:** sender allows multiples \"in flight\" yet-to-be-acknowledged pkts\n+ range of sequence numbers must be increased\n+ buffering at sender and/or receiver \n\n![Captura de pantalla 2016-12-07 a las 14.11.52.png](quiver-image-url/158DF4ABBF29C98DA563C39AE67C6F71.png)\n\n### Overview\n`two generic forms of pipelined protocols: go-Back-N and selective repeated`\n\n<u> Go-Back-N: </u> \n+ sender can have up to N unacked packets in pipeline \n+ Receiver only sends *cumulative ack*\n    + Doesn't ack packet if there's a gap \n+ Sender has timer for oldest unacked packet\n    + When timer expires, retransmit all unacked packtes \n  \n<u> Selective Repeat: </u> \n+ Sender can have up to N unacked packets in pipeline \n+ rcvr sends *individual ack* for each packet \n+ Sender maintains timer for each unacked packet\n    + When timer expires, retransmit only that unacked packet "
+    },
+    {
+      "type": "markdown",
+      "data": "### Go-Back-N\n+ k-bit seq # in pkt header \n+ \"window\" of up to N, consecutive unack'ed pkts allowed\n![Captura de pantalla 2016-12-07 a las 14.19.26.png](quiver-image-url/AAD35BD50CE8F282C0DD777D99A0694B.png)\n+ ACK(n): ACKs all pkts up to, including seq # n - \"cumulative ACK\"\n    + May receive duplicate ACKs `(see receiver)`\n+ Timer for oldes in-flight pkt \n+ *timeout(n):* retransmit packet n and all higher seq # pkts in window "
+    },
+    {
+      "type": "markdown",
+      "data": "![Captura de pantalla 2016-12-07 a las 14.24.24.png](quiver-image-url/1020AE9988C9AF384288889BA4CCFD6E.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Selective Repeat\n+ Receiver *individually* acknowledges all correctly received pkts \n    + Buffers pkts, as needed, for eventual in order delivery to upper layer \n+ Sender only resends pkts for which ACK not received\n    + Sender timer for each unACKed pkt \n+ Sender Window: \n    + N consecutive seq #'s\n    + limit seq #s of sent, unACKed pkts "
+    },
+    {
+      "type": "markdown",
+      "data": "**Selective repeate: sender, receiver Windows**\n![Captura de pantalla 2016-12-07 a las 14.25.09.png](quiver-image-url/F2877A6EED52FD0DFCCDED54E2DA5E31.png)\n\n*Sender:*\n+ **data from above:** if next available seq # in window, sen pkt \n+ **timeout(n):** resend pkt n, restart timer \n+ **ACK(n):** \n    + Mark pkt n as received\n    + If n smallest unACKed pkt, advance window base to next unACKed seq #\n    \n*Receiver:*\n+ **pkt n in [rcvbase, rcvbase+N-1] :**\n    + send ACK(n) \n    + out-of-order: buffer\n    + in-order: deliver (also deliver buffered, in-order pkts), advance window to next not-yet-received pkt\n+ **pkt n in [rcvbase-N, rcvbase -1] :** ACK (n) \n+ **otherwise:** Ignore \n\n![Captura de pantalla 2016-12-07 a las 18.17.51.png](quiver-image-url/8D49665985A48AE0825C222DB7BF1018.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "# 4.5 Connection-oriented transport: TCP \n## Segment Structure \n\n### TCP Overview\n+ Point-to-point: one sender, one receiver\n+ Reliable, in-order byte steam: no \"message boundaries\" \n+ Pipelined: TCP congestion and flow control set window size\n+ Full duplex data: \n    + bi-directional data flow in same direction \n    + MSS: Maximum segment size \n+ Connection-oriented: handshaking (exchange of control msgs) inits sender, receiver state before data exchange\n+ Flow controlled: Sender will not overwhelm receiver \n\n![Captura de pantalla 2016-12-07 a las 18.34.53.png](quiver-image-url/5D69B2F4B4ABBABCA305E50EFC7E6819.png)\n![Captura de pantalla 2016-12-07 a las 18.35.13.png](quiver-image-url/F0B1BE21B7DCE9C024B3EF11946DAF53.png)\n\n### TCP seq. numbers, ACKs\n<u> Sequence numbers: </u> \n+ Byte Stream \"number\" of first byte in segment's data \n\n<u> ACKs </u>\n+ Seq # of next byte expected from other side \n+ Cumulative ACK \n+ How receiver handles out-of-order segments\n    + Answer: TCP spec doesn't say, up to implementor \n\n![Captura de pantalla 2016-12-07 a las 18.44.40.png](quiver-image-url/6DFAA68019844603F0332CBB1630B140.png)\n\n![Captura de pantalla 2016-12-07 a las 18.45.17.png](quiver-image-url/48FEBAB49231679EC3964E25B67C37E7.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Acknownledgements\n+ To reduce acknowledgements traffic, acknowledgements generating may be delayed until: \n    + Received another segment\n    + Send a segment in the opposite direction (piggybacking) \n    + A timer (expires every 500 milliseconds) "
+    },
+    {
+      "type": "markdown",
+      "data": "## Flow Control \n### TCP Flow Control \n*Flow Control:* Receiver controls sender, so sender won't overflow receiver's buffer by transmitting too much, too fast \n\n![Captura de pantalla 2016-12-07 a las 18.49.21.png](quiver-image-url/CD7D484E61231C5910CA357972F2744B.png)\n\n+ Receiver \"advertises\" free buffer space by including *rwnd* value in TCP header of receiver-to-sender segments\n    + RcvBuffer -> Size set via socket options (default 4096 bytes) \n    + Many OS use autoadjust RcvBuffer \n+ Sender limits amount of unACKed (\"in-flight\") data to receiver's *rwnd* value\n+ Guarantess receive buffer will not overflow \n\n![Captura de pantalla 2016-12-07 a las 19.07.59.png](quiver-image-url/08CC4E014022187B7E9C70F5657EA698.png)\n\n![Captura de pantalla 2016-12-07 a las 19.08.05.png](quiver-image-url/7C1E049DD084CDEE7F11760FBC02BF6C.png)\n![Captura de pantalla 2016-12-07 a las 19.08.30.png](quiver-image-url/57D4EF38C4B24B8CE71B0C7D3710ED3C.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Reliable Data Transfer \n### TCP reliable data transfer \n+ TCP creates rdt service on top of IP's unreliable service\n    + Pipelined Segments\n    + Cumulative ACKs \n    + Single retransmission timer \n+ Retransmission triggered by: \n    + Timeout events\n    + Duplicate ACKs \n+ Let's initially consider simplified TCP sender\n    + Ignore duplicates ACKs \n    + Ignore flow control, congestion control"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP sender events\n**Data rcvd from app:** \n+ Create segment with seq #\n+ Seq # is byte-stream number of first data byte in segment\n+ Start timer if not already running\n    + Think of timer as for oldest unaked segment\n    + Expiration interval: `timeout interval`\n\n**timeout:**\n+ Retransmit segment that caused timeout\n+ Restart timer\n\n**Ack rcvd:** \n+ If ack acknowledges previously unacked segments\n    + Update what is known to be ACKed\n    + Start timer if there are still uncaked segments\n\n\n![Captura de pantalla 2016-12-07 a las 19.28.53.png](quiver-image-url/2746F6FE283E5C5DF555CAB71A1681AC.png)\n![Captura de pantalla 2016-12-07 a las 19.28.59.png](quiver-image-url/4037A321A77DD7E6F749B52CD837DBF0.png)\n![Captura de pantalla 2016-12-07 a las 20.27.58.png](quiver-image-url/7D0FF4D53607717EC74F813B48F054E0.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP Fast Retransmit\n+ Time-out period often relatively long: \n    + Long delay before resending lost packet\n+ Detect lost segments via duplicate ACKs.\n    + Sender often sends many segments back-to-back \n    + If segment is lost, there will likely be many duplicate ACKs\n\n*TCP fast retransmit:* If sender receives 3 ACKs for same data (\"Triple duplicate ACKs\") resend unacked segment with smallest seq #. Likely that unacked segment lost, so don't wait for timeout. \n\n![Captura de pantalla 2016-12-07 a las 20.32.25.png](quiver-image-url/101C0ACBE2F4FF83AA3F652D38FB9009.png)\n\n### TCP round trip time, timeout\n**How to set TCP timeout value?** \n+ Longer than RTT (but RTT varies) \n+ *too short:* premature timeout, unnecessary retransmissions\n+ *too long:* slow reaction to segment loss\n\n**How to Estimate RTT?**\n+ SampleRTT: measured time from segment transmissions until ACK receipt (ignore retransmissions) \n+ SampleRTT will vary, want estimated RTT \"smoother\"\n    + Average several *recent* measurements, not just current SampleRTT\n\nEstimatedRTT = (1 - α) \\* EstimatedRTT + α * SampleRTT\n+ Exponential weigthed moving average\n+ Influence of past sample decrease exponentially fast\n+ typical value: α = 0,125\n![Captura de pantalla 2016-12-07 a las 20.38.13.png](quiver-image-url/630184B02194D7E65E730AD9FA797518.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP round trip time, timeout\n+ timeout interval: EstimatedRTT plus \"safety margin\" \n    + Large variation in EstimatedRTT -> Larger safety margin \n+ estimate SampleRTT deviation from EstimatedRTT:\n![Captura de pantalla 2016-12-07 a las 20.40.28.png](quiver-image-url/1435CAF3A6BD16DEE26BE0E3295AA017.png)\n\n+ When a segment is retransmitted and an ACK is received is impossible to know at which copy corresponds (original or retransmitted segment) \n    + Solution: Karn Algorithm \n        + Not taking into account the RTT measures of retransmitted segments\n        + In retransmitions, RTO value double (exponential backoff)\n\n\n![Captura de pantalla 2016-12-07 a las 20.43.13.png](quiver-image-url/674CA3B0C140B65FE4E68FB1FC0BE88F.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Connection Management\nBefore exchanging data, sender/receiver \"handshake\": \n+ Agree to establish connection (each knowing the other willing to establish connection) \n+ Agree on connection parameters\n![Captura de pantalla 2016-12-07 a las 20.47.17.png](quiver-image-url/F626347E5B52616CDB17939FDCCB17D6.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Agreeing to establish a connection \n\n`Before exchanging data, you have to establish a connection. Then you have to agree on connection parameters, when this is done, you can send and receive data. As we have established the TCP connection.`\n\n![Captura de pantalla 2016-12-08 a las 17.03.23.png](quiver-image-url/3042E2E168CFBB266EFEE2CA1EC5EADD.png)\n![Captura de pantalla 2016-12-08 a las 17.03.27.png](quiver-image-url/45A5A58994278C200929C9A0F18A1DAF.png)\n![Captura de pantalla 2016-12-08 a las 17.03.34.png](quiver-image-url/AF4A660DEE0F89241EA8433C70D03413.png)\n\n`When we create a Socket (\"Pasive\"), it is waiting for accepting the request. When it is received the connection is established. No need for a 3-way handshake (\"3 hello\"), 2 are sufficient. `"
+    },
+    {
+      "type": "markdown",
+      "data": "### Reset Flag\nRESET: abortion of a TCP connection.\nCauses: \n+ Sequence numbers impossible\n+ The destination port is not in use (not open) \n![Captura de pantalla 2016-12-08 a las 17.14.03.png](quiver-image-url/C63392204D625D9ACEDFB72B62E7D8AB.png)\n`Both ends can reject the connection`"
+    },
+    {
+      "type": "markdown",
+      "data": "### Duplicated delayed\n![Captura de pantalla 2016-12-08 a las 17.15.25.png](quiver-image-url/F662D31D9A656EBDABDF9B190FC10A35.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP Options\nEach end of the connection announces its MSS (Maximum Segment Size) in the SYN segment: \n+ Eg: If host A announces MSS = 100 bytes, segments with more than MSS bytes can not be sent to it.\n+ By default, MSS = 536 bytes\n![Captura de pantalla 2016-12-08 a las 17.22.17.png](quiver-image-url/E93D4B4F9B468999E40D1E0AE7378C6F.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP Options: Window Scaling \nTCP hosts agree to limit the amount of unacked data that can be in transit any given time. \nThis is referred to as the *window size*, and is communication via 16 bit field in the TCP header: \n+ Maximum receive window is only 65,535 bytes\n+ If RTT*vtrans > 655356 -> It wastes potential throughput \n\nSolution: TCP window scaling option \n+ Window scaling simply extends the 16-bit window field to 32 bits in length. *(Where 2<sup>n</sup> is the value of the window scaling option)* \n+ The window scaling option may be sent only once during a connection by each host, in its SYN packet\n+ By using the window scale option, the receive window size may be increased up to a maximum value of 1,073,725,440 bytes\n    + *The maximum valid scale value is 14* \n  \nExample: \n![Captura de pantalla 2016-12-08 a las 17.28.19.png](quiver-image-url/53F252F2F7671BE49E7567D439C56DD9.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP Options: Selective Acknowledgement\n**Sack-Permitted Option**\n+ This option may be sent in a SYN by a TCP that has been extended to receive (and presumably process) the SACK (*Selective Acknowledgement)* option once the connection has opened. \n+ It MUST NOT be sent on non-SYN segments\n\nThe SACK option is to be used to convey extended acknowledgement info from the receiver to the sender over an established TCP connection. \n\nCumulative ACKs can not confirm the reception of segments out of order\n+ May cause unnecesary retransmissions\n\nThe selective ACKs (SACK) permits the receptioon of out order segment\n+ Each block represents received bytes of data that are contiguos and isolated; that is, the bytes just below the block, (left Edge of Block - 1), and just above the block, (Right Edge of Block), have not been received. \n![Captura de pantalla 2016-12-08 a las 17.35.24.png](quiver-image-url/78F5D603782161D5576A7281F566B644.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP Options: Timestamp \n+ Timestamp is used to calculate more accurately the RTT \n+ The Timemstamp options carries two four-byte timestamp fields\n    + The TSval field contains the current value of the timestamp clock of the TCP sending the option \n    + The TSerc field is valid if the ACK bit is set in the TCP header\n![Captura de pantalla 2016-12-08 a las 17.45.12.png](quiver-image-url/5AE03229CE9FB470D88EDB76D60451DB.png)\n**Example:**\n![Captura de pantalla 2016-12-08 a las 17.45.38.png](quiver-image-url/E1D4692B9C5269EF3972F68D924225F3.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP: Closing a connection \n+ Client, server each close their side of connection\n    + Send TCP segment with FIN bit = 1\n+ Respond to received FIN with ACK \n    + On receiving FIN, ACK can be combined with own FIN \n+ Simultaneous FIN exchanges can be handled \n![Captura de pantalla 2016-12-08 a las 17.47.43.png](quiver-image-url/55CB7888D0D4C4986D24EE7C34EFF743.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Principles of congestion Control \n### Principles of congestion control\n*Congestion:*\n+ Informally: \"To many sources sending too much data too fast for *network* to handle\" \n+ Different from flow control! \n+ Manifestations: \n    + Lost packets (buffer overflow at routers) \n    + Long delays (queuing in router buffers) "
+    },
+    {
+      "type": "markdown",
+      "data": "### Goals of TCP Congestion Control \n+ Congestion is bad for the overall performance in the network \n    + Excessive delays can be caused\n    + Retransmissions may result due to dropped packets\n        + Waste of capacity and resources\n    + In some cases (UDP) packet losses are not recovered from \n    + *Note:* Main reason for lost packets  in the Internet is due to congestion -- errors are rare\n+ **Goal of TCP is to determine the available netweok capacity and prevent network overload.**\n    + Depends on other connections that share the resources \n\nTCP Sender must use ***two algorithms*** to control the amount of outstanding data being injected into network\n+ Slow start algorithm \n+ Congestion avoidance algorithm \n\nTo implement these algorithms, two variables are added to the TCP per-connection state. \n+ The **congestion window (cwnd)**\n    + It is a sender-side limit to the amount of data the sender can transmit into the network befor receiving an ACK\n+ The **Slow start threshold (ssthresh)**\n    + It is used to determine whether the slow start or congestion avoidance algorithm is used to control data transmission \n+ When **cwnd < ssthresh** => The ***slow start*** algorithm is used\n+ When **cwnd > ssthresh** => The ***congestion avoidance*** algorithm is used \n\n**The minimum of cwnd and rwnd governs data transmission**\n`transmission windows (twnd) = min (cwd, rwd)`\n> Remember that the receiver's advertised window (rwnd) is a receiver-side limit on the amount of outstanding data"
+    },
+    {
+      "type": "markdown",
+      "data": "### Slow Start algorithm \nBeginning transmissions into a network with unknown conditions requires TCP to slowly probe the network to determine the available capacity, in order to avoid congesting the network with an inappropriately large burst of data \nThe **slow start** algorithm is **used** for this purpose: \n+ At the beginning of a transfer **OR**\n+ After repairing loss detected by the retransmission timer\n\n**At the beginnig of a transfer** \n+ cwnd = 2 segments\n+ When an ACK is received : cwnd += 1 segments\n+ sstresh = rwnd \n\n![Captura de pantalla 2016-12-08 a las 19.01.06.png](quiver-image-url/A13768DDD21CD3CBBF31906B9017568F.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Congestion Avoidance Algorithm \nWhen the number of byts acknownledged reaches cwnd, the cwnd can be incremented by up to 1 segment\n`cwnd += 1/cwnd` "
+    },
+    {
+      "type": "markdown",
+      "data": "### Congestion Detection \n+ Packet loss is a sign of congestion \n+ Two indicators of congestion \n    + A retransmission timer expires (timeout) \n    + Three duplicate ACKs are received\n\nWhat does TCP do then? \n+ ssthresh = max (twnd/2 , 2 ) \n+ **After repariring loss detected by the retransmission timer** \n    + cwnd = 1 segment \n    + slow start \n+ **When 3 ACKs are received** \n    + cwnd = ssthresh \n    + congestion avoidance \n \n![Captura de pantalla 2016-12-08 a las 19.06.14.png](quiver-image-url/4F6CF3A8F1B8737080950328E3B38F0F.png)\n> As we can see when cwnd < ssthresh we use the slow start\n\n![Captura de pantalla 2016-12-08 a las 19.06.19.png](quiver-image-url/6581FE17542257F520ADAAA8477F8ABB.png)\n> At the beginning the transition follows the congestion window, until it arrives to the change, where it will follow the rwnd. When a packet is lost a new ssthresh will be created. We can see that in this case this occurs due to a timeout"
+    },
+    {
+      "type": "markdown",
+      "data": "### Fairness \n**Fairness and UDP** \n+ multimedia apps often do not use TCP \n    + do not want rate throttled by congestion control \n+ Instead of using UDP: \n    + Send audio/video at constant rate, tolerate packet loss\n\n**Fairness, paralled TCP connections** \n+ Application can open multiple parallel connections between two hosts\n+ *Web browser do this*"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "title": "UT10 : Virtual memory (II) ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Second chance replacement algorithm \nSupporting LRU as a replacement algorithm is too expensive\n**SOLTUTION:** To approximate LRU using the reference bit \n\n**2nd chance algorithm**\n+ It reviews the page reference bit on FIFO ordering\n+ If the page reference bit is 1\n    + Put reference bit to 0 \n    + Let page in memory \n+ If the page reference bit is 0 \n    + The page is chosen as victim \n    + Next page is the first candidate for next victim \n\n![Captura de pantalla 2016-11-28 a las 19.59.04.png](quiver-image-url/36D1041C7781EF324A83CE62AD900302.png)\n\n### Example: Main memory with 4 frames: \n![Captura de pantalla 2016-11-28 a las 20.01.04.png](quiver-image-url/A01002394D4C31735BF6C6579FA9E6EF.png)\n![Captura de pantalla 2016-11-28 a las 20.01.15.png](quiver-image-url/E98E7375538FD6914D0725039ACE6A3C.png)\n![Captura de pantalla 2016-11-28 a las 20.03.07.png](quiver-image-url/DF5686DAA0E6E1AF1404D9480EEB0F47.png)\n![Captura de pantalla 2016-11-28 a las 20.03.17.png](quiver-image-url/164F3CFA97D20483F3A51ADF0DBA0D63.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Frame allocation \nFrame allocation problem \n+ Free frame list: \n    + Frame management requires a data structure whre free frames are kept\n+ Frame to process delivery policy and the OS\n    + The OS gets the required number of frames to execute itself\n    + Processes receive the minimum initial number of frames and the remaining ones on demand\n    + The minimum number of initially assigned frames depends on the indirection leve in the CPU instruction set => To execute an instruction all its operands must be allocated in main memory \n+ Frame delivery policies given m frames and n processes\n    + Fair allocation: All processes allocate A*i* frames equally \n![Captura de pantalla 2016-11-28 a las 20.10.31.png](quiver-image-url/A7B9F804676D9CE7E8D15A1976A20C4D.png)\n    + Proportional allocation: A process P*i* with size S*i* allocate A*i* frams computes as: \n![Captura de pantalla 2016-11-28 a las 20.10.38.png](quiver-image-url/511B4EF25A6B18C43B6BD6D53CAE31E0.png)\n    + Priority allocation: higher priority processes allocate more frames\n\n**Replacement policy scope**\n+ Local replacement: only pages allocated to the process that generate the page fault can be replaced\n    + It cannot choose a victim from another process\n    + The number of process allocated frames does not change\n    + A process execution is not affected by the remaining processes\n        + Advantage:    Sensible response time\n        + Disadvantage: Worse global memory management\n+ Global replacement: the victim is chosen betwenn all allocated pages in main memory \n    + The victim can belong to another process\n    + The number of porcess allocated frames can change\n        + Disadvantage: Response time sensitive to system load\n        + Advantage: Better global memory management"
+    },
+    {
+      "type": "markdown",
+      "data": "### Thrashing \n**The trashing problem:**\n+ Memory becomes scarce and processes generate a lot of page faults => I/O time becomes dominant\n+ The OS allows more processes entering for execution regarding the low level of CPU use\n+ This makes things worse because the same amount of memory has to be shared with more and more processes => Page fault rate keeps increasing \n![Captura de pantalla 2016-11-28 a las 20.19.51.png](quiver-image-url/32F4FA68B079E3506D3B9C4AF1340CDA.png)\n\n**How to solve thrashing?** \n+ To anticipate an to prevent the problem\n    + Using a working set model \n    + Controlling page fault rate\n+ Once thrashing is detected\n    + Swap out processes with a medium term scheduler\n\n**Reference locality principle** \n+ Instruction and data processed recently (and the ones close to them) have a high probability of being processed in the near future\n+ Locality: \n    + Set of pages that a process uses as a whole\n    + It is hard to identify\n+ Thrashing happens when \n    + **Locality size > total main memory size** \n\n**Working set model: preventive technique**\n+ It assumes reference locality principle \n+ Obtain the number of pages that a process needs to have simultaneously in memory to avoid thrashing\n+ Working Set (WS):\n    + Set of pages accessed in a process last referenced logical addresses\n    + Working set window: \n        + Fixed consecutive number of reference ∆ used to compute WS\n        + WS is made of the set of pages accessed in the last ∆ references\n    + Working set size (WSS): Number of different pages that belong to the WS\n    + In a system with m frames and n processes P*1*…P*m* there is trashing when \n![Captura de pantalla 2016-11-28 a las 20.31.51.png](quiver-image-url/72F05632ACB17A1367D1D1C94B826DFA.png)\n\n##Example of WS model \n+ WS window ∆ = 9\n+ Compute WS and WSS in t1 and t2\n![Captura de pantalla 2016-11-28 a las 20.33.00.png](quiver-image-url/1089439525419FF7737231A1ABB5FD9F.png)\n> WS = set of numbers that appear between ∆ , WWS = number of numbers in the WS obtained \n\n**Page fault rate control** \n+ Preventive technique that analyses directly the page fault rate to guess if thrashing is near to happen \n![Captura de pantalla 2016-11-28 a las 20.39.03.png](quiver-image-url/7D0310A62FF9086004FFD109D857428E.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Frame reservation\n+ Concept: \n    + Modern OS kepp a precentage of main memory as a store of free frames (reservation frames)\n+ Goals: \n    + To reduce the time taken to serve a page fault\n        + Attempt to have free frams available \n        + The replacement algorith is used\n            + Only when the free frame level gets too low\n            + To look for victims to amortize its use\n        + Page out\n            + Several pages are written at once to disk \n    + **To avoid Thrashing**\n\n**Reservation frame management**\n+ The OS guarantess that there will be always a set of free frames\n+ Some thresholds are set: \n    + Minimum number of free frames (Mmin)\n    + Recommended number of free frames (Mrec)\n    + Mrec >> Mmin \n+ Very efficient replacement algorithms are NOT required\n    + The first VMS (virtual memory system) systems used FIFO because their MMU did not have reference bit\n    + It is common to use a 2nd chance algorithm \n\n**Monitor Process** \nThere is an internal process that periodically accounts for the number of free frames (frame-free): \n+ if **frame-free > Mrec** then do nothing\n+ if **frame-free < Mmin** then: \n    + Swap out some processes until reaching REC free frames\n    + Victims are process that spend more time suspended\n+ if **Mmin ≤ frame-free ≤ Mrec then: \n    + Seek for processes with too many frames (very low frame rate) to \"steal\" them some frames applying a replacement algorithm \n    + Several victims are selected in every process, the actual number differs on every OS\n\n**Frame reservation management in thrashing**\n+ When thrashing happens the number of free frames decreases quickly\n+ The process monitor detects it when: \n    + Between two monitor activation frame-free decreases too much\n+ Solutions: \n    + Swap ot whole processes until reaching frame-free = Mrec\n    + Free a constant number of frames in every monitor activation if frame-free < Mrec (the monitor activation frequency increases) \n\n**Reservation frames content** \nThe frame of a victim selected by the OS is not allocated immediately to another page, instead the frame goes to the reserve stock \n+ If victim pages are referenced again soon by the process: \n    + There is a high probability that they be in the reserve stock and then they can be relocated without having to read them on disk \n    + The OS remembers which is the content of every frame in the reserve stock\n+ If frames included in the reserve stock correspond to modified pages: \n    + They are not considered to solve page faults immediatelt because its content has to be written on disk (into a file or paging area) \n        + When a threshold is reached all these pages are written at once\n        + Page out overhead is amortized => the number of global page writing is minimized\n    + After write their frames become free and can serve page faults  "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

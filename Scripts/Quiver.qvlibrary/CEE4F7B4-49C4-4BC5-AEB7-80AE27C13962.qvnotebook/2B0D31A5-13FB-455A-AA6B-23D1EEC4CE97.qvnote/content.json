@@ -1,0 +1,217 @@
+{
+  "title": "Unit 2.1  - DML: Queries and Data Manipulation",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Introduction to SQL\n**SQL:** (Structured Query Language) is a standard language for defining and manipulating a relational database\n\n**DDL:** (Data definition Language) Creation and modification of relational DB schemas\n**DML:** (Data manipulation language) Queries and database updates"
+    },
+    {
+      "type": "markdown",
+      "data": "Example: List pairs stage-mountain pass which have been won by the same cyclist"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select Puerto.nompuerto, Etapa.netapa -- to get the pairs\nfrom  Puerto, Etapa   \nwhere Puerto.netapa = Etapa.netapa    -- to join both tables\nand   Puerto.dorsal = Etapa.dorsal    -- the winner"
+    },
+    {
+      "type": "markdown",
+      "data": "> From now on we are going to use simpler names Puerto = P and Etapa = E"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 27*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select  C.nombre, E.netapa  -- Name of cyclist & Stage number\nfrom    Etapa E, Ciclista C\nwhere   E.km > 150          -- More than 150km long\nand     E.dorsal = C.dorsal -- To join the tables and obtain the winners"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 28*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select  C2.nombre\nfrom    Ciclista C1, Ciclista C2\nwhere   C1.nombre = \"Miguel Induráin\"\nand     C1.nomeq  = C2.nomeq          -- Nombre equipo\nand     C1.edad   > C2.edad           -- Younger than him"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 36*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select P1.nompuerto\nfrom   Puerto P1\nwhere  P1.altura > (select  AVG(P.altura)         -- between brackets its the subquerry to \n                    from    Puerto P              -- obtain \"mean of the height of all 2nd\n                    where   P.categoria = \"2\");   -- category mountain passes\""
+    },
+    {
+      "type": "markdown",
+      "data": "> P1.altura can be compared with AVG(P.altura) because AVG(P.altura) returns only one value the mean\n\n*Example page 41*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select E.salida, E.llegada\nfrom   Etapa E                         -- The IN operator allows you to specify multiple\nwhere  E.netapa IN (select P1.netapa   -- values in a WHERE clause  \n                    from    Puerto P1   \n                    where   P1.pendiente = (select MAX(P2.pendiente) from Puerto P2);\n                   );"
+    },
+    {
+      "type": "markdown",
+      "data": "*another solution (example page 41)*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select    distinct E.salida, E.llegada\nfrom      Etapa E, Puerto P\nwhere     E.netapa = P.etapa\nand       pendiente = (select MAX(pendiente)\n                       from Puerto);"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 43*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select DISTINCT E.director\nfrom   Equipo E, \nwhere  E.nomeq IN (select C.nomeq\n                   from   Ciclist C \n                   where  C.nombre LIKE 'A%';)  -- Todos los que empiezan por A"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 44*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select E.netapa\nfrom   Etapa E\nwhere  E.dorsal IN (select C.dorsal\n                    from   Ciclista C\n                    where  C.nomeq IN (select E.nomeq\n                                       from   Equipo E\n                                       where  E.director LIKE 'A%'))"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 48*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select nombre\nfrom   Ciclista\nwhere  dorsal NOT IN (select  dorsal\n                      from    Etapa)"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 54*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select c.dorsal\nfrom   Ciclista c\nwhere  NOT EXISTS (select *\n                   from   Maillot m\n                   where  NOT EXISTS (select *\n                                      from   Llevar l\n                                      where  l.codigo = m.codigo\n                                      and    l.dorsal = c.dorsal))"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 55*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select c.name\nfrom   Ciclist c, Etapa e\nwhere  c.dorsal = e.dorsal\nand NOT EXISTS (select *\n                from   Puerto p\n                where  p.netapa = e.netapa\n                and    p.dorsal <> C.dorsal)\nand EXISTS  (select *\n            from puerto p2\n            where p2.netapa = e.etapa\n            \n-- becayse threr could be some stage with no mountain passes"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 69*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select c.nomeq, AVG(c.edad)\nfrom   Ciclista c\nwhere  c.edad > 25\ngroup by c.nomeq\nhaving 8 > (select count(dorsal)  -- ellos hacen count(*), pero valen ambas\n            from Ciclista c2\n            where c.nomeq = c2.nomeq)"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 71*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select c.name, COUNT(p.nompuerto)\nfrom Ciclista c, Puerto p\nwhere p.dorsal = c.dorsal\ngroup by c.dorsal, p.nombre\nhaving 10 < (select avg(p1.pendiente)\n             from   Puerto p1\n             where    p1.dorsal = c.dorsal)"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 72*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select c.nombre, Count(e.netapa)\nfrom   Ciclista c, Etapa e\nwhere  c.dorsal = e.dorsal\ngroup by c.dorsal, c.nombre     -- en teoria si el nombre es el main select tienes que\nhaving 5 < (select count(*)               -- añadirlo en el GROUP BY\n            from   Ciclista c2\n            where  c2.nomeq = c.nomeq)\n            \n-- another solution\n\nselect C.nombre, count(*)\nfrom   ciclista C, Etapa E\nwhere  C.dorsal = E.dorsal\nand    5 < (select count(*)\n            from   Ciclista C2\n            where  C2.nomeq = C.nomeq)\ngroup by c.nombre, c.dorsal"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 91*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "Select c.dorsal, c.nombre, l.codigo, l.netapa\nfrom   Ciclista c left join Llevar l \n       on c.dorsal = l.dorsal\n\n-- Usar el left join te deja seleccionar todos los ciclistas y los que no cumplen la condicion te los deja a null"
+    },
+    {
+      "type": "markdown",
+      "data": "*Example page 92*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "select e.nomeq, count(*)\nfrom   Ciclista c right join Equipo e\n       on e.nomeq = c.nomeq\ngroup by e.nomeq"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": " "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

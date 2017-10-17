@@ -1,0 +1,97 @@
+{
+  "title": "Seminar 1 - NodeJS",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Important Stuff about JavaScript and NodeJS\n\n`function double(x) {return 2*x} ...is equivalent to...`\n`var double = function (x) {return 2*x}`\n\nInstead of using various operations with loops in the same array. We can use the function **reduce** where inside we can create a new function to operate what we want. For example:"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "function mult(a) {var r = 1; for (i in a) r *= a[i]; return r}\n\nvar a = [1,2,3];\n\nconsole.log(mult(a));\n\nvar one = a.reduce(function(a,b){\n  return a + b;\n});\n\nvar two = a.reduce(function(a,b){\n  return a*b;\n})\n\nconsole.log(one, \"  \", two);"
+    },
+    {
+      "type": "markdown",
+      "data": "Instead of using the function *mult* with a for loop inside we can use reduce() with a function inside where we can specify the behaviour"
+    },
+    {
+      "type": "markdown",
+      "data": "**Some predefined functions**\n+ map: Applies f2 onto each array element, returning a new array.\n+ filter: Maintains in the array the elements returning true when f2 is invoked, removing the other elements.\n+ some: Returns true when any of the array elements obtains true when f2 is invoked.\n+ every: Returns true when every array element obtains true when f2 is invoked."
+    },
+    {
+      "type": "markdown",
+      "data": "### Object literal\n\n+ Properties are accessed as obj.k (when k is an identifier) or as obj[k] (for strings and numbers)\n+ Properties may be removed with: delete obj.k\n+ Test whether a property exists with: k in obj\n+ The for (…in…) loop iterates on the object properties.\n\n*Example of page 29*"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "var dog = {\n  name:'Toby',\n  legs: 4,\n  state: function(){console.log(this.name + \" is okay!\")},    //be careful with commas\n  othervariable: 3\n}\n\ndog.state();\nvar f = dog.state;\nf(); // undefined, it is not bound to an object\nf2 = f.bind(dog); f2(); // a way of doing the bounding\nfor(var k in dog) console.log(k); // to access properties name (name)\ndelete dog.name;  //deletes property name\nfor(var k in dog) console.log(dog[k]); // to access real properties (\"Toby\")\n                                       // here in the case of state it appears as\n                                       // [Function: state]\n"
+    },
+    {
+      "type": "markdown",
+      "data": "### JSON"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "var ob = {\"x\":23, \"y\":{\"a\":45, \"b\":[5,0]}}\nvar s = JSON.stringify(ob);\nconsole.log(s);   // {\"x\":23,\"y\":{\"a\":45,\"b\":[5,0]}}\n\nvar p = JSON.parse(s);\n\nconsole.log(p); // { x: 23, y: { a: 45, b: [ 5, 0 ] } }"
+    },
+    {
+      "type": "markdown",
+      "data": "### Callback functions\nfor instance: `element.fadeIn(speed, function(){..})`\nthe second element is a callback function that will be invoked when \"element\" has completely disappeared\n*Callback functions allow asynchronous invocations:*\n+ An agent calls B(args, C), being C a callback\n+ When B is terminated, it calls C\n    + Thus, B reports its completion and provides its result "
+    },
+    {
+      "type": "markdown",
+      "data": "### Events"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "function fibo(n){\n  return (n<2) ? 1: fibo(n-2) + fibo(n-1)\n}\n\nconsole.log(\"Starting..\");\n\n// Writes a message in 10 ms\nsetTimeout(function(){\n  console.log(\"M1: Something is written...\");\n}, 10);\n\n//This statement lasts more than 5 secs\nvar j = fibo(40);\nfunction anotherMessage(m,u){\n  console.log( m + \": The result is: \" + u);\n}\n\n//M2 is written before M1 since the \"main\" thread is never interrupted\nanotherMessage(\"M2\", j);\n\n//M3 is written after M1\nsetTimeout(function(){\n  anotherMessage(\"M3\", j);\n}, 1);\n\n/* OUTPUT\n  Starting..\n  M2: The result is: 165580141\n  M1: Something is written...\n  M3: The result is: 165580141\n*/"
+    },
+    {
+      "type": "markdown",
+      "data": "Each kind of event may be managed in a different way:\n+ But all events answers are executed by the same thread\n+ This imposes a sequence-based management"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "title": "Introduction",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "What is a distributed system?\n- We need at least 2 computers => Computer Network\n- Which means many \"independent\" processes are collaborating in order to achieve a common goal\n\nProviding to the user the image of a ***Single System*** => Distribution transparency **OUR GOAL!** "
+    },
+    {
+      "type": "markdown",
+      "data": "Types of Transparency: \n* Access\n* Location \n* Replication\n* Failure\n\nThey provide Efficiency and Continuos Availablity.\n[When incrementing the data we should incrementing in every computer to maintain consistency]"
+    },
+    {
+      "type": "markdown",
+      "data": "Request/Reply must be synchrounous => following a set of steps\nAsynchronous programming tries to break this steps thanks to the use of clien/servers structures.\n> JavaScript - Permits asynchronous interactions among processess"
+    },
+    {
+      "type": "markdown",
+      "data": "## What is it going to appear in each (some) Units\n+ Unit 2: Distributed Systmes Software\n    + Provides a system model being needed for theoretical discussims in the subsequent unis\n+ Unit 4: Deployment\n    + Docker => Container management   "
+    },
+    {
+      "type": "markdown",
+      "data": "In the labs we'll use JavaScript -> Interpreted language **without compiler**\n#### Three Projects:\n+ TCP/IP Reverse Proxy\n+ NodeJS and ØMQ app development\n+ Deployment"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

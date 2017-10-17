@@ -1,0 +1,69 @@
+{
+  "title": "Seminar 2 - Questions about Chapter 1 & 2",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "**Questions:**\n1. False\n2. True\n3. False\n4. False\n5. False (\"The subsequent development is manually made\" -> this is true)\n6. False\n7. False\n8. True\n9.  --\n10. False -> It has to monitor the proyect aswell\n11. False\n12. True\n13. False -> There are other factors too\n14. False\n15. False"
+    },
+    {
+      "type": "markdown",
+      "data": "**Additional Questions:**\n1. Starts much earlier \n2. Software crisis (costs, delivery, malfunctions)\n3. Models include waterfall, etc.\n4. Yes (waterfall & automatic)\n5. *(tipical in exams)* Iternations: to add new things to make it grow, evolutionary: during the different iterations we are incrementing funcitonality (usually iterative and evolutionary go hand bu hand), interactive: cooperation between team and customers\n6. Error at the beginning, but are found at the end -> process is repeated for improvement\n7. look slides\n8. Spiral -> Risk analysis activity which is not in the incremental. Also the name of the development parts is different\n9. *Correctness:* Does it do what I want; *Reliability:* Is it reliable all the time?; *Integrity*: Is it safe?\n10. **Milestones** are tools used in project management to mark specific points along a project timeline.\n11. xxx\n12. Software not being reliable when ended, Not achieving deadlines, Dangerous software malfunctioning\n13. Rapid increases in computer power and the complexity of the problems that could not be tackled. Existing methods to solve this problems did not exist. Products running over-budget. Software was very inefficient\n14. The classification of the quality factors of software takes into account three important aspects of a software product:\n    1. Its operational features\n    2. Its capability to support updates\n    3. Its adaptability to new environments\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

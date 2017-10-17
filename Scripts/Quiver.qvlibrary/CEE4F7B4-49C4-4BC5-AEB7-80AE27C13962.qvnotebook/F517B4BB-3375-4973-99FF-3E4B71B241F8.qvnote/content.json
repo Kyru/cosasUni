@@ -1,0 +1,106 @@
+{
+  "title": "BDA - Unit 1.2 - The Relational Data Model",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Terminology\n\n+ Table = Relation\n+ Row / Record = Tuple\n+ Column / Field = Attribute (property with a name and an associated type)\n+ Data Type = Domain\n\n---\n## 2 - Introduction to relational databases\n\n### 2.2 Relation database goals\n\nThe goal of a database is that users and applications can:\n1. Store and modify the information of interest\n      + Insertion\n      + Deletion\n      + Update\n2. Access and retrieve that information:\n      + Query\n \n\nA **relational query** is a retrieval operation to a databse which returns part of the information of the database, possibly combined and/or aggregated, in the form of a single table\n\n### 2.2 Goals: Queries\n\nRelational databases can be queried by different query languages\n+ Relational algebra (based on set and relational operators\n+ Relational calculus (based on logic)\n+ SQL: computer language which integrates most of the two previous approaches\n\n***Set operators:***\n\n+ Union: Contains all the tuples of R and S or both R and S (duplicates are eliminated)\n+ Intesection: All tuples that are in both R and S\n+ Difference: R - S => tuples that are in R, but not in s\n+ Product: R x S => Concatenation of every tuple of R with every tuple of S\n\n\n***Relational Operators***\n\n+ Selection (WHERE): selects the tuples that satisfy the specified condition\n+ Proyection: Extracts the specified attributes (columns) and eliminaties duplicates\n+ Join: defines a relation that contains tuples satisfying some condition from the cartesian product\n+ Rename (old, new): changes the name of a column\n+ Logical operators: AND, OR, NOT"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Exercise 1.1 page 24\n1. Name (nombre) of all the subjects:\n      + Subject [nombre] \n2. Name (nombre) of the subjects with 4 lab groups (GP):\n      + (Subject WHERE GP = 4) [nombre]\n3. Name (nombre) of lecturers with categoria 'Titular' teaching the subject 11545:\n      + (Lecturer x Teaching WHERE categoria = ‘Titular’ AND\ncod_asg=‘11545’)[nombre] \n4. Name (nombre) of the lecturers with categoria 'Titular' teaching a subject in the '1A' semester:\n    + (((Lecturer(nombre, name\\_l) WHERE categoria = ‘Titular’) x(cod_pro) Teaching)\nx(cod\\_asg) (Subject WHERE semestre =‘1A’)) [name_l]\n5. Name of lecturers teaching a subject with 2 GT groups:\n    + ((((Teaching[cod\\_pro,cod\\_asg] x(cod_asg) Subject)\nWHERE GT=2) [cod\\_pro] x(cod_pro) Lecturer))[nombre] \n6. Name (nombre) of lecturers with categoria='Titular' and with no telephone number\n    + (Lecturer WHERE categoria =‘Titular’ AND ISNULL(telefono)) [nombre]"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Queries using SQL - Exercise 1.2 page 34"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "-- 1\nSelect nombre\nfrom   subject\n\n-- 2\nSelect nombre\nFrom   subject\nwhere  GP = 4\n\n-- 3\nSELECT nombre\nFROM   Lecturer, Teaching\nWHERE  categoria = ‘Titular’\nAND    cod_ag = ‘11545’\nAND    Teaching.cod_pro = Lecturer.cod_pro\n\n-- 4\nSELECT Lecturer.nombre\nFROM   Lecturer, Teaching, Subject\nWHERE  categoria = 'Titular' \nAND    semestre  = '1A' \nAND    Teaching.cod_asg = Subject.cod_asg\nAND    Teaching.cod_pro = Lecturer.cod_pro\n\n-- 5 \nSELECT Lecturer.nombre\nFROM   Lecturer, Teaching, Subject\nWHERE  Subject.GT= 2\nAND    Teaching.cod_asg = Subject.cod_asg\nAND    Teaching.cod_pro = Lecturer.cod_pro\n\n-- 6 \nSELECT nombre\nFROM   Lecturer\nWHERE  categoria = 'Titular'\nAND    telefono IS NULL"
+    },
+    {
+      "type": "markdown",
+      "data": "--- \n## 3 - The relational data model\n### 3.1 Data Types\n\nDepend on the Relational Database Manager System. For example:\n\n- Numeric can be:  Integer, number, real, float...\n\n> Each attribute  (column) can be of a different type - Char(50) means a maximum of 50 chars can be present in that certain column\n\n---\n\n### 3.2 Tuple and Relation\n\nA *tuple schema t* (row) is a set of pairs of the form: \n\n\tt = {(A1, D1), (A2, D2),…, (An, Dn)}\n\nWhere:\n\n- {A1, A2,…, An} (n>0) is the set of attribute names in the schema, necessarily different\n- {D1, D2,…, Dn} are the domains associated with the abovementioned attributes.\n\nFor example:\n\nPerson = {(person\\_id, integer), (name_char), (address, char)}\n\nThese two are correct representations of the Person tuple schema:\n\nT1 - {(person_id, 2544), (name, “Joan Roig”), (address, “Sueca 15”)}\nT2 - { (name, “Pep Blau”), (person_id, 9525), (address, “dunno!”)}\n\n> Order does not affect tuples\n\n---\n\nA *relation* is a set of tuples of the same schema\n\nA *relation schema* is the schema of the tuples composing the relation\n\nNotation:\n\tR (A1:D1, A2: D2,…, An: Dn}\ndefines a relation R of schema\n\t{ (A1, D1), (A2, D2),…, (An, Dn)}\n\nRelation schema example:  {(cod\\_pro, char(3), (cod_asig, char(5)), (GT, smallint), (GP, smallint))}\n\n**Properties of a relation:** \n\n- *Degress of a relation:* Number of attributes of its schema\n- *Cardinality of a relation:* Number of tuples that compose the relation\n- *Compatibiliy:* Two relations R and S are compatible if their schemas are identical\n\n***Example page 54:***\n\nDegree: 3\nCardinality: 4\nCompatible with: any other tuple schema with the same names and domains\n\n> REMEMBER: ORDER IN THE TUPLES DOES NOT MATTER (outside the brackets)\n\n> The representation of a relation is a **Table** (the rable is only a *Matrix Representation* of a relation)\n\nTraits which distinguish a relation:\n\n- There can't be repeated tuples in a relation\n- There isn't a top-down order in the tuples\n- There isn't a left-to-right order in the attributes of a relation\n\nThe set of *relation definitions* which represent an information system is called ***relational (logical) schema***\n\n> The content (set of tuples) of the relations of the relational schema is the database\n\n![Captura de pantalla 2017-09-30 a las 20.19.42.png](quiver-image-url/C03BCDBF8CB2FF5B994012AD5075D952.png =491x330)"
+    },
+    {
+      "type": "markdown",
+      "data": "### 3.3 Null Value\n\n> A domain is a set of elements which always includes the NULL Value\n\nThe correct assignation of a null value is:\n+ example **is null**\n+ example = null **IS WRONG** \n\nThe **null value** represents tha there is a *not known value*, so we need a **tri-valued logic**:\n+ True\n+ False\n+ Undefined\n\n> The null value applies to all comparison operators (<, >, =, >= ...)\n\n**Evaluation:**\nA *v* B (where *v* is a comparison operator) is evaluated as **undefined** if at least one A or B is null;\notherwise it is evaluated to the certainty value of the comparison A *v* B (true/false)\n\n***Null Value with AND, OR, NOT:***\n\n![Captura de pantalla 2017-09-30 a las 20.29.01.png](quiver-image-url/52B4D78D7C3FBF5426E431DA54372D0B.png =537x291)"
+    },
+    {
+      "type": "markdown",
+      "data": "### 3.4 Constraints \n\n**Solutions:**\n+ Definition of *domains*\n+ *Uniqueness* constraints\n+ *Not null* constraints\n+ Definition of *primary keys* \n+ Definition of *foreign keys* \n+ *General* integrity constraints\n\nThey are specified together with the **database schema**\nThe responsible for ensuring them is the **DBMS**\n\n+ *cod_pro* identifies lecturers\n    + **Primary key (PK)**\n+ *nombre* is unique for each object\n    + **Uniqueness**\n+ The name *(nombre)* of a lecturer must be known\n    + **Not null value (NNV)**\n+ *cod_asg* in *Teaching* refers to an existing subject\n    + **Foreign key (FK)** \n\n*NNV constraint:*\nNot null value constraint specifies:\n\"There cannot be a tuple in R having the null value in some attribute of K\"\n\n![Captura de pantalla 2017-09-30 a las 20.42.08.png](quiver-image-url/D192DA8DFC034180FA2C9434FEB2888C.png =474x262)\n\nHaving an empty space (undefined) in the *nombre* attribute is not allowe and to ensure this we must add the constraint **NNV:{nombre}***\n\n*Uniqueness constraint:*\nUniqueness constraint specifies:\n\"There cannot be two tuples in R having the same value in all the attributes of K\"\n\n![Captura de pantalla 2017-09-30 a las 20.45.35.png](quiver-image-url/13B009DAF6D6B838AED1D1DAF82C02B7.png =501x269)\n\nThere cannot be two tuples in *Subject* with the same value so we add the **UNI** constraint\n\n*Primary Key constraint:*\nGiven a relation R and PK:{A1...An} the PK constraint specifies:\n1. R satisfies a **not null** constraint over PK\n2. R satisfies the **uniqueness** constraints over PK\n\n![Captura de pantalla 2017-09-30 a las 20.51.04.png](quiver-image-url/2BDDB38E9DDDE6299A58A704FA66ACF2.png =477x274)\n\nApplying PK:{cod\\_pro} will ensure the NNV and UNI constraints over cod_pro\n\n**Foreign Key**\n\n> The use of foreign keys is the mechanism provided by the relational model to express associations between the objects in a database schema. This mechanism is defined such that these associations, if performed, would be carried out adequately. \n\n![Captura de pantalla 2017-09-30 a las 21.27.58.png](quiver-image-url/6A2F88674B61E4C5ADF681BD25C1CC86.png =500x335)\n\nIf FK = {Ai} (contains only one attribute) the three types of referential integrity match\n*S satisfies the referential integrity constraint* if all tuples in S met: \n+ A1 is NULL, or\n+ There is one tuple (and only one) in R with the same value in the f(A1) attributed than A1 in S\n\n![Captura de pantalla 2017-10-02 a las 20.17.55.png](quiver-image-url/49D400476BA100B694BBCF63962AD876.png =450x286)\n\n#### Referential Integrity\n**Applied to FK: {A1,...,Ap} => R**\n\n***Weak RI:**\n\"If in a tuple of S all the values for the attributes of K have a non null value, then there must exist a tuple in R taking the same values for the attributes of J that the values in the attributes of K\"\n\n**Partial RI:**\n\"If in a tuple of S one or more attributes of K have a non-null value, then there must exist a tuple in R taking the same values for the attributes of J as the values in the non-null attributes of K\"\n\n**Complete RI:**\n\"In a tuple of S all the values must have null value or none of them. In the latter case, there must exist a tuple in R taking the same values for the attributes in J as the values in the attributes of K\"\n\n> The type of referential inegirty can be omitted if:\n> + The foreign key has only one attribute, or\n> + When all of them have a not null constraint\n> Since in these cases the three types of referential integrity match\n\n![Captura de pantalla 2017-10-02 a las 20.31.55.png](quiver-image-url/9F89E98CE0C74A46194BAC6C8F273C29.png =467x290)\n![Captura de pantalla 2017-10-02 a las 20.32.03.png](quiver-image-url/9771FE846801043110DA98C066F5543A.png =477x283)\n![Captura de pantalla 2017-10-02 a las 20.32.09.png](quiver-image-url/E85029563EEDED99568DDDEC5DC61B9E.png =473x301)\n\n#### Violation of the referential integrity\n\nGiven two relations R and S such that S has a FK k which refers to the attributes J in R, the only operations which may violate their referential integrity are:\n+ Operations over S:\n    + Insert a tuple in S\n    + Modify the value of K in a tuple of S\n+ Operations over R:\n    + Delete a tuple in R\n    + Modify the value of J in a tuple of R\n    \nIf any of those operations attempts to break the referential integrity, the DBMS aborts the operations (by default). But there are other options, if the FK is previously designed that way:\n+ Setting values to null\n+ Applying the operation in cascade\n\nThe RI defined by a FK is always preserved but can be done in different ways depending on the FK definition:\n+ Reject the operation (default)\n+ Perform the operation but set some values to null to restore integrity\n+ Perform the operation but propagate the action in cascade to restore integrity\n\n> Applied in DELETE and UPDATE\n\n![Captura de pantalla 2017-10-02 a las 21.03.57.png](quiver-image-url/2B2A931EC567EAB285754F459D77E832.png =466x274)\n![Captura de pantalla 2017-10-02 a las 21.04.06.png](quiver-image-url/596F2E3C8DB1E49B318C335ED19B4DA9.png =462x272)\n![Captura de pantalla 2017-10-02 a las 21.04.13.png](quiver-image-url/6D3AF9E1B5CB8282EDC6F4774DEA0FA4.png =459x282)\n![Captura de pantalla 2017-10-02 a las 21.04.25.png](quiver-image-url/AD552326BFF55793733EA4946F2848DD.png =460x286)\n\n#### General integrity constraints\nConstraits which cannot be expressed by the predifined constraints\n+ *Static integrity constraints*\n    + One table attribute or table constraints (represented by: CHECK)\n    + Several tables (expressed by \"CREATE ASSERTION or triggers) \n+ *Transition integrity constraints:* triggers\n\n> A database is valid if all the defined integrity constraints are satisfied. The DBMS ensures that every update in teh database generates a new extension which satisfies all the constraints\n\n![Captura de pantalla 2017-10-02 a las 21.10.37.png](quiver-image-url/BBB5E938DD209D663437D2BD7A4E6395.png =470x278)"
+    },
+    {
+      "type": "markdown",
+      "data": "## 4 - Constraints and transactions\nA **transaction** is a sequence of [manipulation of query] operations which constitues a logical execution unit\n\n> We can put a batch of single operations into a transaction (by using appropriate commands)\n\nConstraints can be disabled during a transaction:\n+ Some constraints are evaluated after every single atomic operation (immediate evaluation)\n+ Some constraints are evaluated after the transaction is completed (deferred evaluation)\n\n`the database designer is the responsible for determining the mode: immediate/deferred`"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

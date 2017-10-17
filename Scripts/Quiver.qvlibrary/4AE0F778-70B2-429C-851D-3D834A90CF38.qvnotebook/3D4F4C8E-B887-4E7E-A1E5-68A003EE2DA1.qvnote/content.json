@@ -1,0 +1,102 @@
+{
+  "title": "Unit 3 - Part II ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Operational Model \n+ A **functional program** consists of: \n    + A list of equations defining functions (possibly with additional equations defining types) \n    + An initial expression (without free variables) \n+ The **execution** of a functional program consits of the evaluation of the initial expression \n+ The evaluation itselft consists of a sequence of reduction steps \n\nWe use the notation of *substitution* to formalize the parameter passing as a matching from the expression to be evaluated against the *(left hand side of)* equation l = r which is used in the reduction step.\n+ A substitution σ is a mapping from variables into expressions such that σ(x) ≠ x holds for a finite set of variables\n+ Substitutions are then represented by just giving the non-trivial bindings {x<sub>1</sub> -> t<sub>1</sub>, ..., x<sub>n</sub> -> t<sub>n</sub> with x<sub>1</sub> ≠ t<sub>1</sub>. \n    + `Example: σ = {x -> 1, y -> 0} is a substitution \n+ The *identity* or \"empty\" substitution is denoted by ε\t\n+ The application σ(e) of a substitution σ to an expression e is called ***instantiation*** "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "-- EXAMPLE 1 \nσ    = {x -> 1, y -> 0}\ne    = f( x,g(y) ) \nσ(e) = g(1, g(0) ) \n\n-- EXAMPLE 2\nσ = {x -> s(y), y -> 0}\ne = f(x,y) \nσ(e) = f( x(y),0 )        -- note that the y in s(y) is not substituted by 0  "
+    },
+    {
+      "type": "markdown",
+      "data": "### Reduction \nA **redex** is an instance σ(l) of a left-hand side l of an equation l = r *(or l | c = r for conditional equations)*\n+ The expression e *reduces* to e' if: \n    + It contains a redex σ(l) of an equation l | c = r \n    + The condition c holds (i.e, it reduces to True) after applying σ to it\n    + e' is obtained as the replacement of σ(l) by σ(r) in e \n+ Expressions that cannot be further reduced are called **normal forms** "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "-- EXAMPLE \n\nsixtimes 1 -> double ( triple 1 )         -- 1. we apply first, redex to sixtimes 1 => we obtain that the eq: sixtimes x = \n                                          --    double ( triple x ) and the subs is {x -> 1}\n           -> double ( 3*1 )              -- 2. apply redex to triple 1 => eq: triple y = 3*y and the subs {y -> 1}\n           -> double 3                    -- 3. apply redex to 3*1 we obtain 3 (predefined funtion: product) \n           -> 3 + 3                       -- 4. apply redex to double => eq: double x = x+x and subs {x -> 3}\n           -> 6                           -- 5. apply redex to 3+3 we obtain 6 (predefined function addition) "
+    },
+    {
+      "type": "markdown",
+      "data": "`6 is the Normal form`"
+    },
+    {
+      "type": "markdown",
+      "data": "### Evaluation \n**The evaluation of an expression proceeds by applying successive reduction steps until a normal form is reached. The final result may depend on the selected *reduction strategy***"
+    },
+    {
+      "type": "markdown",
+      "data": "### Evaluation modes \nGiven a funtiona call: \n+ ƒ e<sub>1</sub> ... e<sub>k</sub>\n\nWe can distinguish two essential evaluation modes: \n+ Eager evaluation \n+ Lazy evaluation "
+    },
+    {
+      "type": "markdown",
+      "data": "#### Eager Evaluation \nEager evaluation *(call-by-value)*: first evaluate the arguments; then use an equation defining the funtion ƒ "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "-- EXAMPLE EAGER\nsixtimes 1 -> double (triple 1) \n           -> double (3*1)\n           -> double 3\n           -> 3 + 3\n           -> 6"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Lazy Evaluation "
+    },
+    {
+      "type": "markdown",
+      "data": "Lazy evaluation *(call-by-name)*: the arguments are evaluated only if this is necessary to apply some of the equations defining ƒ"
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "-- EXAMPLE LAZY \nsixtimes 1 -> double (triple 1) \n           -> (triple 1) + (triple 1) \n           -> (3*1) + (triple 1) \n           -> 3 + (3*1) \n           -> 3 + 3\n           -> 6 "
+    },
+    {
+      "type": "markdown",
+      "data": "#### Which strategy is more efficient? \n`It depends on the program!`\n+ **Sometimes Eager is more efficient than lazy**\n![Captura de pantalla 2016-12-01 a las 18.40.48.png](quiver-image-url/0BA807F844AD8097C8C9AEAEE81DB12C.png)\n+ **Sometimes Lazy is more efficient than Eager**\n![Captura de pantalla 2016-12-01 a las 18.41.30.png](quiver-image-url/6E11AD5830037CE2730AD513A27E9542.png)\n+ **Sometimes Lazy and Eager are equally efficient**\n![Captura de pantalla 2016-12-01 a las 18.42.05.png](quiver-image-url/D6056699874916DB6C874887EA771D0E.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### The Evaluation Process \n*The evaluation process can be:* \n+ Successful: it terminates and yields a value\n    + `sixtime 1 -> *6` *(the star means to skip the procedure)*\n+ Failed: it terminates but no value is obtained\n    + `tail (x:xs) = xs => the expression tail[] is a normal from but it is not a value`\n+ Incompleted: it does not terminate \n    + `for loop = loop and mult 0 x = 0 => An incomplete evaluation sequence: mult 0 loop -> mult 0 loop -> ... `\n\n#### Lazy Evaluation \nWith lazy evaluation we can avoid ***nontermination***\n+ `loop = loop `\n+ `mult 0 x = 0`\n+ `mult 0 loop -> 0`\n> We can see that when we detect a 0 with lazy evaluation, 0 is always obtained with no need to evaluate the whole function \n\nWith lazy evaluation we can deal with ***infinite data structures*** "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "-- EXAMPLE \nfrom n       = n:from (n+1) \nsel 0 (x:xs) = x \nsel n (x:xs) = sel (n-1) xs           -- We can see that the expression \"from 0\" denotes an infinite list containg all                                         -- natural numbers\n\n-- With lazy evaluation we can evaluate expressions involving infinite values\n\nsel 1 (from 0) -> sel 1 (0:from(0+1)) \n               -> sel (1-1) (from (0+1)) \n               -> sel 0 (from (0+1))\n               -> sel 0 ((0+1):from(0+1+1))\n               -> 0 + 1\n               -> 1 "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

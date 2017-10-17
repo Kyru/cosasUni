@@ -1,0 +1,13 @@
+{
+  "title": "Pizza Exercise",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "+ Ich habe Hunger / Ich bien hunrig\n+ Sie wünschen? / que desea? \n"
+    },
+    {
+      "type": "markdown",
+      "data": "### Dialogo\n+ Ich habe Hunger? Und du? \n+ Ich auch, was möchste du essen? \n+ Ich möchte Pizza \n+ Super!\n+ Wie Pizza möchst du? Pizza mit Champignon und Speck. Das ist gut? \n+ Ja, sehr Gut! \n+ Rufst du an?\n+ Okay\n\n+ Pizza Pelli! Sie wünschen? \n+ Guten Tag, ich möchte gerne etwas bestellen.\n+ Ja, bitte! Was nehmen Sie? (Welche Pizza) \n+ Ich möchte eine Champignon und Speck Pizza \n+ Eine große oder kleine? \n+ Eine große, bitte.\n+ Also, eine große Champignon und Speck. Ist das alles? \n+ Ja \n+ Wie ist Ihr Name un wo wohnen Sie? \n+ Ich heiße Ferran und ich wohne in Andorra Sraße 3. Wie lange dauert das und wie kostet Sie? \n+ 20 Minuten und 10€\n+ Viele Dank, auf Wiederhören. "
+    }
+  ]
+}

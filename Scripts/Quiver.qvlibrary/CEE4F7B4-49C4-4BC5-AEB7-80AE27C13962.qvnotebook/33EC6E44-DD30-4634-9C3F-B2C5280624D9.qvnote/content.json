@@ -1,0 +1,81 @@
+{
+  "title": "Chapter 1: Relational Databases",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "An *Information system (IS)* is a collection of elements, which are orderly related to each otherother"
+    },
+    {
+      "type": "markdown",
+      "data": "**Database** -> Is a collection of structured data\n**Database managemente system (DBMS)** Software tool (collection of programs) that enables users to create, manipulate and mantaina database."
+    },
+    {
+      "type": "markdown",
+      "data": "### The Relational Data Model\n+ Entities are represented as ***tables***\n+ Objects correspond to table ***rows*** \n+ Object's features are represented by ***attributes*** -> Columns (also know as ***fields***\n+ Attributes in the same column must have the same ***datatype*** (domain)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Relational database goals\n\n1. *Store* and *modify* the information of interest using **INSERTION, DELETION, UPDATE**\n2. *Access* and retrieve that information **QUERY** \n\n\nA relational query is a retrieval operation to a database which returns part of the information of the database, possibly combined and/or aggregated, in the form of a single table"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "Exercise 1.1:\n\n1. Subject [nombre]\n2. (Subject WHERE GP=4) [nombre]\n3. (Lecturer x Teaching WHERE categoria = \"Titular\" AND cod_asg = \"11545\") [nombre]\n4. (((Lecturer(nombre, name\\_l) WHERE categoria = \"Titular\") x (cod\\_pro) Teaching) x (Cod_asg)\n   (Subject WHERE semestre = \"1A\")) [name_l]\n5.\n    \n     "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

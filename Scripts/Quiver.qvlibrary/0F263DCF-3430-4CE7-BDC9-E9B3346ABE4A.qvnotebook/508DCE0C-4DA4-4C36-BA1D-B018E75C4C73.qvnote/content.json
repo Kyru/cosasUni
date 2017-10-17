@@ -1,0 +1,57 @@
+{
+  "title": "UT12 : Directories and protection ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Directory concept \n![Captura de pantalla 2016-12-26 a las 17.45.02.png](quiver-image-url/F3F7A19292AA9463EB5165A2C1DCF6C1.png)\n\n**A directory is a file** \n+ An abstract data file: contains directories entries\n+ It is the required element to organize files \n\n**Goals** \n+ To find quickly a file from its associated name \n+ To implement a convenient name scheme for users \n+ To allow users to organize their files freely \n+ To allow owners controlling operations permitted to other users on their files and directories \n\n**Operations on directories:** \n+ Create entry (file or directory): It requires available space\n+ Remove entry: It frees the disk space allocated to the entry and remove the corresponding directory entry \n+ Search by name: It is performed sequentially \n+ List directory content: It allows to see the directory entries inside the directory \n+ Rename entry: It changes the name field in a directory entry \n+ Navigate the file system: It allows accessing any point inside the directory hierarchy\n\n### Directory implementation \n\n![Captura de pantalla 2016-12-26 a las 17.52.26.png](quiver-image-url/5263C7CC7CB25502CEF28DCC167EB42F.png)\n![Captura de pantalla 2016-12-26 a las 17.52.39.png](quiver-image-url/EBF098F0C5E186EB468F1DDFC4C1F9FB.png)\n\n**Directory content** \n+ It is organized as registers named **directory entries** \n+ It has a directory entry per element (file or directory) inside the directory \n\n**Directory entry** (Its format depends on the file system)\n+ UNIX: Name + i-node reference\n+ Windows: Name + attributes + reference to data \n\n**Directory location** (in disk) \n+ Centralized in a disk dedicated area (flat) \n+ In files (hierarchical) \n\n**Directories in FAT(12,16)**\n+ Root directory of fixed size and located in a dedicated area \n+ All the other directories are managed as files containing directory entries\n+ A directory entry has 32 byte size \n    + Name (8) + extension (3) \n    + Attributes (i.e. date, time, size, etc.) \n    + First data block index (FAT entry) \n\n![Captura de pantalla 2016-12-26 a las 17.58.14.png](quiver-image-url/959991909EC374E54EEE482D90CDA884.png)\n![Captura de pantalla 2016-12-26 a las 17.58.22.png](quiver-image-url/67739801DDF60E0113F782E544666DEE.png)\n\n### Links \n**Symbolic Links** \n+ UNIX terminology (Windows 7 also supports them by means of **mklink** command) \n+ A is a symbolic link file that links with file B \n    + One A's attribute indicates that it is a link \n    + The OS interprets A data as a path to access file B\n    + The OS redirects read and write operations on A to B \n    + The access permissions that apply are the ones from B \n+ B can be located in another file system form A (i.e remotely mounted) \n+ What happensif file B is deleted or moved to another location? \n    + In some systems (i.e MacOS) the OS itself corrects the link path \n    + In other systems (i.e Linux) the link becomes orphan and no longer works \n+ Deleting A does't affect B \n\n![Captura de pantalla 2016-12-26 a las 18.16.15.png](quiver-image-url/B0C160A80E4F4D74403A75499DA68FB9.png)\n\n**Hard links** \n+ Two or more directory entries contain the same i-node number\n    + A file can be accessed from several paths (names) \n+ Every i-node keeps a counter with the number of directory entry that reference to it \n    + The file (data + i-node) is deleted only when its last reference is deleted\n+ Hard links must be inside the same file system \n\n![Captura de pantalla 2016-12-26 a las 18.18.08.png](quiver-image-url/16BB0D8D65C984B040EE7DB8551446F9.png)\n\n### Free disk space management \nDisk space is seen as a **blocks vector** \nAt every moment the OS has to be able to know which ones are free \n+ Any block doesn't work \n    + Contiguity is required for efficiency sake\n+ **Bit map**\n    + The state for every block is represented by one bit (i.e. value means free) \n    + It is stored in a dedicated disk area \n    + It allows efficient searching of consecutive blocks \n+ **Linked list**\n    + In a specific disk location it is mantained the index to the first free block \n    + Every flee block point to the next \n+ **Grouping** \n    + Free blocks are represented by means of a index block list \n    + IT easies inserting/extracting blocks, but it is difficult to look for contiguity \n\n![Captura de pantalla 2016-12-26 a las 18.23.06.png](quiver-image-url/E3A7829E52F86281546322D0D55B429B.\n\n### Protection \n\n**Protection concept:** Mechanism used to control process access to system resources \n**How is protection implemented in UNIX systems?** \n+ It is based on comparing process attributes with file attributes and then determining if the operation is allowed \n\n![Captura de pantalla 2016-12-26 a las 18.24.56.png](quiver-image-url/38701F8D900FED94495BC6122F65DA23.png)\n\n**Process protection attributes** \n+ User identifier: \n    + Real UID (rUID) identifier of the process creator user\n    + Effective UID (eUID) indentifier of the process executable file owner \n+ Group identifier:\n    + Real UID (rGID) identifier of the rUID user group \n    + Effective (eGID) identifier of the eUID user group \n\n**File protection attributes** \n+ Permission bits: 9 permission bits organized in three sets: owner, group and others\n+ Sample formats: rwxr\\_xr, 0755, 04755, rwsr\\_xr_x\n+ Interpretation: \n    + *Regular files:* read, write and execution \n    + *Directories:* list content (r), create or remove entries (w), move to subdirectories (x)\n    + *Special:* read and write\n+ SETUID and SETGID bits \n\n**Attributes assignmen** \n+ A file receives its attributes from the process that creates it \n    + `ownerUID = UID` & `ownerGID = GID` \n+ The process receives its attributes thanks to the inheritance mechanism and the information stored in /etc/passwd\n    + `Name: password: UID: GID: description: HOME: shell`\n+ A process can change its UID and GID when calling to exec() on a file with SETUID or SETGID set\n    + If the executable file has its SETUID bit set then the eUID becomes the file \"ownerUID\" \n    + If the executable file has its SETGID bit set then the eGID becomes the file \"ownerGID\" \n![Captura de pantalla 2016-12-26 a las 18.34.19.png](quiver-image-url/17233FFB94B991C133F80EFD4B3736F5.png)\n\n###UNIX protection rules\n\n![Captura de pantalla 2016-12-26 a las 18.34.57.png](quiver-image-url/0E60771F0055CC56FBD8B9B4331C09B3.png)\n![Captura de pantalla 2016-12-26 a las 18.36.04.png](quiver-image-url/0DDF59E40626421D7D59D6B6DF9625A7.png)"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

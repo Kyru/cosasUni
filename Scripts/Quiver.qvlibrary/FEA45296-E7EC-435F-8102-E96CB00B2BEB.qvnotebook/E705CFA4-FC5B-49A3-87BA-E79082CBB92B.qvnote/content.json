@@ -1,0 +1,77 @@
+{
+  "title": "Chapter 1",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "> * Falta todo lo de arriba de esto * \n\n### 2 Fault Tolerance\n\nService Continuity\n\n### 3 Resource Sharing\n\n+ From the concurrent execution point of view:\n    + A *problem*! \n    + Concurrent accesses usually introduce inconsistencies! \n    + A solution is **Mutual Exclusion** among accessers\n\n+ Economically, an advantage -> Expensive resource: can be placed at a single computer and sharred bu all the agents."
+    },
+    {
+      "type": "markdown",
+      "data": "Distributed Application: \n+ Many computers\n    + Programs  \n        + Provide a Service \n\nA distributed app is basically a collection of services"
+    },
+    {
+      "type": "markdown",
+      "data": "WWW => Document Sharing\n+ Web server: Manages a collection of documents\n+ Browsers (clients): download those document"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

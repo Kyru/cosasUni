@@ -1,0 +1,146 @@
+{
+  "title": "Unit 4 : Logic Paradigms ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "+ **Use of logic as a programming language** \n+ **Logical variables**\n    + Answer extraction \n    + Invertible definitions\n    + Non-deterministic"
+    },
+    {
+      "type": "markdown",
+      "data": "### Use of logic as a programming language\n+ Logic programming implemets the revolutionary idea using ***logic as a programing language***\n+ Writing a logic program consists of expressing a relation (or set of relations) by using a logic notation based on the predicate logic\n+ The essential idea of the logic paradigm is that of **COMPUTATION AS A DEDUCTION**. This is in contrast to more standardd notions like **COMPUTATION AS CALCULATION** \n\n`Program: Express the knowledge of the problem => Write logic formulas`\n\n`Program Execution: Express the problem to solve => Goal formula; deduction using queries`"
+    },
+    {
+      "type": "markdown",
+      "data": "### Logical variables\n+ Program variables are unknowns (mathematical variables, like equations) \n+ Implicitly, logic formulas in programs are universally quatified\n\n> Connected (X,Y) <= arc(X,Z) ^ connected (Z,Y) \n![Captura de pantalla 2016-11-29 a las 9.59.47.png](quiver-image-url/4984A9D8E83F8C84DA7212D7F3FE2612.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Answer extraction \n**Variables in queries are existentially quatified** \n![Captura de pantalla 2016-11-29 a las 10.02.12.png](quiver-image-url/7A90AA0C9AA561B57284DE83EA54BC62.png)\nThis is the outcome or ***answer*** to the query "
+    },
+    {
+      "type": "markdown",
+      "data": "### Invertibility \n+ The predicate argumetns can be both input or output arguments"
+    },
+    {
+      "type": "code",
+      "language": "prolog",
+      "data": "member(H,[H|L]).\nmember(H,[X|L]) :- member(H,L). "
+    },
+    {
+      "type": "markdown",
+      "data": "+ Check for memebership: member(2,[1,2])\n+ Return the elements of a list: member (X,[1,2])\n+ Generate the list containing an element: member(1,L)\n\n> All of them are possible implementations with the above code, each of them, does a different thing depending on how you input the query"
+    },
+    {
+      "type": "markdown",
+      "data": "`Remeber that in prolog there are no types`"
+    },
+    {
+      "type": "markdown",
+      "data": "## Syntax of logic programs: Terms\n**Data in logic programs are called terms and can be either:**\n+ Variables: \n    + Prolog: variable identifiers begin with a **capital** letter. Anonymous variables are represented using \"_\"\n    + Examples: X, Y, SquareArea … \n+ Constants: \n    + Prolog: numeric and symbolic (with identifiers beginning with a **lower case** letter or written in quotes) \n    + Examples: 42, 'a', peter, 'Peter'\n+ Structured data f(t<sub>1</sub>, … t<sub>n</sub>) where f is a function symbol and t<sub>1</sub>, … t<sub>n</sub> are terms. \n    + Prolog: f is a data constructor beginning with a lower case letter\n    + Examples: hour(h,m,s), name('Peter')"
+    },
+    {
+      "type": "markdown",
+      "data": "### Lists (Prolog notation) \n+ Lists are a particular kind of terms built out from: \n    + the empty list: []\n    + the list constructor symbol [ \\_|_ ]\n![Captura de pantalla 2016-11-29 a las 10.20.23.png](quiver-image-url/7AEC32023BEC89D323E68456804F1E88.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Syntax of logic programs: Atoms\n+ **Atoms** are expressions p(t<sub>1</sub>, … t<sub>n</sub>) where\n    + p is a predicate symbol of arity n (often written p/n), \n    + i.e. = a sequence of characters beginning by a lower case letter\n    + t<sub>1</sub>, … t<sub>n</sub> are terms\n+ Atoms express properties or relations (p) concerning data represented by terms t<sub>1</sub>, … t<sub>n</sub>\n+ Example arc(1,2)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Syntax of logic programs: Prlog programs\n**A logic program is a set of sentences/declarartions that can be of two types: facts or rules\n+ FACTS: single atoms followed by a dot **A**\n    + Example:      arc(0,1).\n+ RULES: having the form A:-B<sub>1</sub>,…,B<sub>n</sub>.\n    + Example: `connected (X,Y) :- arc(X,Y), connected (Z,Y). `\n    + where A and B<sub>i</sub> are atoms. \n\n> NOTE: facts can be seen as rules with an empty body, as follows: \n                       ` A :- true. `"
+    },
+    {
+      "type": "markdown",
+      "data": "### Syntax of logic programs: goals\n+ The 'call' that serves to execute a logic program is called the goal an is written as a clause withou head:\n![Captura de pantalla 2016-11-29 a las 10.29.52.png](quiver-image-url/7E434FBA8004E3878D204CB3B038E627.png)\n##### note that, in sharp contrast to functional programming (FP), terms are ***not evaluated*** because goals rather consist of atoms\n\n+ A clause without head nor body is called an **empty clause** and is represented as `?-`\n##### The empty clause witnesses that the computation was successfully finished"
+    },
+    {
+      "type": "markdown",
+      "data": "### From Haskell to Prolog\n+ Both Haskell and Prolog are **rule-based languages**. From a syntatic point of view, the main differences are that, in Prolog: \n    + There is no function (only procedures) \n    + Calls to such procedures cannot be nested\n+ Example: \n![Captura de pantalla 2016-11-29 a las 10.33.39.png](quiver-image-url/630AF24D1DAD4532B8B63FAC831D54D7.png)\n![Captura de pantalla 2016-11-29 a las 10.34.02.png](quiver-image-url/4CD9E7F67FB8F24AA664709BEE934438.png)\n![Captura de pantalla 2016-11-29 a las 10.34.08.png](quiver-image-url/BFE5629F390707BEAF9BE3A1B11C6A8E.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Examples\n**Lenght of a list:** "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "-- haskell code: \nlength [] = 0\nlength (x:xs) = length xs + 1"
+    },
+    {
+      "type": "code",
+      "language": "prolog",
+      "data": "/* Prolog code */ \nlength([],0).\nlength([_|T],N) :- length(T,N1), N is N1+1. "
+    },
+    {
+      "type": "markdown",
+      "data": "**List concatenation:** "
+    },
+    {
+      "type": "code",
+      "language": "prolog",
+      "data": "/* Prolog */ \nappend([],Y, Y).\nappend([X|R], Y, Z) :- append (R, Y, RY), Z = [Z | RY]."
+    },
+    {
+      "type": "markdown",
+      "data": "**Last element of a list:** "
+    },
+    {
+      "type": "markdown",
+      "data": "# ACABAR DE COPIAR LOS EJERCICIOS DE LAS SLIDES"
+    },
+    {
+      "type": "markdown",
+      "data": "### Exercise\nSpecify the relationship \"ancestor\" by using a logic program: \n![Captura de pantalla 2016-11-29 a las 10.53.20.png](quiver-image-url/BCBC450168298A306423879B09DFB750.png)\n**Answer:**"
+    },
+    {
+      "type": "code",
+      "language": "prolog",
+      "data": "is_the_father_of('Peter','John').\nis_an_ancestor_of(X,Y) :- is_the_father_of(X,Y).\nis_an_ancestor_of(X,Y) :- is_the_mother_of(X,Y).\nis_an_ancestor_of(X,Y) :- is_the_father_of(X,Z), is_an_ancestor_of(Z,Y).\nis_an_ancestor_of(X,Y) :- is_the_mother_of(X,Z), is_an_ancestor_of(Z,Y)."
+    },
+    {
+      "type": "markdown",
+      "data": "### Procedural interpretation \n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

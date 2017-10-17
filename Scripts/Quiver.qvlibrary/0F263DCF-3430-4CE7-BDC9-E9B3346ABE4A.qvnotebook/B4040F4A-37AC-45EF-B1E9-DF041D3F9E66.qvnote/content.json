@@ -1,0 +1,61 @@
+{
+  "title": "UT11 : Implementing file Systems ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### File system architecture \nFile system architecture has three aspects: \n1. How files are organized from the user point of view \n2. How files are stored in secondary storage (commonly disks) \n3. How file operations like reading, writing, positioning, etc. are done \n\n![Captura de pantalla 2016-12-13 a las 8.15.53.png](quiver-image-url/FF34E593A14A6A87D0E1BDFAA36A5198.png)\n\nThe file system provides mechanisms to: \n+ **Persistent Storage** of information \n    + Information stays in the computer when it is switched off, the most common device nowadays is the hard disk \n+ **Access to information**\n    + A *user interfance* made of: \n        + Files: logical unit for persistent storage of data\n        + Directories: mechanism (container) to organize files \n\nImportance: \n+ It keeps system critical data\n+ It constrains global system performance\n+ It is the most visible and used aspect of an OS \n\n![Captura de pantalla 2016-12-13 a las 8.24.31.png](quiver-image-url/62226DC2FD30FBFF1E9B9C1B1E9DA5AF.png)\n\n![Captura de pantalla 2016-12-13 a las 8.27.16.png](quiver-image-url/E3680D54577677894B5C5FBBC0DDB241.png)\n\n**Open file call** \n+ System call that allows accessing file content\n    + Processes must open a file before reading or writing on it \n    + The calling Process receives a file handler that will reference the file in future reading or writing operations \n+ It stablishes the file acces modes (read and/or write) and the initial position on the file of the acces pointer \n    + For instance, when accesing a file in writing mode\n        + Locating the acces pointer at the beginning (0) to overwrite the whole file content \n        + Locating the access pointer at the end (filesize -1) to add new content to the file\n    + Upcomming accesses will start at the acces pointer location left in the last access and will update it\n+ File access permissions are checked\n    + Open call will fail if the mode specified is inconsistent with the file permissions\n\n![Captura de pantalla 2016-12-13 a las 8.31.54.png](quiver-image-url/CB22932167F7AC7390713EAE77C888C4.png)\n\n### File concept\n**A file is:**\n+ An abstract data type\n+ An interrealted information collection established by its author \n+ The required element to write information in secondary storage \n\n`File = Attributes + Data `\n\n![Captura de pantalla 2016-12-13 a las 8.33.54.png](quiver-image-url/2C890FD8424D006B65F13CC303226EB7.png)\n\n`When you see the files (MyPC for instance) you are seeing the metadata, no the data. To see the data you have to double click and you are now able to navigate through the files`\n\n**Access methods to file data** \nThere are three access modes to file information: \n+ **Sequential**\n    + Information is accessed (reading or writing) in order\n    + In every read/write operation the location pointer is implicitly updated \n+ **Direct** \n    + The file is made up of logical registers\n    + In every operation an argument indicates the working register\n+ **Memory mapping**\n    + The file is allocated in a logical memory range of one several processes \n    + In this way file read/write ops are transformed into main memory read/write ops\n    + The OS is in change of updating inforamtion into disk \n\n\n### File block allocation \nHow to allocate disk space to files?\n+ Modern OSs view hard disks as a numbered set of fixed size byte blocks\n+ It requires: \n    + Efficient use of disk space\n    + Fast access to files\n+ Allocation squemes: \n    + Contiguos\n    + Linked\n    + Indexed \n\n**Contiguos allocation**\n+ A file is allocated as a set of consecutive disk blocks \n+ It is defined for evey file as the first allocated block address and the file length in blocks \n+ A convinient usage is: **A CD as you are only going to write once**\n\n![Captura de pantalla 2016-12-13 a las 8.42.41.png](quiver-image-url/F974F5D34CCFE5B9DA7299987B9413EF.png)\n\n`IN THE TABLE, START COLUMN => COUNT AND TR ARE 2 AND 8 RESPECTIVELY`\n\n**Linked allocation** \n+ File allocated blocks do not need to be contiguos, then every block is linked to the next by means of a pointer. \n+ To allocate a file you just need the first one as every-one of them are connected\n+ Not good for performace \n\n![Captura de pantalla 2016-12-13 a las 8.47.51.png](quiver-image-url/70D7CE2BB7228B70B7F6D3E7915E5C2E.png)\n\n**FAT** - variation of linked allocation \n\n![Captura de pantalla 2016-12-13 a las 8.52.13.png](quiver-image-url/E57ED09B92DA9C255C0168E5E7946806.png)\n\n`in the yellow table the number at the right of the position is the linked position. So in 4, the next position is 19, from 19 is 22 and so on`\n\n**Indexed allocation**\nA block could be index block or data block, a index blocks contains pointers to data blocks\n\n![Captura de pantalla 2016-12-13 a las 9.02.18.png](quiver-image-url/30310C696A1FF53678569BC28A1E3435.png)\n\n`Here it starts at 5 not at 4 because 5 is the first block of pointers. 4 would be the block of data.`\n\nExample: \n1 block = 512 bytes\n1 pointer = 32 bit = 4 bytes \n\n512 / 4 = 128 bytes => Which would be the maximum number of blocks that a file can have (in this case) \n\n**Multilevel indexed allocation** \n+ It is a variation of indexed allocation \n+ Motivation: \n    + Supporting big files requires several index blocks\n+ Solution\n    + A pointer can point to a data block or to another index block \n\n\n![Captura de pantalla 2016-12-13 a las 9.10.43.png](quiver-image-url/1200CED6CD043BA50DEF361A97AC5C15.png)\n\n![Captura de pantalla 2016-12-13 a las 9.12.56.png](quiver-image-url/9D547DB476D01B8370EA393466DB4CCE.png)"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "title": "Unit 2 - Shared Memory. Basic Parallel Algorithms Design",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## Section 1 - Shared Memory Model\n#### Concurrent processes\nThey are typically defined using *fork-join-like* constructions\n+ ***Fork*** creates a new concurrent task that starts its execution in the same point where the initiator task made the fork\n+ ***Join*** waits for the task to finish\n\nThis schema can be implemented at the level of:\n+ OS processes (*heavy processes*)\n+ Threads (*light processes*)\n\n#### Shared Memory Model\n+ Tasks share a common memory space\n+ Programming quite similar to sequential case\n    + There are no task \"private\" data\n    + We do not need to exchange data explicitly\n+ Inconvenients\n+ Memory access need to be coordinated\n    + Locks, monitors...\n    + Unpredictable results if data access is not properly protected\n+ Data locality is difficult to control\n\n#### Thread model\nThis model is coupled to shared memory architectures\n***thread:*** Independent instruction flow that can be scheduled by the OS\n+ A process may have multiple concurrent execution threads\n+ Each thread has local data\n+ Threads share resources/memory of the process\n+ Synchronization is needed\n\n#### Java Threads"
+    },
+    {
+      "type": "code",
+      "language": "java",
+      "data": "// Object-oriented model\n\npublic class HelloThread extends Thread {\n  public void run() {\n    System.out.print(\"Hello from a thread!\");\n  }\n  public static void main(String args[]) {\n    (new HelloThread()).start();\n  }\n}\n\n// Synchronized methods\n\npublic class SynchronizedCounter {\n  private int c = 0;\n  publid synchronized void increment() {\n    c++;\n  } \n  public synchronized int value() {\n    return c;\n  }\n}"
+    },
+    {
+      "type": "markdown",
+      "data": "#### POSIX threads (pthreads)\nSome operations:\n+ Creations: pthread\\_create, pthread_join\n+ Locking: sem\\_wait, sem_post\n+ Mutual exclusion: mutex\\_lock, mutex_unlock\n+ Condition variables: pthread\\_cond_ wait, pthread\\_cond\\_signal, pthread\\_cond_broadcast\n\nDrawbacks:\n+ Portability (windows uses another system)\n+ Task-oriented parallelism, rather than data-oriented parallelism"
+    },
+    {
+      "type": "markdown",
+      "data": "#### OpenMP\nStandarization of threads\n+ Based on compiler directives\n+ Available in C/C++ and Fortran\n+ Portable/multi-plataform\n+ Easy to use: incremental parallelisation\n+ Sequential code can be preserved\n\n*Some directives and functions:*\n+ `pragma omp parallel for`\n+ `omp_get_thread_num()`\n\n> Creation and termination of threads is implicit in some directives (no need of calling fork/join)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Unix processes\nEach process comprises information about resources and its execution status\n+ Program code (read-only, can be shared)\n+ Variables (global, heap and stack)\n+ Execution context: registres, stack pointer, etc...\n+ System resources (only accessible through the OS)\n    + Identifiers \n    + Environment, work directory, signals\n    + File descriptors\n+ In multi-threaded processes\n    + Each thread has its own execution context\n    + Each thread has its own independent stack \n    + System resources are shared"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Threaded-memory model\nSimple model: Single address memory space\nMore realistic model: unique space of addresses with private variables for each thread\n\n![Captura de pantalla 2017-10-02 a las 15.36.34.png](quiver-image-url/59469D0F4608CB485F95D40AAED3C3B8.png =401x173)\n\nEach thread has its own stack\n+ Some variables are created in the stack (local variables)\n+ A thread cannot know if a stack from other thread is active"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Memory Access Coordination\n\nThe exchange of information among threads is performed by reading and writing on variables in the shared memory space\n> Simultaneous access can produce a race condition (final result could be incorrect)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Mutual Exclusion and Synchronization\nHow race conditions can be addressed?\n*Atomic operations*\n+ Force problematic operations to be performed atomically (without being interrupted)\n+ Special instructions of the processor: test-and-set or compare-and-set\n\n*Critical sections*\n+ Code fragments with more than one instruction\n+ Only one thread can execute the section simultaneously\n+ It requires *synchronization* mechanisms: semaphores\n+ Risk of dead-locks\n\n*Event-based synchronization*\n+ Barriers: all threads wait in the barrier for the last one to arrive\n+ Ordered execution and others"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 2 - Fundamentals of Parallel Algorithm Design\n#### Parallelization of Algorithms\nParalellizing an algorithm implies finding *concurrent tasks* (parts of the algorithm that can be run in parallel)\n> A task can only start when another one has finished"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Data dependencies\nIt is possible to determine if there exist dependencies between two tasks form the I/O data of each task\n\n![Captura de pantalla 2017-09-26 a las 12.13.16.png](quiver-image-url/3CF9A6B2C96971B2283EAC4294665F76.png =448x141)\nDependency types:\n+ Flow dependencies (condition 1 not fulfilled)\n+ Anti-dependecy (condition 2 is not fulfilled)\n+ Output dependency (condition 3 is not fulfilled)"
+    },
+    {
+      "type": "code",
+      "language": "c_cpp",
+      "data": "// Flow dependency\ndouble a = 3, b = 5, c, d;\nc = T1(a,b);\nd = T2(a, b, c);\n\n/* T2 cannot start until T1 ends */\n\n// Anti-dependency\ndouble a[10],b[10],c[10],y;\nT1(a,b,&y);\nT2(b,c,a);\n\n/* T2 cannot start until T1 ends, otherwise T2 would overwrite the contents of a that is input to T1 */\n\n// Output dependecy\ndouble a[10],b[10],c[10],x[5];\nT1(a,b,x);\nT2(c,b,x);\n\n/* Both tasks modify array x */"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Design of Parallel Algorithms: General Idea\n\nBasically 2 phases:\n1. Task decompostion\n    + Requires a detailed analysis of the problem => Task Dependecy Graph\n2. Task assignment\n    + Which thread/process executes each task\n    + Often implies agglomeration of several tasks\n     \nUsually there are several possible parallelization strategies\n+ Use one decomposition or another may have a great impact on performance\n+ We must try to maximize the ***degree of concurrency***"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Task Dependecy Graphs\n\nTDGs are an abstraction used to express the dependencies among the tasks and their relative execution order.\n+ It can be represented by using a Directed Acyclic Graph (DAG)\n+ Nodes denotes the tasks (may have an associated cost)\n+ Edges define the dependencies among tasks\n\n*Definitions*\n+ Length of a path: sum of the costs *c<sub>i</sub>* of each node contained in the path\n+ Critical path: longest path between the starting and final nodes\n+ Maximum *concurrency degree*: Larger number of tasks that can be concurrently executed\n+ Average concurrency degree: $M = \\sum_{N}^{i = 1} C_{i}/L  $\n    + N = total nodes, L = length of the critical path\n\n![Captura de pantalla 2017-10-02 a las 16.21.57.png](quiver-image-url/15419085E5E416E81D5766B532F541FE.png =462x348)\n\n![Captura de pantalla 2017-10-02 a las 16.28.43.png](quiver-image-url/7611309406D82D9D5B423A1AEB7F684A.png =461x354)\n\n> Sometimes the graph incorporates information related to *communication*"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 3 - Performance Evaluation\n#### Performance Evaluation\nThe main objective of parallel computing is to increase performance.\n+ It is very important to know how the different parts of a parallel program behave\n+ It is also imporatant to know how they will behave when the number of processors and the size of the program change"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Analysis types\n*A priori* Analysis:\n+ It is performed on the pseudocode and the program desgin, before the implementation of a program\n+ Independent of the machine where it is executed\n+ It enables identifying the best approach to implement a parallel program\n+ It enable the determination of the best size of the problem and the features of the hardware used\n\n*A posteriori* Analysis:\n+ It is performed on a specific implementation and machine, and using a defined of input data\n+ It enables analysing bottlenecks and detecting unpredicted conditions during the design"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Theoretical Analysis\nThe cost is analyzed depending on the problem size: n\nIn many cases the cost depends only on *n: t(n)*\nHowever, sometimes given the same problem size, different behaviour may be observed depending on the input data\n+ Cost of the most favourable case\n+ Cost of the less favourable case\n+ Average case (reasonable when the cost only depends on the problem size)\n\n> In practical terms, asymptotic values are defined (inferior and superior)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Concept of a FLOP\nFLOP - Floating Point Operation => measurement unit for:\n+ Cost of algorithms\n+ Performance of computers (flop/s)\n\n1 flop = cost of an elemental floating point operation (product, sum, division, subtraction)\n+ The cost of the elemental integer operations are neglectable\n+ The cost of other operations in floating point are evaluated depending on the FLOP unit\n\n> The flop represents a machine-independent cost measurement unit"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Asymptotic Notation\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "title": "Unit 7: Input/Output Interfaces ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "*The I/O system comunicates CPU and memory with the \"external world\"* \n\n### 1. The Big Picture \n\n**Peripheral Device:** \n+ A device that enables communication between computer and its environment \n+ Types: \n  + Human-machine interaction(MHI): keyboard, mouse...\n  + Interaction with other devices: sensors\n  + Storage: CD \n  + Communication: Bluetooth\n+ Peripherals cannot be directly connected to the system bus. They need specific *adapters* (each peripheral needs its own adapter) \n\n**Adapter (I/O controller - I/O interface):** \n+ An electronic device that enables connecting the peripheral to the system bus \n+ Implements support for a programmer's view of the peripheral\n\nThe main functions of all I/O adapters are: \n+ Connect with the CPU \n+ Connect with the peripheral \n+ Control and timing of operations \n+ Data transfer\n+ Error control "
+    },
+    {
+      "type": "markdown",
+      "data": "### 2. The Concept of I/O interface\n\n+ An I/O interface is (heterogeneous) set of registers that enable communication between programs and a given peripheral \n+ Every periphera has its own interface\n+ Every register in the interface has its own address in the address space \n+ Each interface register can be read and writteh in their address space\n+ Each interface register has its own different function\n\n**Interface registers** \n+ Sizes: (8, 16, 32) \n+ Access Mode: (read-only, read/write...) \n+ Contents: \n  + A register may or may not be structured. When structured, each bit or group of bits has its own meaning, independent from the rest \n  + Some bits may be undefined\n+ Types: \n  + Command: They trigger peripheral actions \n  + Status: Provide current information about the peripheral \n  + Data: Enable transmission/reception of date to/from the peripheral \n  \nInterface registers have their own addresses in one of two possible I/O addressing schemes: \n+ *Memory-mapped I/O* => Most processors, including MIPS\n+ *I/O-mapped I/O* => Intel \n\n![Captura de pantalla 2017-02-28 a las 14.19.48.png](quiver-image-url/DABA50F6A547419D304A61E3E805E970.png)\n\n**Interface addressing schemes**\n*Memory-mapped I/O:* \n+ There's a unique, shared address space for both memory and I/O devices (MIPS model) \n+ Register access via Load and Store instructions\n\n![Captura de pantalla 2017-03-01 a las 11.40.22.png](quiver-image-url/5EF48863D03693D222301E4D10C190B4.png)\n\n*Input/Output-Mapped I/O* \n+ Separate addressing spaces for memory and I/O (Intel model) \n+ Load/Store used only for memory access\n+ Specialized Input/Output instructions for accessing peripheral interfaces\n\n![Captura de pantalla 2017-03-01 a las 11.41.56.png](quiver-image-url/AA19033F9B0A536D67D3820BF90D8DCC.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### 3. Internal organization of I/O interfaces \n\n**Selecting the interfaces** \nImplementation of selection on a unique shared map (memory-mapped I/O) \n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

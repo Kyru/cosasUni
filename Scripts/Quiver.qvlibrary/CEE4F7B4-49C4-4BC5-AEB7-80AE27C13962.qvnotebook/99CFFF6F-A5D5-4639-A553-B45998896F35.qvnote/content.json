@@ -1,0 +1,13 @@
+{
+  "title": "BDA - Unit 1.3 - Interpretation of a Relational Database",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Exercises - Travel Agency\n\n1. Can the same trip visit the same city twice? \n    * No\n2. Can a guide speak two languages?\n    * No\n3. Can a driver be in two trips at the same time (date)?\n    * No\n4. Can a driver be also a guide?\n    * Yes\n5. How many drivers are there, as a minimum, in each trip?\n    * 0 (could have null values (?) )\n6. Can a guide participate in more than one trip?\n    * Yes"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "title": " 4.5 : Connection-Oriented Transport TCP ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "**CONNECTION MANAGEMENT**"
+    },
+    {
+      "type": "text",
+      "data": "<div>Before Exchanging data, you have to establish a connection. Then, you have to agree on connection parameters.&nbsp;<br>When this is done, you can send and receive data. As we have established the TCP connection.&nbsp;</div>"
+    },
+    {
+      "type": "text",
+      "data": "When we create a Socket (“Pasive”), it is waiting &nbsp;for accepting the request. When it is recieved the connection is established. No need for a 3 way-handshake (“3 hellos”), 2 are sufficient.&nbsp;"
+    },
+    {
+      "type": "markdown",
+      "data": "### *Reset Flag*"
+    },
+    {
+      "type": "markdown",
+      "data": "RESET: abortion of a TCP connection\nCauses: \n1. Sequence numbers impossible\n2. The destination port is not in use (not open) \n\n> ACK = Acknowledgment \n\nSends SYN x -> Receives SYN x -> Sends RST 0, ACK x+1 -> Receives RST 0, ACK+1 [Application error]\n\nBoth ends can Reject the connection. "
+    },
+    {
+      "type": "markdown",
+      "data": "### *TCP Options: MSS* "
+    },
+    {
+      "type": "markdown",
+      "data": "Each end of the connection announces its MSS (Maximum Segment Size) in the SYN segment: \n* If a host A announces MSS = 100 bytes, segments with more than MSS bytes cannot be sent to it\n* by Default MSS = 536 bytes. \n\n> IP Header + TCP Header + Data (MSS)"
+    },
+    {
+      "type": "markdown",
+      "data": "### *TCP Options: Windows Scaling* "
+    },
+    {
+      "type": "markdown",
+      "data": "TCP: Hosts agree to limit the amount of unacknowledged data that can be in transit at any given time: \n+ This is referred to as the *window size* and is communicated via a 16 bit field in the TCP header\n  + Max. Receive window is only 65,535\n  + If RTT * vtrans > 65535 => It wastes potential throughput   \n+ SOLUTIONS: \n  + Window scaling simply extends the 16bit window field to 32 bits in length\n  + By using the window scale option, the receive window size may be increased up to a Max. value of 1,073,725,440. \n\n> $2^n$, where n is the window scaling option (MAX 14) "
+    },
+    {
+      "type": "markdown",
+      "data": "### *TCP Options: Selective Acknoledgement*"
+    },
+    {
+      "type": "markdown",
+      "data": "+ Sack-Permitted Option: \n  + This option may be sent in a SYN by a TCP that has been extended to receive the SCAL option once the connection has opened\n  + It **MUST NOT** be sent on non-SYN segments\n+ The SACK option is to be ussed to convey extended acknowledgement info from the reciver to the sender over an established TCP connection. \n+ Cumulative ACKs cannnot confirm the reception of segments out of order (May cause unnecessary retransmissions) \n+ The Selective ACKs (SACK) permits the reception of out the order segment. \n  + Each block represents recieved bytes of data that are contiguous and isolated. "
+    },
+    {
+      "type": "markdown",
+      "data": "### *TCP Options: Timestamp*"
+    },
+    {
+      "type": "markdown",
+      "data": "+ Timestamp is used to calculate more accurately the RTT \n+ The Timestamps option carries two-four byte timestamp fields\n  + The TSval field contains the current value of the timestamp clock of the TCP sending the option (only valid if it is accepted, otherwise is 0) \n  + The TSecr field is not valid if the ACK bit is set in the TCP header \n+ You have to substract the number of TSecr (Timestamp echo replace) to the time value so you can obtain the RTT. "
+    },
+    {
+      "type": "markdown",
+      "data": "### *Closing a connection* "
+    },
+    {
+      "type": "markdown",
+      "data": "+ Client, Server each close their side of connection \n  + Send the TCP segment with FIN bit = 1\n+ Resond ti received FIN with ACK\n  + On receiveing FIN, ACK can be combined with own FIN \n+ Simultaneous FIN exchanges can be handled "
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "title": "Seminar 1 - NodeJS",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "Solution to modification of the example page 47 modifications:\n+ The server manages multiple clients\n+ For each client message A, it returns \"Hello\" + A\n+ The client is not finishied once it send its first message\n  + It sends periodically the same message every 5 secods"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Client\nvar net = require('net');\nvar client = net.connect({port:9000};\n  function(){\n    console.log(\"client connected\");\n  });\nclient.on('data', function(msg){\n  console.log(msg.toString());\n});\n\nvar text = process.argv[2] || 'default identity';\n\nclient.on('end', function(){\n  console.log('client disconnect');\n});\n\nsetInterval(function(){\n  client.write(text);\n}), 5000);\n\n// Server\nvar net = require('net');\nvar server = net.createServer(function(c){\n  console.log('server connected');\n  c.on('end', function(){\n    console.log('server disconnected');\n  });\n  c.on('data', function(msg){\n    c.write('Hello' + msg);\n  });\n}).listen(9000, function(){\n  console.log('server bound');\n});"
+    },
+    {
+      "type": "markdown",
+      "data": "### Exercises S1\n#### Activity 1\na) Only the table of 5 will be printed with the function table(5,4,1) because the functions table only expects one argument\nb) First the table(2) function is executed - This function those not return a number, instead it returns an undefined, so when the second call is done table(undefined) we are creating the table of NaN which always returns NaN. So the output is the printing of the NaN table:\nNaN x 1 = NaN\nNaN x 2 = NaN\n...\nc) allTables (undefined, undefined, undefined)\nd) ...\n\n#### Activity 2\n\nBUSCAR SOLUCION EN POLIFORMAT \n\n#### Activity 3\n\na) the return result fo line 25 is: \"0\" + function(y){return x\\*y;} + funtion(y){return x*y;}\nwhere in the first function x = 3 and the second function is x = 5 due to the next position in the array (myArray)\nb) iterate(2, a3(2), myArray); => Where a3(2) is function(y){return 2*y);\nSo therefore, teh answer is 0+ (3*2) + 10 = 16\nc) iterate(2, add, myArray); => 0 + 0 + 0\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

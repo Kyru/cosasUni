@@ -1,0 +1,101 @@
+{
+  "title": "Chapter 3 - Software Architectures",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Structured Methods \n\nStructured diagram -> A system is partitioned in modules that invoque or provide service to other modules, possibly with data passing in both directions.\n\n**Module:** Part of the program that implements part of the functionality\n**Characteristics:** \n  + White/Black box\n  + Encapsulation\n\nA module may be decomposed in terms of other modules of a lower level"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Object Oriented Architectures\n\nClasses as decomposition units => Structure + behaviour in a module\nThe class structure of the architecture is propagated to the code"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Problems \n+ Approaches based on modules and objects are low level ones\n+ They do not divide the application in terms of functional blocks; they are mere groupings of code\n+ A more abstract mechanism is necessary to clearly detect the aspects that are present in most software system"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Software Architecture is important\n+ Software Architecture must be organized in terms of subsystems\n+ Developed by means of architectonic patterns\n\nWe will work with ***Distributed systems*** \n> A software system which information processing is distributed among different computing nodes.\n\nInside Distributed Systems we'll use ***Client/Server Architecures*** \n\n> The System is seen as a set of services that are provided to client applications by server applications. Client and server applications are handled separetly\n\n---\n\nAlways a two step interaction:\n+ Server is service provided \n+ Client is a consumer of services\n\nThey interact by means of message passing mechanism:\n+ Services request\n+ Answer"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Multi-layer Architecture\n\n> A layered sustem is a sorted set of subsystems each one defined in terms of the ones located *below* them and providing the implementation base of the systems above\n\nThe objects in each layer are usually independent (recommended)\nThere is a relationship *client/server* between the lower layers (providing service) and the upper layers (using those services)\n\nLayered architectures may be open or closed depending on the dependencies between layers\n+ Open: A layer may use characteristics of any layer\n+ Close: A layer may only use characteristics of its adjacent lower layer *(recomended)*"
+    },
+    {
+      "type": "markdown",
+      "data": "2-Layer Architecure: Thin clients => Data intensive applications with little processing"
+    },
+    {
+      "type": "markdown",
+      "data": "> ***Layer*** refer to logical segmentation of the solution whereas ***tier*** refers to a physical segmentation or location"
+    },
+    {
+      "type": "markdown",
+      "data": "#### 3-Layered Architecture\n**Advantages:**\n+ Business logic isolated from presentation and persistence in a separate component\n+ Distribution of layers in different machines or processes\n+ Possible parallel development\n+ Asigning resources to each layer\n+ Software Reuse *(important)*"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

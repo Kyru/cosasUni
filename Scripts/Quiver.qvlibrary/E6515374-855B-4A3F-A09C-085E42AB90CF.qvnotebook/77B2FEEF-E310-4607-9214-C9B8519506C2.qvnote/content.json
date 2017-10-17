@@ -1,0 +1,114 @@
+{
+  "title": "Unit 4: ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### FP in MIPS \n**Programmers view** \n![Captura de pantalla 2016-11-29 a las 13.11.34.png](quiver-image-url/5B36D283B46B3E28BF4B8731505E9AD3.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Data transfer instructions\nData interchange with memory and integer registers\n![Captura de pantalla 2016-11-29 a las 13.16.42.png](quiver-image-url/8D95FF111ED4F3DA9BA1C740003331CC.png)\n![Captura de pantalla 2016-11-29 a las 13.16.13.png](quiver-image-url/B17547C7B9F066CF3D2B954B1D3E9978.png)\n\n> FP instructions do not handle immediate operands. Constants must be allocated in memory or built into integer registers and then moved"
+    },
+    {
+      "type": "markdown",
+      "data": "### Type conversion \n+ FP registers may contain \n    + s: Single-precision FP values\n    + d: Double-precision FP values \n    + w: 32-bit integer values\n+ Type conversion is possible via cvt.\\_.\\_ fd, fs \n+ In combination with transfers to-from integer registers, values of different types can be used in arithmetic operations"
+    },
+    {
+      "type": "markdown",
+      "data": "### Exercise \nA = π·$r^2$ \nInput: $a0 radius in mm (integer) \nOutput: \\($\\)f0 = area in $m^2$ \n        *in single precision*\n+ Steps\n    1. Divide r/1000\n    2. calculate $r^2$\n    3. Multiply by π \n\nArea: "
+    },
+    {
+      "type": "code",
+      "language": "assembly_x86",
+      "data": "mtc1      $a0, $f1          ########################\ncvt.s.w   $f1, $f1          # $f1 = r/1000, single #\nli.s      $f2, 1000.0       # precision            #\ndiv.s     $f1, $f1, $f2     ########################\nmul       $f1, $f1, $f1     # $f1 = $r^2 (m^2) \nli.s      $f1, 3.1415926536\nmul.s     $f0, $f1, $f2\njr        $ra"
+    },
+    {
+      "type": "markdown",
+      "data": "> Remember cvt converts from integer to single-precision "
+    },
+    {
+      "type": "markdown",
+      "data": "### Comparison instructions\n+ Comparison instructions store their result in bit **FPc**\n    + TRUE = 1; FALSE = 0\n+ FPc is kept in a control register of coprocessor 1 and is used by conditional branch instructions\n+ There is a set of comparison instructions for each data type\n![Captura de pantalla 2016-11-29 a las 13.44.46.png](quiver-image-url/3DBA31E5E44C3714DA9D519EEE49E0A6.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Flow control \n+ Two conditional branch instructions: \n    + **bclt** *label* - if FPc = 1 then branch to *label*\n    + **bclf** *label* - if FPc = 0 then branch to *label* \n+ Combined with comparison instructions, they enable complex conditional branches\n+ Each condition accepts two implementations\n    + SP example: if (\\($\\)f0 > \\($\\)f2) then *branch to label*\n![Captura de pantalla 2016-11-29 a las 13.48.03.png](quiver-image-url/38C44357B0E0C541D405D11CD0914080.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Floating point operators\n+ FP operators take one or two argumens of a given FP format\n+ Their output is a standard FP values\n    + `With the exection of comparison operators` \n+ They are relatively complex because they must: \n    + Normalize result\n    + Handle special values\n    + If needed, round the resultt according to the current rounding mode\n    + Raise the exceptions dictated by the standard"
+    },
+    {
+      "type": "markdown",
+      "data": "### Floating point operators: roadmap \n![Captura de pantalla 2016-11-29 a las 13.50.52.png](quiver-image-url/C4DBB13F208F27924CBA3E55D1368C43.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Sign change operator (neg) \n**Operation** \n![Captura de pantalla 2016-11-29 a las 13.57.19.png](quiver-image-url/B1912A6FE60B23B30A889D9880587EEE.png)\n+ Change sign: S<sub>R</sub> = not S<sub>A</sub>\n+ Copy exponent: E<sub>R</sub> = E<sub>A</sub>\n+ Copy mantissa: M<sub>R</sub> = M<sub>R</sub>\n\n**Software emulation** \n` float x = 1.0; `\n` x = -x; `\n\n![Captura de pantalla 2016-11-29 a las 13.55.02.png](quiver-image-url/297A6F119CA4045FBD4B5A5DABDDC269.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Single to double precision (cvt.d.s) \n![Captura de pantalla 2016-11-29 a las 13.57.41.png](quiver-image-url/8AB433A79786F085F393C264C6E9305A.png)\n**Operation** \n+ Sign doesn't change: S<sub>R</sub> = S<sub>A</sub>\n+ Exponent: change excess 127 into excess 1023: E<sub>R</sub> = E<sub>A</sub> + 896\n+ Mantissa: add 52-23 = 29 zeros to the right: M<sub>R</sub> = M<sub>A</sub> || 00…0\n\n![Captura de pantalla 2016-11-29 a las 14.00.17.png](quiver-image-url/7C124454A7FE297F93D74BED4348A7C5.png)\n**Basic Operator (no handling of special values)**\n![Captura de pantalla 2016-11-30 a las 11.41.34.png](quiver-image-url/204D2BEB9AA13584CB0EAB0085976B46.png)\n**Handling special values: obtaining the exponent** \n![Captura de pantalla 2016-11-30 a las 11.42.36.png](quiver-image-url/1ED4EE35C053AE24438151CAB2D7D9A5.png) \n> To make the DEC you need an NOR gate for E=0, an AND gate to obtain E=255 and an AND with the 2 inputs being the other gate's ouputs negated, so we obtain E=1..254"
+    },
+    {
+      "type": "markdown",
+      "data": "###  Double to single precision (cvt.s.d) \n**Structure** \n+ Sign: does not change\n+ Exponent: Convert from 11-bit excess 1023 to 8-bit excess 127\n    + `This conversion may have overflow`\n+ Mantissa: remove 29 least significant bits, rounf the resulting M \n\n![Captura de pantalla 2016-11-30 a las 11.48.37.png](quiver-image-url/4DB24BB4ABB76EC47B63A0E0FE15128B.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Rounding details\n![Captura de pantalla 2016-11-30 a las 11.53.08.png](quiver-image-url/87C3FE5A2FA8E4832964ADBC0129DA5C.png)\n> The MUX is not needed ! \n\n `R is the rounding circuit`"
+    },
+    {
+      "type": "markdown",
+      "data": "### Integer to double precision (cvt.d.w) \n**Operating principles** \n+ A postive integer W can be rewritten as +0.Wx2<sup>32</sup>\n+ A negative integer W can be written as -0.(-W)x2<sup>32</sup>\n+ The mantissa W has Z leading zeros (0 ≤ Z ≤ 32) \n    + Normalization requires a  left shift of Z+1 positions and substract Z+1 positions and substract Z+1 to the exponent\n\n**Example:**\nTransformation of integer to double precision\n0100 = 4                          \n0.0100 x 2<sup>4(nº bits)</sup>  -> `Z = 1 because the number of shifted positions is 1; (4 - Z - 1 + Excess) `\n1.0000 x 2<sup>4-2(\\*)</sup> = 1.0 x 2<sup>2</sup> = 4 `This process is called Normalization`\n`(*) el numero de posiciones que tienes que mover para que 1 este a la izq. del punto `\n\n\n\n**Specification**\n+ Input: 32-bit integer (W) \n+ Output: S<sub>R</sub> (1 bit), E<sub>R</sub> (11 bits), M<sub>R</sub> (52 bits)\n    + S<sub>R</sub> = Sign (W) \n    + M<sub>R</sub> = |W| << Z+1\n    + E<sub>R</sub> = 1023 + 32 - Z - 1 = 1054 - Z\n  \n`Z is the number of leading 0 (numeros delante del primer 1)`\n**Structure** \n+ Normalization counts the number of leading zeros Z\n+ |W| is shifted Z+1 positions to the left\n    + The exponent is then adjusted to 31 - Z\n    + Adding the excess, E = 1023 + 31 - Z\n+ The matissa is filled with zeros \n\n![Captura de pantalla 2016-11-30 a las 12.21.04.png](quiver-image-url/DDDD6E1FFF54BE7716E5BC707E21414E.png)\n![Captura de pantalla 2016-11-30 a las 12.21.34.png](quiver-image-url/CEA96E365801CDC2C35A4ADED5C98891.png)\n`STOP: AFter left shift by Z positions, the MSB is the implicit bit, which is no part of the mantissa`\n\n+ A priority encoder codifies the position of the input's least-significant \"1\"\n    + Hence we reverse |W|\n+ A barrel shifter shifts Z positions to the left \n+ The implicit bit is descarded\n\n![Captura de pantalla 2016-11-30 a las 12.23.06.png](quiver-image-url/066B067EBC934BE71C75923F85E52970.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Multiplication (mul.s and mul.d) \n**Specifications** \n+ Inputs: \n    + S<sub>A</sub> (1 bit) , E<sub>A</sub> (8/11 bits), M<sub>A</sub> (23/52 bits)\n    + S<sub>B</sub> (1 bit) , E<sub>B</sub> (8/11 bits), M<sub>B</sub> (23/52 bits)\n+ Output: S<sub>R</sub> (1 bit) , E<sub>R</sub> (8/11 bits), M<sub>R</sub> (23/52 bits)\n+ Sign S<sub>R</sub> = S<sub>A</sub> **xor** S<sub>B</sub>\n+ Exponent: add and compensate the excess\n    + SP: E<sub>R</sub> = A<sub>A</sub> + E<sub>B</sub> - 127\n    + SP: E<sub>R</sub> = A<sub>A</sub> + E<sub>B</sub> - 1023\n+ Mantissa: \n    + Multiply 1.M<sub>A</sub> x 1.M<sub>B</sub> (consider implicit bit)\n        + Size of the multiplier depens on precisio: 24 or 53 bit multiplier\n    + The result needs to be renormalized (remove implicit bit) and rounded"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

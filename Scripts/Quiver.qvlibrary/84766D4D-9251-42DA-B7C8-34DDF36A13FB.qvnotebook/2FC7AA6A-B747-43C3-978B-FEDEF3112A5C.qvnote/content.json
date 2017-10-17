@@ -1,0 +1,9 @@
+{
+  "title": "Lab 1 Cuatri Revision",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### LAB 2\n\n**SMTP CONNECTIONS:**\n   > [user@host]# telnet smtp.domain.com 25\n   Trying 192.168.0.1...\n   Connected to smtp.domain.com (192.168.0.1).\n   Escape character is '^]'.\n   220 myrelay.domain.com ESMTP\n   HELO smtp.domain.com\n   250 myrelay.domain.com\n   MAIL FROM:<alice@hacker.com>\n   250 sender <alice@hacker.com> ok\n   RCPT TO:<bob@secure.net>\n   250 recipient <bob@secure.net> ok\n   DATA\n   354 go ahead\n   From: [Alice Hacker] <alice@hacker.com>\n   To: [Bob Smith] <bob@secure.net>\n   Date: Mon, 12 Apr 2010 14:21:26 -0400\n   Subject: Test Message\n\n   > Hi there!\n   > This is supposed to be a real email...\n\n   > Have a good day!\n   > Alice\n\n\n   > .\n   > 250 ok:  Message 222220902 accepted\n   QUIT\n   221 myrelay.domain.com\n   Connection closed by foreign host.\n   [user@host]#\n\n**POP3 COMMANDS:**\n> Minimal POP3 Commands:\n\n     > USER name               valid in the AUTHORIZATION state\n      PASS string\n      QUIT\n\n      > STAT                    valid in the TRANSACTION state\n       LIST [msg]\n      RETR msg\n      DELE msg\n      NOOP\n      RSET\n\n     > QUIT                    valid in the UPDATE state\n\n   > Optional POP3 Commands:\n\n   >    APOP name digest        valid in the AUTHORIZATION state\n\n   >    TOP msg n               valid in the TRANSACTION state\n   >    UIDL [msg]\n\n   > POP3 Replies:\n\n   >    +OK\n       -ERR\n       \n       \nImportant comands: \n\tnslookup www.mit.edu \n\tnslookup -type=NS mit.edu\n\ndentro de nslookup te puedes encontrar:\n\\> set type=NS\n\\> stanford.edu\n\\> … answer … \n"
+    }
+  ]
+}

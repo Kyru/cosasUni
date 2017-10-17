@@ -1,0 +1,29 @@
+{
+  "title": "UT08 : Sparse memory allocation ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Sparce allocation \n+ The logical memory space of a process is made up of fragments \n+ Every fragment is allocated into physical memory independtly \n+ The mapped physical memory space of a process doesn't need to be contiguos: \n    + Paging: fragments of fixed size \n    + Segmentation: fragments of variable size \n+ The MMU needs to know for every segment its location and size \n    + Page table\n    + Segment table \n\n### Paging \n+ Allows non-contiguos allocation of process logical memory space\n+ It is based on considering both logical and physical spaces divided into fixed size fragments\n    + Pages in case of logical space\n    + Frames in case of physical memory \n+ When a process enters the system the OS loads all its pages in physical memory frames\n    + Every page fits a frame\n    + A table is built to store the frame number where every process page is allocated\n    + Every process has its page table \n\n### Page table\n+ Every table entry is called page descriptor and contains: \n    + The page allocated frame number \n    + A set of control bits: valid bit, modified bit and protection bits \n\n![Captura de pantalla 2016-11-28 a las 17.05.25.png](quiver-image-url/48EEBBACF8564026A8C7E908B9061294.png)\n\n### Logical address structure \n\n![Captura de pantalla 2016-11-28 a las 17.10.18.png](quiver-image-url/225922C05899C563EF5EE30C6F93DA3E.png)\n\n### Example => Paging on a 32-bit fragmentation \n+ Page size: 4K -> 4K = 2^(12) = 4096 , so k = 12\n+ Number of page sizes: 2^(20) = 1M = 1048576 ( m - k = 32 - 12 = 20 bits ) \n\n### Advantages: \n+ Ther is no external fragmentation \n+ It eases reallocation \n+ It provides protection \n+ Code pages are shared between processes\n\n### Disadvantages\n+ Internal fragmentation: page size should be an integer power of 2 to ease getting page number and offset \n    + Big pages: a lot internal fragmentation \n    + Small pages: very big pages tables \n\n### Page table implementations \n+ MMU registers \n    + Only feasible for small logical spaces (few spages) \n+ Memory \n    + The page table base register (PTBR) is kept with the page table starting physical address \n    + An additional memory acces is required (page table access) to translate a logical address \n+ TLB (translation look-aside buffer) \n    + The TLB contains only a small subset of page table entries (the ones recently used) \n        + Much faster than memory implmentation \n        + High hit rate with few entries\n\n### Segmentation \n+ Process logical space is divided into variable length fragments\n+ Logical space is a set of segments\n+ Every segment has its name and size \n+ Segments are defined by the compiler\n    + Code segment\n    + Data segment \n    + Stack segment\n> A segment is always contiguosly allocated in physical memory \n\n+ When a process enters the system the OS loads all its segments in main memory \n+ A table is built to store the starting physical address and length of every segment \n    + Every process has an associated segment table \n\n### Segmet table\n+ Every segment has an entry in the segment table called segment descriptor that contains \n    + Starting (base) elements physical address\n    + Segment size\n    + Set of control bits: protection bits, valid bit and modified bit \n\n![Captura de pantalla 2016-11-28 a las 17.56.45.png](quiver-image-url/76E5F9F4A4BAAEC628111AE8A7C3DB73.png)\n\n### Logical address structure \n\n![Captura de pantalla 2016-11-28 a las 17.57.31.png](quiver-image-url/1DFAD538608A86751690836235C44E0F.png)\n\n### Advantages\n+ There is no internal fragmentation \n+ It eases reallocation \n+ It provides protection and segment code sharing\n\n### Disavantages \n+ External fragmentation \n\n### Segment Size \n+ Big => big external fragmentation (same as variable partitions)\n+ Small => little external fragmentiation but very big segment tables\n+ Fixed Size => same as paging \n\n### Multilevel Paging \n\nDefinition: To page the page table itself, that means to break it in such a way that every page table fragment will fit a memory frame \n\n### Segmentation with paging \n\n+ Problem: When segment become big: \n    + Increases external fragmentation \n    + It is more difficult to find a free memory hole to allocate it \n    + There is a dynamic memory allocation problem due to the different segment sizes \n+ The solution is Segmentation with paging\n\n+ When a process enters the system the OS loads all pages from every process segment in main memory frames\n    + Segment table\n    + Page table for every segment\n+ A table is built to store for every segment its page table starting address and its segment size  \n\n\n\n\n\n\n\n\n\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE \n"
+    }
+  ]
+}

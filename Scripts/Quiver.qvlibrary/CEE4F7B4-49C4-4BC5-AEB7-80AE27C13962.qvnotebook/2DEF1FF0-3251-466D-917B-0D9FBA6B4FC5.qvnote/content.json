@@ -1,0 +1,61 @@
+{
+  "title": "Unit 1.1 - Fundamentals",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "#### Information System\nAn ***information system (IS)*** is a collection of elements, which are orderly realted to each other following some rules, that provide the entity they serve with the necessary information for the completion of its goals\n\nBasic functions: \n+ Data gathering\n+ Data processing\n+ Data storage\n+ Data elaboration and presentation"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Database and DBMS\n\n**Database:** Is a collection of structured data\n**Database management system (DBMS):** Software tool that enables users to create, manipulate and maintain a database\n\nThe way in which reality is represented in the context of databases is known as a ***data model***.\nMany different data models have been proposed: hierarchical, network, *relational*, object-oriented...\nA DBMS assumes one data model and builds everything upon it\n\n> A relational DBMS (RDBMS) is a DBMS based on the relational model"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Database characteristics\n+ *Integrating* all the organization's info\n+ Data *Persistence*\n+ *Shared Accesibility* to several users\n+ *Unified* data description, independent of the applications\n+ *Independence* between the *applications* and the physical representation\n+ Description of *partial views* of the data for different users\n+ Mechanisms to ensure data *Integrity* and *Security*\n\nDB's Goal:\nGlobal integration of the system's information in order to *avoid_redundancies*, with no loss of the different datbase *perspectives* by users.\n\n> DBMSs must ensure data independence, integrity and security"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

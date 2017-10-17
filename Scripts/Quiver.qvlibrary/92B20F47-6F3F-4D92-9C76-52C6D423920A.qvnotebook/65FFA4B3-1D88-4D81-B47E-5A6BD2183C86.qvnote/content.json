@@ -1,0 +1,9 @@
+{
+  "title": "Unit 1.3 - Instruction set architecture design",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 1. General aspects related to instruction sets\n#### Instruction set design factors\n+ Instruction sets act as interfaces between programs and datapath of processors\n+ Instructions result from program compilation\n    + Those instructions rarely used by compilers -> useless\n+ Experience in program compilation shows that\n    + Although programs can be very complex, most of them are very simple\n+ Fast execution simple instructions possible using simple datapaths -> CPI,T↓"
+    }
+  ]
+}

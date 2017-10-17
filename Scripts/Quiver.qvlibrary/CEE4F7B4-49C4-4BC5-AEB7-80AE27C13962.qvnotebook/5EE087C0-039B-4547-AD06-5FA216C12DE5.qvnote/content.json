@@ -1,0 +1,10 @@
+{
+  "title": "SQL - Revision Exercises",
+  "cells": [
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "-- List the name of the youngest cyclist\n\nselect c.nombre \nfrom ciclista c\nwhere c.edad <= ALL(Select edad\n                    from ciclista)\n                    \n-- List the value of the attribute netapa and the departure city for those \n-- stages with no mountain passes\n\nselect e.netapa, e.salida\nfrom   etapa e, puerto p\nwhere  e.netapa NOT IN (select etapa\n                        from puerto)\n\n-- List the name of the departure and the arrival of the stages where the\n-- steepest mountain passes (\"puerto\") are located\n\nselect e.salida, e.llegada\nfrom   Etapa e\nwhere  e.netapa = (select p.netapa\n                   from   puerto p\n                   where  p.pendiente <= ALL(select pendiente\n                                             from puerto)\n                                             \nselect e.salida, e.llegada\nfrom etapa e, puerto p\nwhere e.netapa = p.netapa \nAND p.pendiente"
+    }
+  ]
+}

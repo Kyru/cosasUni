@@ -1,0 +1,73 @@
+{
+  "title": "Unit 1 - Introduction",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 1. Concept of Distributed System\n#### History\n\n![WhatsApp Image 2017-10-05 at 14.38.52.jpeg](quiver-image-url/9C1AABE2D231FEF1415604A32FC8824D.jpg =1012x1425)\n\n#### What is a distributed system?\n+ Set of autonomous agents -> Each agent is a sequential process, proceeding at its own pace\n+ Agents interact. Options:\n    + Message passing\n    + Shared memory\n+ Agents have their own independent state\n+ There is some collective goal to this cooperation (which asserts the system's behaviour)\n+ In practice, a Distributed System is a Networked System\n\nSummary: Distributed Application: \n+ Many computers\n        + Provide a Service \n+ Basically *collection of services*"
+    },
+    {
+      "type": "markdown",
+      "data": "## 2. Relevance\n#### Why should we care about Distributed Systems?\n+ Evolving field since its beginnings\n    + Heavily studied for their usefulness in the design of time sharing systems\n+ Pushed by evolution of computer networks\n\n\n+ Main reasons:\n    + Speed up -> Complex problem divided into pieces each one in a different computer\n        + Economically, an advantage -> Expensive resource: can be placed at a single computer and sharred with all the agents. \n    + Fault tolerance -> If one computer breaks down, we still have other computers to take care\n    + Resource sharing -> Access resources from everywhere\n\n\nNowadays the computer environment is ***distributed and interconnected***\n+ Myriad of connected computers\n+ Myriad of remote services\n+ Challenges (create subsytems capable of delivering well-behaved services"
+    },
+    {
+      "type": "markdown",
+      "data": "## 3. Main Approaches\n#### Client Server\n+ Interaction between agents could be very complex\n    + Distributed systems need to be programmed as easily as possible\n    + Need to make simplifying assumptions to build working systems\n+ Two Roles\n    + Server -> Waits for client's request\n    + Client -> Connects with a Server. Sends request and waits for result\n+ Modeled after subroutine invocations\n    + Main program is client\n    + Invoked Subroutine is server (may hold state)\n+ Extremely succesful simplification\n+ Web protocols are based on this approach\n    + Web Servers wait for clients\n    + Browsers are the clients\n\nTypically Client-Server approach implies central delivery of services/resources:\nIf an agent has a resource to share it is placed on a server, other agents can access those resources contacting with the server. This leads to problems:\n+ Scale: large population of clients overload the server\n+ Availability: Failure of the server makes resources unavailble\n\n#### Peer to Peer (P2)\n\nIn P2P an agent interesent in a resource contacts directly its producer.\n+ Resources are spread over the population of agents forming the P2P network\n+ The same resource may be replicated and held by more than one agent"
+    },
+    {
+      "type": "markdown",
+      "data": "## 4. Application Areas\n\n#### 4.1 World Wide Web (WWW)\n+ Client/Server model\n+ Server attends request for documents\n+ Clients are browsers (sending/receiving documents)\n    + Browsers parse documents searching for metadata\n    + Links are a particular metadata pointing to other documents (they may be in another server)\n+ Simple and powerful paradigm\n    + Initially for document sharing\n    + Extended to allow general service requests\n\n#### Sensor Networks\n+ Driven by declining costs of hardware\n+ Mini-computers\n+ Embedded in common devices\n+ Physical world sensors (temp, humidity...)\n+ Wide range of applications (power monitoring, biological detection...)\n\n#### Internet of things\n+ Generalization of sensor networks\n    + Devices interact among them\n    + Devices can alter their physical environment\n+ New scenarios open up: Smart cities, healtcare...\n\n#### Cooperative Computing \n> Como en ISW labs basicamente (Visual Studio)\n\n+ Most computational power is underused\n+ Many engineering and specific problems can be split into pieces\n+ Servers can be set up with an instance of such a problem\n+ Computers across the internet can subscribe to receive tasks to solve\n    + Special client software: task runtime environment\n    + Client registers with the server\n+ Server spread tasks among the registered clients and collects their results\n\n#### Highly Available Clusters\n+ Some environments need a high degree of availability: Banking, finances\n    + Having more than one device to cover failures\n\n+ Set of computers, with server programs on which clients depend constantly\n+ Holding sensitive data\n+ Specific Protocols to stand failures\n+ Main Concerns:\n    + Preserve data integrity\n    + Preserve server operation availability"
+    },
+    {
+      "type": "markdown",
+      "data": "## 5. Cloud Computing\n#### 5.1 Software and Services\n**Goal:** Make creation and explotation of services based on software simpler and more efficient"
+    },
+    {
+      "type": "markdown",
+      "data": "#### 5.2 Roles in the Service Life Cycle\n+ Developer: Gets the software components built\n+ Service Provider: Decides the characteristics of a service, the components that make it up, and how it should be configured and managed\n+ System's Admin: Make sure every piece of software/hardware is in place and properly configured\n+ Service User: Accesses the service"
+    },
+    {
+      "type": "markdown",
+      "data": "#### 5.3 Service Evolution\n**Mainframes**\n+ System administration taken care of by specialists\n+ Systems with reduced user base\n+ Efficient use of hardware\n    + Shared by a large population of users\n    + Low up-front cost for a user\n+ Mixed role for Users\n    + Many were also developers or their own service providers (third party or own developed software)\n+ Users were involved in too many of the management details for the services they finally used\n\n**Personal Computers/Workstations**\n+ Users no longer needed to have access to a mainframe in a computer centre\n+ Computer infra-utilized\n+ In advance, investment cost to purchase\n+ Rationalization of the role of developer -> Specialized organizations build the software\n+ Still, mixed role of user: Service provider and System admin of their PC\n+ Too much complexity for the majority of users\n\n**Enterprise Computer Centers**\n+ Including Highly-Available Cluster set-ups\n+ Similar characteristics to the PC situation:\n    + The user being the enterprise\n    + High Personnel cost to take up the roles of system admin and service provider\n    + On occasion, developer role, for in-house sotfware (internal programs)\n+ "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

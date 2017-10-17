@@ -1,0 +1,53 @@
+{
+  "title": "Unit 2 - Distributed System Software",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "#### 4.5 Aspects of Synchrony\n\n1. Time -> Cannot be perfectly represcuted -> Each process has its notation of the current time -> Different views (one per process in the worst case)\n\n2. Synchrony -> Synchronous processes: (example of a 2-face commit protocol)\n+ Each process executed a step \"at the time\"\n    + Algorithms define execution phases\n        + Every process completes a phase before starting the following one \n            \nSynchronous processes: we need a round of communication at the end of each \"step\" (*This doesn't scale*)\n\n**Synchronous channels: (Feasible in a LAN)**\n+ Transmission time is bounded -> That upper limit is known\n    + Useful for failure detection!\n        + Processes\n        + Channels\n\nSynchronous messaage order:\n+ Can message delivery be ordered? Which order may be ensured\n\nBasic message order: FIFO\nP1 -----> P2"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

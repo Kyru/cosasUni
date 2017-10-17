@@ -1,0 +1,77 @@
+{
+  "title": "UT09 : Virtual memory (I) ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Concept \nPaging without virtual memory :\n+ The OS reserves all the physical memory required by a process to start it \n+ All memory accesses take the same amount of time \n+ When a process end the OS releases all the frames used by the process \n\nMemory requirementes chenge due to dynamic regions\n+ The stack grows due to function calls\n+ Dynamic memory allocation creates the heap region that can grow and shrink due to *malloc* and *free* calls\n+ Creating new threads stack region\n\n**Reference locality principle** \n+ Indepently of the logical size of a process its memory accesses are located into hot spots: \n    + Given a time interval a small set of instructions is accessed particularly inner loops, something similar happens with data access\n    + Along the process lifetime hot spots of code and data move\n\n**Memory mangement based on virtual memory** \n+ The OS manages memory allocation to processes in such a way that only their hot spots are allocated on physical memory \n+ The remaining logical space content is allocated on secondary storage (swaping area) \n\n**Virtual memory base tecnologies** \n+ It combines physiscal memory (RAM) with secondary storage (hard disk or SSD) \n+ Main memory is made of words (i.e. 32-bit, 64-bit) addresable by the CPU, access time is a couple of nanoseconds \n    + Every instruction cycle performs one or more accesses to main memory \n+ Secondary storage is made of blocks (i.e. 512-bytes, 4096-byte), access time is a couple of milliseconds\n    + A page transfer is made in one single I/O operation that requires the execution of serveral instructions by the CPU  \n\n### Virtual memory scheme \n+ The OS manages memory following a sparse allocation approach, typicaly paging\n+ A swap area is available on disk, as a partition or as a system file\n+ For every page in use by a process it can be in two states: \n    + Valid: page allocated into a main memory frame\n    + Invalid: page not allocated in main memory but on the swap area \n+ For every memory acces it can happen a: \n    + Hit (most common) : reference to a valid page \n    + Fault: reference to an invalid page -> the page table has to be updated and one or more pages are transfered between main memory and the swap area\n+ Benefits: \n    + The same as paging: paging sharing and protection \n    + It saves memory and increases the multiprogramming level\n    + It allows bigger executable process size\n    + It easies dynamic memory management\n+ Penalties:\n    + Turaround time can increase due to page faults \n    + Workload of secondary storage increases\n    + Great OS design complexity "
+    },
+    {
+      "type": "markdown",
+      "data": "### Virtual Memory Support \nEvery page descriptor has the following fields: \n+ Frame number where the page is allocated in physical memory \n+ Valid bit: it indicates if a page is mapped in memory, it supports demand paging \n+ Reference bit: it indicates page access done. It is required for a second opportunity algorithm \n+ Modified bit: it indicates page write access done. Trouble with shared pages. \n+ Access mode bits: read only, read-write, execution \n\n![Captura de pantalla 2016-11-28 a las 18.44.14.png](quiver-image-url/84B5D418BAF07F56ECA9F7E435905387.png)\n\n**Page fault -> MMU Exeption**\n+ It happens when a non memory allocated page is referenced, that is with valid bit = 0\n+ Page fault cases: \n    + Page on disk: The reference page belongs to the process => it is allocated into a memory frame \n    + Access error: The reference page doesn't belong to the process and cannot be assigned to it => the process is aborted\n    + Process growing: The process asks for new pages, if the OS permits it, a new page is assigned to the process with its bit set and the new page is allocated into a memory frame "
+    },
+    {
+      "type": "markdown",
+      "data": "### Demand Paging\n**Page fault: Page on disk case**\n![Captura de pantalla 2016-11-28 a las 18.50.16.png](quiver-image-url/F7E4BE01D4627F70DC0371F29198409C.png)\n![Captura de pantalla 2016-11-28 a las 18.50.22.png](quiver-image-url/2AFA79B1B44D434087702CEC41502BC2.png)\n\n**Page fault algorithm: page on disk case** \n+ Find demanded page on disk \n+ Find a free frame\n    + If there is a free frame, then use it\n    + If there are no free frames apply **page replacement algorithm**\n+ Read demanded page on disk (page in) and allocate it into the free frame\n+ Update page table of the process that generates the page fault \n+ Update free frame table\n+ Transfer control to user process\n    + Restart the instruction that has produced the page fault \n\n**Page replacement:** It is required when the main memory is full and there is a page fault\n+ Select an allocated page in main memory, named victim, to leave its frame\n    + There are several victim selection algorithms \n+ If the victim page has its modified bit equal to 1 then save the victim page to disk (page out) \n+ The victim page entry on the page table is updated with valid bit = 0\n+ Update the free frame table\n\n**Reference String:** Sequence of accessed pages along a certain time period\n+ From every logical address sent by the processor its page number is obtained\n+ Repetitions are removed: several consecutive references to the same page are replaced by a single reference\n\n*Example*\n![Captura de pantalla 2016-11-28 a las 18.59.43.png](quiver-image-url/B0D819218D2349A8DC3622D4F101E596.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### FIFO replacement algorithm \n+ FIFO = First in first out\n+ Victim page: The one that is longer loaded in memory\n![Captura de pantalla 2016-11-28 a las 19.02.23.png](quiver-image-url/FDFF6F8E4F8DCF0BEC7FE8EADF11991D.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Optimal Replacement algorithm \n+ Vitim page: The one which takes longer to be referenced\n+ Minimum number of faults => **IMPOSIBLE TO IMPLEMENT** (future is unknown) \n![Captura de pantalla 2016-11-28 a las 19.04.58.png](quiver-image-url/5D1D60C99A6AE678E5DEB19254B979B6.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### LRU replacement algorithm \n+ LRU = Least recently used \n+ Victim page: the one that lasted more without being referenced\n+ It is a stack algorithm \n![Captura de pantalla 2016-11-28 a las 19.06.54.png](quiver-image-url/FD3330CF3FD24F401913E56B247DEE81.png)\n\n**LRU Implementations**\n+ Using counters: \n    + Every page has an associated counter\n+ Using an ordered list of referenced pages\n    + When a page is referenced it is put at the end\n    + The victim page is the first one \n\n**Performace analyis**\n+ Advantages: \n    + Good approach to the optimal algorithm \n+ Disadvantages: \n    + Costly implementation => requires hardware support\n+ Solution: \n    + LRU approximation algorithms => based on reference bit  "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

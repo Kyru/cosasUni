@@ -1,0 +1,53 @@
+{
+  "title": "ST12 : Minix File System ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Partition Structure\nA **Minix partition** is built upon a set of fixed size blocks (i.e 1KBytes) \nA partition structure contains: \n+ A **header** made up of blocks groups intended to store the data structures that sustain the file system \n+ **Data area** made up of blocks intended to store file data \n\n![Captura de pantalla 2016-12-27 a las 12.14.46.png](quiver-image-url/B473E65A3FBDBDCC912BD1687366C25E.png)\n\n### Header blocks \n\n![Captura de pantalla 2016-12-27 a las 12.15.57.png](quiver-image-url/C8BA400A0D45CC67807A582F810BC637.png)\n\n+ **Boot block:** contains the boot program that loads the OS and transfers the control to it \n+ **Superblock:** is a data structure with the file system description that indicates the size and location of every element \n+ **i-node bit map:** bit vector to manage free and allocated i-nodes. It contains one bit per zone \n+ **Zone bit map:** bit vector to manage free and allocated zones. It contains one bit per zone. \n+ **i-node blocks:** contains the i-node data structures. The i-node number depends on the partition size (i-node 0 is not used) \n\n![Captura de pantalla 2016-12-27 a las 12.20.09.png](quiver-image-url/245AF5FE3DEC7D2C867E455E4A6DFE75.png)\n![Captura de pantalla 2016-12-27 a las 12.20.24.png](quiver-image-url/F1517A3A560D5057CDC0EABD3E1C2348.png)\n![Captura de pantalla 2016-12-27 a las 12.21.11.png](quiver-image-url/E01CDCA3D4C52E4D35672EFFD3A95D93.png) \n\n### i-node Structure \n\nData structure that contains all the file attributes except its name\n+ Every file has an associated i-node\n+ It controls indexed allocation by means of direct, indirect and double indirect pointers \n\n![Captura de pantalla 2016-12-27 a las 12.28.12.png](quiver-image-url/38459DA2F7B7458329A87C546B94F5AF.png)\n\n**Performance analysis** \n+ *Efficient random access:** The maximum number of disk accesses is limited to 4\n    + The indirect pointers are only used with big or very big files (commonly few) \n    + Small file (common case) access is very efficient\n+ *Reliable and elegant design:* Every file has its own separated data structure\n\n### Directory entry \n\n**Minix directories**\n+ Directory structure as a directed acyclic graph (DAG) \n+ Directories are files which content is interpreted as registers -> directory entries (also named links) \n\n**Minix directory entry or link** \n+ It has a 16 byte size \n    + 2 bytes for the i-node\n    + 14 bytes for the file name \n    \n\n![Captura de pantalla 2016-12-27 a las 12.32.03.png](quiver-image-url/2E922EBE5F9FFA2AA5E53B9C09B82E27.png)\n\n**Directory entry** \n+ When a directory is created, the entries '.' and '..' are automatically created\n+ **i-node 1 describes the root directory** \n+ When a directory entry is removed it is marked with i-node 0\n\n![Captura de pantalla 2016-12-27 a las 12.33.27.png](quiver-image-url/2390F1E4FD6E4EE2E36D05BB9DC9FB80.png)\n\n### Standard sizes \n\nDefault sizes for Minix elements: \n+ 1 Zone = 2<sup>0</sup> blocks = 1024 bytes\n+ 1 pointer to zone or block = 2 bytes = 16 bits\n+ 1 directory entry = 16 bytes \n+ 1 i-node = 32 bytes "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

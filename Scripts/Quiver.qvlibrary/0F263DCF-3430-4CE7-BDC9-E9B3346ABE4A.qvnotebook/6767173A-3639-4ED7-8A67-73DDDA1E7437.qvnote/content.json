@@ -1,0 +1,74 @@
+{
+  "title": "ST07 : Memory map of a Linux process ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "#### Process memory map\n+ The OS manages the memory map of every process during its lifetime \n+ Memory map is a process **attribute** -> it is include in its PCB. (in its *Control* block) \n+ It contains information about a process memoery region (Code, data, stack)\n+ The initial memory map of a process is strongly linked to its executable file\n+ Nowadays OSs offer a dynamic memory model that gives support to process memory regions allocation: \n    + New regions could be created to allocate dynamic process entities: stack, mapped files, dynamic memory, etc\n    + Unused regions could be removed"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Simplified format of an executable file \n+ After compiling and linking an executable file is generated that contains the program machine code ready for execution \n+ An executable file is structured into a header and a sections set \n    + **Header:** It contains control info that allows reading into the remaining executable file content\n    + **Sections:** Executable file content is organized in sections\n\n![Captura de pantalla 2016-11-28 a las 10.17.05.png](quiver-image-url/D4C177B22A0ABF02E4BBF868EA2FB59C.png)\n\n+ There are commonly at least the following three sections: \n    + Code (text): It contains the program code\n    + Initialized data: It stores all the variables with a value assigned in the program text \n    + Non-initialized data: It corresponds to variables without a value assigned in the program text\n\n![Captura de pantalla 2016-11-28 a las 10.19.43.png](quiver-image-url/D7750DD67F0866428DD7CB2BFB715B25.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Memory map of a linux process \nLinux 2.6.x versions on 32 bits architectures:\n+ Logical Space is 4GB \n+ 1st GB: Code + initialized data begin at address 0x08048000\n+ 3rd GB: The satack starts here and grows downwards\n+ 4th GB: The upper GB is reserved to the OS\n+ The remaining space is available for data (uninitialized + heap) and dynamic linked libraries\n\n![Captura de pantalla 2016-11-28 a las 10.24.25.png](quiver-image-url/9DC21DAB39A78F020FC86C9B80430268.png)\n\n#### Memory maps are regions made \n+ A region has a certain type of info associated \n    + Code, init data, uninit data, mapped files and dynamic linked libraries\n+ A region is continuos memory chunk featured by the address inside the process memory map where it begins and its size\n+ Region features: \n    + Suport: where the region information is stored\n        + File support: region information is stored in a file \n        + Without support: region without initial content\n    + Share type: \n        + Private (p) : content is only accessible by the owner process\n        + Shared: content is accesible by several processes\n    + Protection: (region access type allowed)\n        + Read, write and/or execution \n    + Size: fixed or variable \n+ Program execution starts building a process memory map from the executable file \n+ Every executable file section becomes an initial map region \n    + Code (text): shared region, read and execution, fixed size, executable file support\n    + Init data: private region (every process need private copy), read and write, fixed size, executable file support\n    + Uninit data: private region, read and write, fixed size. without support (some compilers/languages initialize it to 0 ) \n    + Stack: private region, read and write, variable size, without support. It grows towards lower addresses. When execution starts it only contains calling program arguments\n\n![Captura de pantalla 2016-11-28 a las 10.39.13.png](quiver-image-url/52269D9AD14C5C96BC69B6857B431AC7.png)\n\n#### Process memory map is dynamic -> along process lifetime some regions can be created like:\n+ Heap:\n    + Dynamic memory support (ie pointers) \n    + Private, read and write, variable size, without support (init to 0) \n    + It grows towards upper address\n+ Mapped files: \n    + When a file is mapped into memory, a new region is created\n    + Variable size, file support \n    + Protection and sharing specified in the mapping \n+ Shared memory: \n    + Region that supports interprocess communication\n    + Shared, variable size, file support (init to 0) \n    + Protection specified in the program\n+ Thread stacks:\n    + Every thread stack has its own region \n    + Same features as process stack \n    + \n\n#### There are two visualization methods of a process memory map:\n+ Viewing the process maps file: **$cat/proc/PID/maps**\n    + Logic adress range\n    + Permissions\n    + Shift form the beginning of the executable file \n    + Device\n    + Node-i\n    + Mapped file name \n+ Executing the shell command: **$pmap PID** \n    + Logical base address\n    + Size \n    + Permissions \n    + Mapped file name \n\n> Replacing PID by variable && we refer to the process in execution like: \n+ $pmap &&\n+ cat/proc/&&/maps"
+    },
+    {
+      "type": "markdown",
+      "data": "File /proc/PID/maps => it contains the actual memory regions associated to process PID and their access permissions\n\n![Captura de pantalla 2016-11-28 a las 10.54.55.png](quiver-image-url/AF4F518017A9C67A6C73219EEFC44D4C.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Copy-on-write\n+ Linux technique to efficiently perform copies of memory pages (saves memory and time) \n+ When a process creates a new one, parent and child share data and stack pages in memory \n    + All shared pages are marked as \"read-ony\"\n    + A write access attempt to these pages make the MMU send a page access failure interrupt, then: \n       + The kernel does a copy of the troubling pafe to the process that wants to write it\n          + If there are more than two processes, the remaining processes continue being unable to write\n          + If it remains only one process using the page it will be able to write changing previously its descriptor bit\n          + The interrupted instrucion is restarted\n+ **Advantage:** Time and space required to copy unused pages are avoided\n\n### fork() call with Copy-on-Write\n![Captura de pantalla 2016-11-28 a las 11.10.07.png](quiver-image-url/8991FA98CB83A66D5183C6F442635DFC.png)\n![Captura de pantalla 2016-11-28 a las 11.10.27.png](quiver-image-url/4F00EDF6094ED30CA150906A2D5776A3.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Memory mapped file\n+ A file (whole or part) is included inside a process memory map \n> POSIX: mmap () \n  Win32: CreateFileMapping() \n+ Advantages: \n    + File access time improved (once mapped into memory access time is set by memory speed instead of hard disk) \n    + Intermidiate copies are avoided, the OS transfers data directly between mapped file memory region and file \n+ It is an alternative file access method instead of using I/O calls read and write\n    + The file becomes an array of byte \n+ POSIX call mmap creates a new region in the process memory map and some of its properties can be set, like sharing and permissions"
+    },
+    {
+      "type": "code",
+      "language": "c_cpp",
+      "data": "cadd_t  mmap ( caddr_t  addr,  size_t length,  int protec,  int indicator,  int fd, offt_t shift )"
+    },
+    {
+      "type": "markdown",
+      "data": "+ **addr:** memory address for file mappind. If 0 the OS decides. mmap always return the mapping address used\n+ **fd:** file descriptor for the file to map (must be opened) \n+ **shift and length:** define the region to map the file, it is from shift to shift+length-1\n+ **protec:** PROT-READ, PROT-WRITE, PROT-EXEC and combinations      \n+ **indicator:** MAP-SHARED, MAP-PRIVATE\n`I used - instead of _ because the program does not allow it`\n+ **nummap:** remove a previous whole part file mapping"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Dynamic linking libraries\n+ Binary (no text) files that contain functions code\n+ There are two way of linking prgrams with libraries: \n    + Static linking: the executable includes al library functions code\n        + Program code = Own program code + Library function code\n        + .lib files on Windows, .a files on UNIX\n    + Dynamic linking: The executable file contains references to library function that it uses and the memory region required to store them  \n        + Library functions are loaded in memory on demand mapping them in the correspondif process memory map region. This is done by the library loader program by means of ***dlopen*** call \n        + Windows: .dll files\n        + UNIX: .so files \n\n#### Static linking\n+ Disavantages: \n    + Generally big executable files\n    + Library funtions code replicated in many executables in the file system and in memoery during execution \n    + A library update requiers rebuilding programs\n+ Advantages\n    + Executable files are self-contained\n\n#### Dynamic linking \n+ Disadvanges: \n    + Executable files rely in library files\n    + Dynamic linking introduces execution time overhead\n+ Advantages: \n    + Smaller executable size that saves disk memory space\n    + No library functions code replication \n        + Processes share library code in memory \n        + Library updates don't require rebuilding and several library versions can coexist"
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

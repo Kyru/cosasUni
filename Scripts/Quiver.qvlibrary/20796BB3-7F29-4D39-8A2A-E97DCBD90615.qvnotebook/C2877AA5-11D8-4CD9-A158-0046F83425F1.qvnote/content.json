@@ -1,0 +1,73 @@
+{
+  "title": "Chapter 4 - OO Modeling with UML",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "#### 1 - Motivations\n\n+ OO methods represent requirements in terms of objects and the services they offer\n+ OO methods are more \"naturaL\" than traditional, structured ones"
+    },
+    {
+      "type": "markdown",
+      "data": "### 2 - Views of a Software System\n\n#### Static View\n*Object:*\n+  Entity that exists in the real world\n+  Have identity and are differentiated from each other \n  + Examples:\n      +  The plane with number x\n      +  A costumer\n\n*Object Classes:*\n+ Same Properties\n+ Same Behaviour\n\n***Associations***\nAllows linking or connecting objects of different clases\nExample: A country has one capital => Combines an object country with an object capital\n\n***Generalization/Specialization***\nAct or result obtained after distinguishing a concept that is more general than another\nExample: Figure can contain the objects: square, triangle and circle\n\n**Static Aspect:** Describes the static structure of a system and its interrelationships\n> Intra objects => classes, attributes | Inter-objects => Association, Generalization"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Dynamic View\n\nObjects communicate by means of invocation of operations on other objects\nThe dynamic view describes the aspects of a system that change over time:\n+ Interactions between objects\n+ Possible states of an object\n+ Transitions between states\n+ What events are produced\n+ What operations are executed\n\n> MSCs: describe interactions between different points\n\n#### Summary\n\nStatic View: Structure and interrelationships\nDynamic View: Aspects that change overtime"
+    },
+    {
+      "type": "markdown",
+      "data": "### 3 - OO Methods"
+    },
+    {
+      "type": "markdown",
+      "data": "OO Analysis:\n+ A specification of the problem is created\n+ Describes what the system must do\n\nOO Design: \n+ Definition of a software solution to satisfy the requirements\n+ Describes how the system will work"
+    },
+    {
+      "type": "markdown",
+      "data": "#### 4 - The UML Language\nUML = Unified Modeling Language\nIt functions as a general purpose for OO modelling\n\n**Success Triangle**\nNotation => UML\nProcess (methodology) = RUP, USDP\nTool => Rational Rose, Objecteering, Visio (programa para hacer graficas vectoriales)\n\n> UML is not a method, it is a notation to describe systems "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

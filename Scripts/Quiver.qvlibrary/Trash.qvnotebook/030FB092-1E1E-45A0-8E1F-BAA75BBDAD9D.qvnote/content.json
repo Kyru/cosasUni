@@ -1,0 +1,73 @@
+{
+  "title": "4.6 : TCP Congestion Control",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Congestion \n+ Informally \"too many sources sending too much data too fast for network to handle\n+ Its different from flow control\n+ Manifestations\n    + Lost Packets (buffer overflow at routers)\n    + Long delays (queueing in router buffers) "
+    },
+    {
+      "type": "markdown",
+      "data": "### Goal of TCP Congestion Control\n+ Congestion is bad for the overall performance in the network \n    + Excessive delays can be caused \n    + Retransmissions may result due to dropped packets (Waste of capacity and resources) \n    + In some cases (UDP) packet losses are not recovered\n    + *Note:* Main reasonn for lost packets in the Internet is due to congestion -- errrors are rare\n+ The Goal of TCP is to determine the available network capacity and prevent network overload\n    + Depends on other conections that share the resources  "
+    },
+    {
+      "type": "markdown",
+      "data": "### TCP Congestion Control\nTCP sender must use 2 algorithms to control the amount of outstanding data being injected into the network \n+ **Slow start algorithm** \n+ **Congestion avoidance algorithm**\n\nTo implement these algorithms, two variables are added to the TCP per-connection state\n+ The congestion window (cwnd) \n    + It is a sende-side limit on the amount of data the sender can transmit into the network before receiving an ACK \n+ The slow start threshold (ssthresh) \n    + It is used to determine whether the slow start or congestion avoidance algorithm is used to control data transmission \n    + when **cwnd < ssthresh** \n        + The ***Slow start algorithm*** is used \n      + when **cwnd > ssthresh**\n          + The ***Congestion avoidance*** algorithm is used  "
+    },
+    {
+      "type": "markdown",
+      "data": "The minimum of cwnd and rwnd governs datat transmission\n+ transmission window (twnd) = minc (cwd, rwd) \n    + `Remember that the receive's advertised window (rwnd) is a receiver-side limit on the amount of outstanding data ` "
+    },
+    {
+      "type": "markdown",
+      "data": "**Example:**\nrwind -> win = 32 000 bytes\nMSS = 1000 bytes  *(MSS is maximum segment size)* \n32000/1000 = 32 Segments -> rwnd "
+    },
+    {
+      "type": "markdown",
+      "data": "### Slow Start Algorithm \n+ Beginning transmission into a network with unknown condition requires TCP to slowly probe the network to determine the available capacity, in order to avoid congesting the network with an inappropriately large burst of data ...\n+ The **slow start** algorithm is **used**\n    + At the beginning of a transfer **OR** \n    + After repaining loss detected by the retransmission timer  \n\n![Captura de pantalla 2016-12-02 a las 9.24.26.png](quiver-image-url/13E7F3969EEA1DC68419C5400AAA9BCB.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Congestion Avoidance Algorithm \nWhen the number of bytes acknowledged reaches cwnd, then cwnd can be incremented by up to 1 segment\n   + `cwnd += 1/cwnd `"
+    },
+    {
+      "type": "markdown",
+      "data": "### Congestion Detection \n+ Packet loss is a sign of congestion \n+ Two indicators of congestion: \n    + A retransmission timer expires *(timeout)*\n    + Three duplicate ACKs are received\n+ What does TCP do then? \n    + ssthresh = max ( (twnd/2), 2) \n        + After repairing loss detected by the retransmission timer \n            + cwnd = 1 segment\n            + slow start \n        + When 3 ACKs are received\n            + cwnd = ssthresh\n            + congestion avoidance \n\n![Captura de pantalla 2016-12-02 a las 9.31.18.png](quiver-image-url/3EBAAEBBAAA7BEF28C0DFE6C214298A3.png)\n> As we can see when cwnd < ssthresh we use the slow start \n\n![Captura de pantalla 2016-12-02 a las 9.31.43.png](quiver-image-url/7EEA9E1105690E4F8592F5FAAF05ECB5.png)\n> At the beginning the transition follows the congestion window, until it arrives to the change, where it will follow the rwnd. When a packet is lost a new ssthresh will be created. We can see that in this case this occurs due to a timeout \n\n### Fairness (more) \n**Fairnes and UDP** \n+ Mulimedia apps often do not use TCP \n    + do not want rate throttled by congestion control \n+ Instead use UDP: \n    + Send audio/video at constat rate, tolerate packet loss\n\n**Fairness, parallel TCP connections**\n+ Application can open multiple parallel conncetions between two hosts\n+ web browsers do this"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

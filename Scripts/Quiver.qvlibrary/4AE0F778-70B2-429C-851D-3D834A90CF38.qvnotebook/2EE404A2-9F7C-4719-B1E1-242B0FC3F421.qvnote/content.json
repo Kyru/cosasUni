@@ -1,0 +1,93 @@
+{
+  "title": "Unit 3 - Part III ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### Anonymous (or nameless) functions\n+ In Haskell we can define anonymous functions of the form \\x -> e\n    + Example: The funtion square x = x\\*x can be defined in this way as follows: square = (\\x -> x*x) \n+ In general, `\\x1 x2 .. xn -> e is equivalent to \\x1 -> (\\x2 -> (... -> (\\xn -> e) ... )) `\n    + Example: \n    + `sumOfSquares = \\x y -> x\\*x + y*y` *is equivalent to:* `sumOfSquares = \\x -> (\\y -> x\\*x + y*y )`"
+    },
+    {
+      "type": "markdown",
+      "data": "### Function Composition \n![Captura de pantalla 2016-12-01 a las 19.10.45.png](quiver-image-url/D1603A3B2B56DB41304B3B7414EF6572.png)\n\n+ Funtion composition is defined in the Haskell prelude as follows: \n    + `(f.g) =\\ x -> f(g x) `\n+ The function composition is a frequent computation pattern. The solution of a problem consists of serveral steps each of which can be indepently addressed by using independent funtions that can be then *composed* to solve the problem \n    + Example: `twice f x = (f.f)x` > Point-wise\n    + Equivalently, `twice f = f.f` > Point-free\n    + In lambda notation: `twice =\\f x -> f (f x) `"
+    },
+    {
+      "type": "markdown",
+      "data": "### Iterators and compressors\n#### Iterators \n+ Iterators can be used to save memory and time when dealing with *iterable types* like lists or sequences\n+ *iterate f x* returns an inifinite list of repeated applications of f to x: iterate f x is [x, f x, f (f x), ...]"
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "iterate     :: (a -> a) -> a -> [a]\niterate f x = x : iterate f (f x) \n\n-- Bonus: The Haskell prelude function from is defined by \nfrom = iterate (1+) "
+    },
+    {
+      "type": "markdown",
+      "data": "#### Compressors\n+ Many functions over lists follow a recursive scheme \n    + f :: [a] -> [b]\n    + f [ ] = z \n    + f (x:xs) = x ⊗ f xs"
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "sum :: [Int] -> Int \nsum [] = 0\nsum (x:xs) = x + sum xs "
+    },
+    {
+      "type": "markdown",
+      "data": "\n+ We can introduce a function \"foldr\" that implements this kind of transformation: "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "foldr :: (a -> b -> b) -> b -> [a] -> b\nfoldr op z [] = z \nfoldr op z (x:xs) = x `op` (foldr `op` z xs) "
+    },
+    {
+      "type": "markdown",
+      "data": "+ The previously considered function f can be just define as follows `f = foldr (⊗) z `\n+ And similarly for specific functions like: \n    + sum     = foldr (+) 0 \n    + product = foldr (*) 1 \n+ Example: the function *sum* given in a previous example (length of a path) can be given by using foldr or foldl "
+    },
+    {
+      "type": "code",
+      "language": "haskell",
+      "data": "sum :: [Float] -> Float\nsum = foldr (+) 0.0 "
+    },
+    {
+      "type": "markdown",
+      "data": "### The MapReduce Scheme \n+ The combined use of optimized functions like map and fold inspired *an efficient syle of sequence processing*, the MapReduce scheme, which has been successfully used in massive dataprocessing, with thousands of processors and around 100000 HDs\n+ The funtiona scheme MapReduce was promoted by Google and has a number of relevant applications: \n    + Information retrieval \n    + Cloud computing"
+    },
+    {
+      "type": "markdown",
+      "data": "### Use of MapReduce\n+ Google: \n    + Building indices for Google Search \n    + Classifying notice for Google News\n    + Automatic translation \n+ Yahoo!:\n    + Yahoo! Search\n    + Spam detection in Yahoo! mail\n+ Facebook: \n    + Data mining\n    + Optimization of publicity \n    + Spam detection \n    \n![Captura de pantalla 2016-12-01 a las 19.37.03.png](quiver-image-url/4993729E7CE87F6FE021925F9ED12BD9.png)\n\n+ The computation proceeds from left to right; the number of steps is equal to the length of the list. \n+ But (+) is associative and commutative, which means we can (automatically) parallelize the process and distribute the workload over hundreds/thousands processors! \n+ The cost becomes O(log n) if we proceed as follows: \n\n![Captura de pantalla 2016-12-01 a las 19.41.54.png](quiver-image-url/B79FC2B260BBAC50CC517FB5068549EE.png)\n+ We can do it by appropriately combining map and fold:\n\n![Captura de pantalla 2016-12-01 a las 19.41.59.png](quiver-image-url/1B873531EE11850917ED8AA059D04F0F.png)\n\n+ map f : builds a new list by applying f to the input list `Exploit commutativity`\n\n![Captura de pantalla 2016-12-01 a las 19.45.54.png](quiver-image-url/2ABA59E23CC0E31F1C69FA04121105A7.png)\n+ fold f z xs : applies f to the elements of a list and carries an *accumulator* `Exploit associativity`\n    + The function f returns the new value of the accumulator, which is combined with the next element of the list  \n\n![Captura de pantalla 2016-12-01 a las 19.45.59.png](quiver-image-url/B34AFCF3D7922012B749E8929E12D541.png)\n\n+ The MapReduce scheme is a useful abstraction that simplifies and optimizes heavy computations \n+ MapReduce has inspired the design of libraries for other languages: \n    + C ++ and Java MapReduce libraries \n    + Advantages: we can focus on the problem, and leave the management details (organization, keys, acces, etc.) to the library"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

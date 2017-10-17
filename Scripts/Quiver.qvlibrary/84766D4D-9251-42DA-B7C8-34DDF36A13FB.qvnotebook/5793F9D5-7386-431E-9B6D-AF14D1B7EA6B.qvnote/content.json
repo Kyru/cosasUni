@@ -1,0 +1,49 @@
+{
+  "title": "Resumen Practicas - Java",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## TCP \n### Clients\nSocket s = new Socket (\"zoltar.redes.upv.es\" (Host), 7777 (Port) );\n### Servers\n**ITERATIVE** \nServerSocket ss = new Socket (7777);\nwhile (true) {\nSocket sc = ss.accept(); \n... (code to provide the service) \n}\nScanner (sc.getInputStream)\nPrintWriter(sc.getOutputStream, true) `The true is to avoid the flush() method`\n**CONCURRENT**\nServerSocket ss = new ServerSocket(7777);\nwhile (true) {\nSocket sc = ss.accept(); \nEchoTCPServer etcps = new EchoTCPServer(sc); \netcps.start(); \nEchoTCPServer extends Thread\nrun { \n... (code to provide service) \n}\n## UDP \n### Clients\nDatagramSocket upds = new DatagramSocket(7777); \n### Servers \nDatagramSocket upds = new DatagramSocket(7777); \nBytes [] buffer = ...\nDatagramPacket dp = new DatagramPacket (buffer, buffer.length);\nudps.receive(dp); \nudps.send(); "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE"
+    }
+  ]
+}

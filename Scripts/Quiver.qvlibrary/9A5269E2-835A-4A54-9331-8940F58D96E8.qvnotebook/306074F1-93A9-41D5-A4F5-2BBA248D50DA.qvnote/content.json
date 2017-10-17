@@ -1,0 +1,134 @@
+{
+  "title": "Seminar 1 - Introduction to Parallel Computing Frameworks",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## Section 1 - Programming in C\n*Variables and Basic Types*\n+ Integer: char, int, long\n+ Enumerated: enum\n+ Floating point: float, double\n+ Void Type: void\n+ Derived Type: struct, array, pointers\n+ typedef - to define new types\n\n*Sentences* \n+ Declaration of types and variables\n+ Expression, typically asignment\n+ Composed sentence ({...} block)\n+ Conditions (if, switch)\n+ Loops (for, while, do)\n+ Others: void sentences, jump (goto)\n\n*Expressions*\n+ Assignations: =, +=, -=, *=, /=\n+ Increments: ++, --\n+ Arithmetic: +, -, *, /, %\n+ Bit-wise: ˜, &, |, ˆ, <<, >>\n+ Logic: ==, !=, <, >, <=, >=, ||, &&, !\n+ Ternary operator: a ? b: c"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Arrays\n*Array:* collection of variables of the same type\n+ Length defined in declaration\n+ Elements accessed by an index\n\n*Multidimensional arrays:* `matrix[N][M]`\n> Strings are arrays of type char ending with the character '\\0' "
+    },
+    {
+      "type": "markdown",
+      "data": "#### Pointers\nPointer: Variable containing the memory addess of other variable or value\n+ In the declaration, * is added before the name of the variable\n+ Operator & returns the address of a variable\n+ Operator * enables accessing the value pointed to\n\nArithmetics:\n+ Basic operations: +, -, ++\n+ The increment/decrement is proportional to the pointed type size\n\n"
+    },
+    {
+      "type": "code",
+      "language": "c_cpp",
+      "data": "p = &v[0];    // p = v\n*p = 4;       // v[0] = 4\nv[1] = *p++   // v[0] = 5\n              // v[1] = 4\n\n// no es lo mismo que:\nv[1] = *++p   // v[0] = 5\n              // v[1] = 5\n\n/* Si hacemos el *p++, p se actualiza despues de haber añadido el puntero. En cambio en *++p actualizas p y luego usas eso como nuevo contenido del puntero"
+    },
+    {
+      "type": "markdown",
+      "data": "*NULL pointer*\n+ It values zero\n+ It is an invalid pointer normally used to indicate a failure\n\n*Generic Pointer*\n+ Type: void*\n+ It can be casted to point to a variable of any type"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Structs\nStructs: a collection of heterogenous data\n+ Members can be accessed with . (or -> in the case of struct pointers)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Functions\n*reminder:*\n+ A C program has at least one function (main)\n+ Functions return a value (unless void)\n+ The arguments of a function receive the values indicated in the call\n\n***Software Library functions***\n+ String processing <string.h>\n    + String copy (strcpy), string compare (strcmp)\n    + Memory copy (memcpy), memory set (memset)\n+ I/O <stdio.h>\n    + Standard: printf, scanf\n    + Files: fopen, fclose, fprintf, fscanf\n+ Standard tools <stdlib.h>\n    + Dynamic memory management: malloc, free\n    + Conversions: atof, atoi\n+ Math functions <math.h>\n    + Functions and Operators: sin, cos, exp, log, pow, sqrt\n    + Rounding: floor, ceil, fabs"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Variable Types\nGlobal variables:\n+ They can be declared outside any function block\n+ They can be accessed from any point of the program\n+ They are allocated in the data segment\n\nLocal Variables:\n+ They are declared inside a function block\n+ They are only accessible by the sentences of the function block\n+ They are created in the (stack), and destroyed when leaving the function\n\nStatic variables:\n+ Modifier static\n+ Local scope but persistent between successive calls\n\nDynamic memory: \n+ Variables pointing to memory allocated with malloc, persist until free function is called\n+ They are created in the *heap*"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Stack\nWhen entering a function:\n1. all arguments are inserted in the stack\n2. the return address is stacked also\n3. local variables are created in the stack\n\nWhen executing *return* or leaving the function, the whole context created is destroyed"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 2 - Usage of Parallel Computers"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Development Cycle\nConsists of:\n+ *Preprocessing:* The C source is modified according to a set of instructions \n+ *Compiling:* The object code (binary) is created from the already preprocessed code\n+ *Linking:* It merges teh object codes from different modules and external libraries to generate the final executable"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Preprocessing\n+ include: It inserts the content from other file\n+ define: It defines constants and macro-expressions (including arguments)\n+ id, ifdef: enables skiping part of the code during the compliation\n+ pragma: compiler directive"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Compiling and Linking\nCompiling: cc\n+ For each *.c file, a *.o object file is generated\n+ It comprises the machine code of the functions and variables, as well as a list of unsolved symbols\n\nLinking: ld\n+ It solves all the unsolved dependencies using the \\*.o files and external software libraries (*.a, *.so)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Parallel program compilation\nOpenMP is based on directives #pragma omp\n+ A compiler without OpenMP support ignores these directives\n+ Modern compilers have these support, provided that a special option is included in the compilation and linkage\n\nMPI provides the mpicc command\n+ Invokes cc adding all necessary options for MPI codes\n+ Eases the compilation in different computers and environments\n+ mpicc -show shows the options available"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Parallel computing: Front-End\nThe *front-end* enables users to interact with the cluster\nUsed for routine tasks:\n+ Editing and compiling programs\n+ Short test runs\n\nUseful commands:\n+ Files/directories: cd, pwd, ls, cp, mkdir, rm, mv, scp, less, cat, chmod, find\n+ Processes: w, kill, ps, top\n+ Editors and others: vim, emacs, pico, man"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Running parallel programs\n**OpenMP:** Executables can be run directly (usually the number of threads should be indicated)\n**MPI:** use mpiexec (or mpirun) commands\n+ Options: choose hosts, architecture\n+ MPMD mode"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Wueue system\nThe **Queue system** (or job scheduler or resource manager) is a software that enables sharing a cluster among different users\n+ The user can run \"jobs\" usually in batch mode (non-interactive) using one or several nodes\n+ A job is a particular execution with a set of attributes (nodes, max execution time)\n+ Job scheduling policies are defined\n+ The system accounts the resources used\n+ Objective: Maximize usage and minimize waiting time\n\nWorking procedure:\n1. A job is defined and then submitted to a queue, which returns an identifier\n2. Depending on the workload, after a waiting time the job is run\n3. The output is obtained when the job finishes"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

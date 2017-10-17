@@ -1,0 +1,53 @@
+{
+  "title": "ST11 : Unix file System calls",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "### UNIX files\n+ Secondary storage abstraction\n+ File types: \n    + **Regular:** common files that contain data or binary code (text files, image files, executable files, etc. ) \n    + **Directory:** file containers which content is dierctory entries \n    + **Pipe:** unnamed sequential access files for interprocess communication \n    + **FIFO:** named sequential access files for interprocess communication \n    + **Special:** hardware or virtual device system abstraction, for instance: \n        + Console devices are /dev/ttyX (X=0,1,..) \n        + Sound card is /dev/dsp\n        + Virtual sink is /dev/null \n+ File attributes in Unix: \n    + File type \n    + Owner user (UID) \n    + Owner group (GID) \n    + Access permissions (permission bits) \n    + Number of links\n    + Creation, last access and last change time stamps\n    + Size \n\n**Unix directory entry: i-node** \nOS data structure to store file attributes except its name (a file can have several names or links) \n+ Every Unix file has one i-node\n+ It points to file content using indexed block allocation that can be direct, indirect, double indirect and triple indirect\n\n![Captura de pantalla 2016-12-26 a las 16.54.42.png](quiver-image-url/766BDC96CB530FEBD5AC2DB87602686F.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "**File structure:**\n+ Vector of bytes \n\n**File access mode:**\n+ Sequential access with ***read/write*** calls: \n    + Read/write (fd, buffer, nbytes) \n+ Iseek allows direct access specifying on offset from the file start, or actual location \n    + Isee (fd, offset, from\\_where) \n\n![Captura de pantalla 2016-11-30 a las 12.59.19.png](quiver-image-url/70570A5DE16770A720426AA7BA8DE6D9.png)\n\n**File descriptor**\n+ To read or write a file it must be first opened and last closed\n\n![Captura de pantalla 2016-12-26 a las 16.56.52.png](quiver-image-url/71430C177AFF3008E637B0B54D9AE4A9.png)\n\n+ A file descriptor (fd) is an abstract file identifier local to every process\n    + File access inside a process is done through the file descriptor (table index) given by ***open***\n    + Working with file descriptors does file access more efficient, avoids looking for them in disk for every access\n\n**Open file operation**\n+ It looks for the file in the directory structure and brings its attributes to an entry in the opened files table located in main memory \n+ It registers some additional attributes like: \n    + Location pointer\n    + Number of active open calls\n    + Disk location of data \n+ The file content is brought partially into memory buffers \n\n**Close file operation** \n+ It frees the corresponding entry in the opened files table\n\n![Captura de pantalla 2016-12-26 a las 17.02.30.png](quiver-image-url/B754368214577AA45688C284D1D7F6C0.png)\n\n**File descriptors and standard I/O** \n+ The first three file descriptors in a process have a proper name:\n\n![Captura de pantalla 2016-12-26 a las 17.03.53.png](quiver-image-url/9CD1A3B1596F6E4F05544FCDF7A00E0B.png)\n\n+ By default these file descriptors are associated to the console\n    + Console devices are /dev/ttyn or /dev/ptn/n \n\n**Use examples:** \n+ ***From the C library*** *scanf* reads from standard input and *printf* writes on the standard output\n+ ***From the Shell*** its commands read and write in the standard I/O, for instance, command \"ls\" writes the file listing on the standard output and writes the error message \"No such file or directory\" in the standard error\n\n![Captura de pantalla 2016-12-26 a las 17.07.50.png](quiver-image-url/A89B194057E42AB890D61003C07DDF67.png)\n\n![Captura de pantalla 2016-12-26 a las 17.08.04.png](quiver-image-url/DA14082F746FA9E7C7983D761B68F99A.png)\n![Captura de pantalla 2016-12-26 a las 17.10.21.png](quiver-image-url/3DA556E0EE5089B68BD495FB6258D2B8.png)\n![Captura de pantalla 2016-12-26 a las 17.11.55.png](quiver-image-url/E45C97572493F3F2B517D2D2DE6A88BA.png)\n\n###Unix files system calls \n\nSystem call to work with file and devices\n+ Unix implements a unified interface to access files and I/O devices\n\n![Captura de pantalla 2016-12-26 a las 17.16.08.png](quiver-image-url/F610A185D5A6DB5D3B05D2D2232DE575.png)\n\n> Note: System calls \"read\" and \"write\" don't perform any format conversion, so formated I/O functions in C like *scanf* and *printf* include format conversion code \n\n![Captura de pantalla 2016-12-26 a las 17.17.57.png](quiver-image-url/2C72DD74198A621C4A06F12602869F30.png)\n![Captura de pantalla 2016-12-26 a las 17.18.21.png](quiver-image-url/9EF57CA2575456C81A12D0BA0BE88FDC.png)\n![Captura de pantalla 2016-12-26 a las 17.18.58.png](quiver-image-url/B35A065ECA75818C20BEE444E8F7D013.png)\n![Captura de pantalla 2016-12-26 a las 17.21.35.png](quiver-image-url/B602DF79EAD35528F684143FDB63E701.png)\n\n###Redirections and pipes\n+ Standard input redirection\n  `mail gandreu < mensaje`\n\n![Captura de pantalla 2016-12-26 a las 17.22.49.png](quiver-image-url/88FF4F23A009BAD6D407CF39989B3B89.png)\n+ Standard output redirection\n  `echo hola > f1.txt`\n\n![Captura de pantalla 2016-12-26 a las 17.22.52.png](quiver-image-url/D5964FB171FC801535130E7A5C0EAAE2.png)\n+ Standard error redirection\n  `gcc prg.c -o prg 2> error`\n\n![Captura de pantalla 2016-12-26 a las 17.22.56.png](quiver-image-url/CC4DB1EB107D58C93D865EA5BC660A1C.png)\n\n![Captura de pantalla 2016-12-26 a las 17.25.39.png](quiver-image-url/76DD5C36A5DC24372C8060A5A1458062.png)\n\n### Redirection and pipe system calls\n\nThey allow performing communication between parent and children processes relying on inheritance: dup2, pipe and mkfifo (which creates a named pipe) \n\n![Captura de pantalla 2016-12-26 a las 17.27.35.png](quiver-image-url/C87ADDBB794BB94DB4C644B92C49E85B.png)\n![Captura de pantalla 2016-12-26 a las 17.28.29.png](quiver-image-url/77D41D4A5DCAB4425C1C959477B0665B.png)\n![Captura de pantalla 2016-12-26 a las 17.30.16.png](quiver-image-url/683F96B8681B7929FC27A6AAC9BDE7D2.png) \n\n**Pipe operations** \n+ Read: \n    + If there are bytes available, at most the requested **nbytes** are read\n    + If pipe is empty, **read** suspends the calling process until bytes are available in the pipe\n    + When there is no pipe writing descriptor (bellowing to the reading process or any other one) **read** doesn't suspend the process and returns 0, noticing in this way the ending data condition (end of file) \n+ Write: \n    + If there is enough pipe capacity to allocate the nbytes to write they are stored into the pipe in FIFO order\n    + If there is not enough capacity (pipe full) the writing process is suspended until space is available\n    + If writing is done into a pipe that doesn't own a reading descriptor (bellowing to the reading process or any other one) the process that intends to write receives a SIGPIPE signal\n        + This mechanism eases automatic removing of a pipe communicating process chain when one of its components aborts unexpectedly \n\n![Captura de pantalla 2016-12-26 a las 17.35.50.png](quiver-image-url/436C12528DD029C579E7C4DA50DDF65C.png)\n![Captura de pantalla 2016-12-26 a las 17.35.57.png](quiver-image-url/078C58553404515F66623D0413CA89F4.png)\n![Captura de pantalla 2016-12-26 a las 17.36.03.png](quiver-image-url/3BEA42D542B4C952BCDC756BCE12A55C.png)"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}

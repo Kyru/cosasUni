@@ -1,0 +1,73 @@
+{
+  "title": "UT07 : The memory management problem. Contiguos allocation ",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "To execute a program: Both instructions and data must be allocated in main memory.\nTo get more system efficiency -> Multiprogramming \n  + Processes in a multiprogrammed system: \n    + share CPUs -> Process scheduling \n    + Share main memory -> Memory Mangement"
+    },
+    {
+      "type": "markdown",
+      "data": "Computer dynamic storage is available at several levels:\n  + CPU registers\n  + Cache memory \n  + Main memory "
+    },
+    {
+      "type": "markdown",
+      "data": "### Main memory: \n  + It is made by a big binary word or byte vector, every one with its one physical address\n  + It is a critical resource \n    + Its availability is fundamental (Access coninuosly) -> instruction execution cycle \n    + It has a limited allocation capability "
+    },
+    {
+      "type": "markdown",
+      "data": "### Memory management issues include: \n  + Allocation\n  + Protection \n  + Shortage\n  + Relocation \n\nHowever modern OSs own techniques and mechanism to solve them: \n  + Logical address Space\n  + MMU \n  + Dynamic libraries\n  + Virtual Memory \n  + Allocation techniques "
+    },
+    {
+      "type": "markdown",
+      "data": "### Logical Address\n+ Every process has its own independent address space\n+ It allows the code not being involved with machine features -> relocation\n\nTo be able to use physical address and logical address you require: \n+ A translation function from LA to PA\n+ To decide how to implement it (Software/Hardware) \n+ When the translation is done: \n    + At compilation time: Absolute code => non relocatable \n    + At program load time: Relocatable code at load time \n    + At execution time: The process can relocate while it is executed "
+    },
+    {
+      "type": "markdown",
+      "data": "### Memory Management Unit (MMU) \nTranslating LA to PA is an overhead (gastos). \nSo, we try to use minimum overhead by modifying the MMU hardware. "
+    },
+    {
+      "type": "markdown",
+      "data": "### Contiguos memory allocation \n+ *Model* = A process is allocated in a unique section in memory with a contiguos range of physical addresses \n+ Memory is usually divided in two parts: \n    + The OS allocation area \n    + The user process allocation area \n+ *Strategies* \n    + A priory definition of memory section to allocate processes: **fixed partitions** \n    + To allow the system allocating processes into available holes: **variable partitions** \n\n#### Fixed partitions\n+ Memory is supposed to be divided into different fixed size partitions\n+ The OS maintains a free partitions list \n+ Variations: Single process queue & Multiple process queue\n+ Problem is **Internal Fragmentation** "
+    },
+    {
+      "type": "markdown",
+      "data": "![Captura de pantalla 2016-11-27 a las 13.02.26.png](quiver-image-url/2E551287A6B42D9D7F823121CC014BE9.png)\n![Captura de pantalla 2016-11-27 a las 13.02.35.png](quiver-image-url/142A6365C4240F59C5E41ED6217EAE28.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Variable partitions \n+ Initially process available memory is all available into a single hole \n+ As process demands arrive, memory is allocated\n+ The OS maintains a free hole list with address and size \n+ Problem: **External Fragmentation** \n+ *Strategies*\n    + Best Fit : Smallest satisfying hole is allocated \n  ![Captura de pantalla 2016-11-27 a las 13.09.42.png](quiver-image-url/CCAE78DAA72BEAF2FAB3B1197B064A9D.png)\n    + Worst Fit: The biggest satifying hole is allocated\n  ![Captura de pantalla 2016-11-27 a las 13.09.47.png](quiver-image-url/3B5881532C83FC04F0CC3A5165E0CE65.png)\n    + First Fit: The first found satisfying hole is allocated \n  ![Captura de pantalla 2016-11-27 a las 13.09.51.png](quiver-image-url/39C7CEE50A1878D55B4D86B519CCA208.png)\n\n#### External Fragmentation: \nThe added size of available holes may not be enough but it cannot be allocated because it is not contiguos\n#### Compaction: \n+ External fragmentation solution \n+ Processes should be relocated in main memory \n+ Relocatable code at execution time required \n![Captura de pantalla 2016-11-27 a las 13.13.32.png](quiver-image-url/556E7FA1A91D779D2C83E5303ECDDE36.png)"
+    },
+    {
+      "type": "markdown",
+      "data": "### Examples \n#### Example 1 \n![Captura de pantalla 2016-11-27 a las 13.16.17.png](quiver-image-url/91A09F99058F4B26D8E624F48068DC77.png)\n**ANSWER:** We can see that the algorithm used is worst fit. "
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "text",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Chapter 5 - Security",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## What is network security? \n**Confidentiality:** only sender, intended receiver should \"understand\" message contents\n+ Sender Encrypts message\n+ Receiver decrypts message\n\n**Authentication:** Sender, receiver want to confirm identity of each other \n**Message integrity:** Sender, receiver want to ensure message not altered (in transit, or afterwards) without detection \n**Access and availability:** Services must be accessible and available to users "
+    },
+    {
+      "type": "markdown",
+      "data": "### Intruders: Passive vs Active\n***Passive Intruder (poco a poco)***\nAttempt to learn or make use of information from the system but does not affect system resources\n+ Monitor transmission to obtain message contents or traffic analysis\n+ Eavesdropping (saving bank account, password and using them later) \n+ Difficult to detect because is no alteration of data \n\n***Active Intruder (a saco)***\nAttempt to alter system resources or affect their operation \n+ Modification of messages in transit\n+ Denial of service\n+ A typical active attack is one in which an intruder impersonates one endof the conversation, or acts as a man-in-the-middle \n\n***What can \"bad girls (and guys)\" do?****\n+ Eavesdrop: intercept messages\n+ Actively *inser* messages into connection \n+ Impersonation: can fake source address in packet (attacking from your IP)\n+ Hijacaking: \"take over\" ongoing connection by removing sender or receiver, inserting himself in place\n+ Denial of service: prevent serive from being used by others "
+    },
+    {
+      "type": "markdown",
+      "data": "## Principles of Cryptography\n### What is Cryptography? \n+ Cryptography derived its name from a Greel word called \"Kryptos\" which means \"Hidden Secrets\" \n+ Cryptography is the practice and study of hiding information. Is te Art or Science of converting a plain intelligible data into an unintelligible data and again retransforming that message into its original form \n+ It provides Confidentiality, Integrity and Accuracy. \n\n![Captura de pantalla 2016-12-09 a las 9.31.09.png](quiver-image-url/2BCA35B14181409496E88A54E10F051C.png)\n\n### Breaking an encryption scheme\n+ **Cipher text only attack** Trudy has ciphertext she can analyze\n+ **Two approaches:**\n    + Brute force: Search through all keys \n    + Statistical analysis\n+ **Known-plaintext attack:** Trudy has plaintext corresponding to ciphertext\n    + Eg: in monoalphabetic cipher, Trudy determines pairings for a,l,i,c,b,e...\n+ **Chosen-plaintext attack:** Trudy can get ciphertext for chosen plaintext\n\n### Cryptographic algorithms\nThe cryptogrphic algorithms, based on the number of keys that are employed for encryption and decryption, can be categorized in three types of algorithms\n+ *Symmetric key Cryptography (SKC):* Uses a single key for both encryption and decryption. Primarily used for privacy and confidentiality\n+ *Public Key cryptography (PKC):* Uses one key for encryption and another for decryption, also called ***asymmetric encryption***. Primarly used for authentication, non-repudiation, and key exchage \n+ *Hash functions:* Uses mathematical transformation to irreversibly \"encrypt\" information. providing a digital fingerprint. Primarily used for message integrity. \n\n![Captura de pantalla 2016-12-09 a las 9.41.52.png](quiver-image-url/DAB64D0D2D239A7C7AFBBE2A2462F738.png)\n\n![Captura de pantalla 2016-12-09 a las 9.46.42.png](quiver-image-url/688EB0323FCC83494E274BE45046F1F7.png)\n\n### Simple encryption scheme \n**Susbtitution cipher:** substituting one thing for another \n**Monoalphabetic cipher:**Substitute one letter for another\n\n![Captura de pantalla 2016-12-28 a las 12.09.59.png](quiver-image-url/48E02ABC99CEBC4B22C228C9FAF72046.png)\n![Captura de pantalla 2016-12-28 a las 12.10.26.png](quiver-image-url/5D296A22C4C7285FB1C5C9109DF2D6F3.png)\n\n### Two schemes of symmetric key cryptography\nSymmetric key cryptography schemes are generally categorized as being either *stream ciphers or block ciphers* \n+ **Stream ciphers** operate on a single bit (byte or computer word) at a time\n+ A **block cipher** is so called because the text message is fragments into blocks of identical size, and then the scheme encrypts one block of data at a time using the same key on each block \n\n### Symmetric key cryto: DES \n`DES = Data Encryption Standard`\n+ US encrytption standard [NIS 1993]\n+ 56-bit symmetric key, 64-bit plaintext input\n+ Block cipher with cipher block chaining\n+ How secure is DES? \n    + DES Challenge: 56-bit-key-encrypted phrase decrypted (brute force) in less than a day \n    + No known good analytic attack \n+ Making DES more secure: \n    + 3DES: Encrypt 3 times with 3 different keys \n\n\n![Captura de pantalla 2016-12-09 a las 9.57.48.png](quiver-image-url/3892359352B5723BE4BDDF8C628E2FB7.png)\n\n### AES: Advanced Encryption Standard\n+ Symmetric-key NIST standard, replaced DES (Nov 2001)\n+ Uses more bits, different length of iteration (bits changed) and permutes the keys each iteration. \n+ Processes data in 128 bit blocks \n+ 128, 192 or 256 bit keys \n+ Brute force decryption (try each key) taking 1 sec on DES, takes 149 trillion years for AES"
+    },
+    {
+      "type": "markdown",
+      "data": "### Public Key Cryptography \n**symmetric key crypto:** \n+ Requires sender, receiver known shared secret key \n\n**Public key crypto:** \n+ Radically different approach \n+ Sender, receiver do *not* share secret key\n+ *public* encryption key known to *all*\n+ *private* decryption key known only to receiver \n\n![Captura de pantalla 2016-12-09 a las 10.09.52.png](quiver-image-url/755C0CAF1E47DD623C05743FCC21B638.png)\n\n![Captura de pantalla 2016-12-09 a las 10.16.18.png](quiver-image-url/26730EE46BBDAA697033CD879BDAB692.png)\n\n### Prerequisite: modular arithmetic\n+ x mod n = remainder of x when divided by n \n+ facts: \n    + [(a mod n) + (b mod n)] mod n = (a+b) mod n \n    + [(a mod n) - (b mod n)] mod n = (a-b) mod n \n    + [(a mod n) \\* (b mod n)] mod n = (a*b) mod n \n+ thus \n    + (a mod n)<sup>d</sup> mod n = a<sup>d</sup> mod n \n\n![Captura de pantalla 2016-12-09 a las 10.18.40.png](quiver-image-url/856FD14055D7B501DC369A2251BA147F.png)\n\n### RSA: getting ready \n+ Message: just a bit pattern \n+ Bit pattern can be uniquely represented by an interger number\n+ thus, encrypting a message is equivalent to encrypting a number \n\n*example:*\n+ m = 10010001. This message is uniquely represented by the decimal unmber 145\n+ to encrypt m, we encrypt the corresponding number, which gives a new number (the ciphertext) \n\n###RSA: Creating public/private key pair\n1. choose two large prime numbers p,q. (eg: 1024 bits each) \n2. Compute n = pq, z = (p-1)(q-1) \n3. Choose e (with e<n) that has no common factors with z (e,z are \"relatively prime\") \n4. Choose d such that ed-1 is exactly divisible by z. (in other words: ed mod z = 1) \n5. Public key is (n,e). private key is (n,d). \n\n###RSA: encrytion, decrytion \nGiven (n,e) and (n,d) as computed above \n1. to encrypt message m (<n), compute c = m^e mod n \n2. to decrypt received bit pattern,c, compute m = c^d mod n \n\n![Captura de pantalla 2016-12-28 a las 12.18.01.png](quiver-image-url/6F31A4B67D2B1430849C68A358C1C675.png)\n\n###RSA: Example \n\n![Captura de pantalla 2016-12-28 a las 12.21.24.png](quiver-image-url/55B48307EF19FD4C535F46EA32AA1BFE.png)\n\n###Why does RSA work? \n+ Must show that c<sup>d</sup> mod n = m \n    + where c = m<sup>e</sup> mod n \n+ Fact: for any x and y:x<sup>y</sup> mod n = x<sup>(y mod z)</sup> mod n \n    + where n = pq and z = (p-1)(q-1) \n+ thus, \n    + c<sup>d</sup> mod n = (m<sup>e</sup> mod n)<sup>d</sup> mod n \n    + = m<sup>ed</sup> mod n\n    + = m<sup>(ed mod z)</sup> mod n \n    + m<sup>l</sup> mod n \n    + = m "
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": "> SPACE "
+    }
+  ]
+}
