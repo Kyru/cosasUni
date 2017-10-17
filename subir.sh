@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /Users/ferranius/Desktop/cosasUni
+cd /Users/ferranius/Desktop/uniArchives
 git init
 git add .
 git commit -m "Autosave"
