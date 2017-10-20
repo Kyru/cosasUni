@@ -1,0 +1,65 @@
+{
+  "title": "Seminar 2 - Distributed Algorithms",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "Degree of synchrony / asynchrony -> we will use asynchrony\n\nAsynchronous system: \n+ Processes:\n    + Use asynchronous sendings \n        + They dont remain blocked onec a message is sent\n        + Don't proceed in phrases\n+ Communication:\n    + Message transmission has no kwown limit/bound"
+    },
+    {
+      "type": "markdown",
+      "data": "DS/DA = (P,C) \nwhere P = processes\nC = Communication directed (channels/links)\n+ Failure of a given process doesn't alter the communication among the other processes\n+ Reliable channels -> Messages are always delivered to their target (except when that concrete target fails)"
+    },
+    {
+      "type": "markdown",
+      "data": "*Mutual exclusion:*\n+ Why?\n    + Because there is some shared resource with potential concurrent accesess\n    + We use an algorithm to ensure sequenctial access (instead of concurrent) to the resource. The fragment od code where the shared resource is accessed is the **CRITICAL SECTION**"
+    },
+    {
+      "type": "markdown",
+      "data": "1. other code...\n2. Enter a CS requesting protocol  (CS = Critical section)\n    + Ask for permission\n    + Wait until that permission is granted\n3. Execute the critical section\n4. Enter a leave-CS protocol in order to:\n    + If any requestors exist, choose one of them, and grant permission to it\n    + Otherwise, mark CS as free"
+    },
+    {
+      "type": "markdown",
+      "data": "Correctness properties in distributed algorithms:\n+ *Safety:* Nothing wrong ever happens. i.e: all steps are correct\n+ *Liveness:* Eventually, the goal of the algorithm is achieved"
+    },
+    {
+      "type": "markdown",
+      "data": "In our Mutual Exclusion (ME) algorithms:\n+ *Safety:* At most 1 process is in the critical section \n+ *Liveness:* All requestors enter the CS\n+ *Casual order:* Casual order is respected for accessing the CS\n\n![Imagen JPEG-49FCD5A73975-1.jpeg](quiver-image-url/ADD585385A89EB19152015E71C11C4E9.jpg =1610x853)"
+    },
+    {
+      "type": "markdown",
+      "data": "**Ring algorithm:**\nThe token is forwarded when the receiver doesn't need to execute the CS. Otherwise, the token is kept until the CS is completely executed and then it is also forwarded\n\n![Imagen JPEG-52872B448CEF-1.jpeg](quiver-image-url/0C8EE0C7B56D95F7B2DCDA859B2D7902.jpg =1836x1360)\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}
