@@ -1,0 +1,73 @@
+{
+  "title": "Unit 1.1 - Concept of Computer Architecture",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 1. Concept of Computer Architecture\n\nDefines the *hardware* of a computer attending to its requirements, as a desgin trade-off between performance, available technology and cost. Encompasses three levels:\n+ **Instruction Set Architecture (ISA):**\n    + Includes everything that must be known by assembler programmers. \n    + Description of instructions and their use, logical organization of memory...\n+ **Process organization:**\n    + It describes the logical elements enabling the execution of instructions: registers, decoders, ALU operations, memory interfaces... \n+ **Implementation:**\n    + It defines the computer implementation: VLSI(very large scale implementation) design, cooling, power supply...\n\n+ Before: architecture level was designed isolated by a different specialist\n+ Now: Considered a transversal discipline (three levels). Focuses on the design of programmable machines that must execute a set of programs correctly and efficiently. The three levels are dependent: design decisions at one level may affect the others.\n\n*The computer engineer task:*\n+ Consider the expected requirements\n+ Identify existing tech, energy and cost limitations\n+ Provide the best possible design"
+    },
+    {
+      "type": "markdown",
+      "data": "---\n## 2. Computer Requirements\n\nIn order to design a computer, an architect must consider:\n+ The type of required computer (mainframes, pcs...)\n+ The degree of compatibility with other existing computers\n    + Source code:\n        + More flexible design\n        + Need of new compilers\n    + Binary:\n        + Existing *ISA* (lack of flexibility)\n        + No new software required\n+ Operating system requirements\n    + Address space -> Limits, app size\n    + Memory management -> Paging, segmentation...\n    + Protection\n    + Process management -> Multitasking support\n+ Market standards:\n    + Floating point -> IEEE 754\n    + E/S -> SATA, SCSI, PCI Express\n    + OS -> Linus, wind, Mac\n    + Networks -> Ethernet, InfiniBand\n    + Languages -> C, C++, Java, FORTRAN"
+    },
+    {
+      "type": "markdown",
+      "data": "--\n## 3. Technology, power consumption and cost\n\nDesigners must take into account:\n+ Available technology\n+ Power and energy limitation\n+ Cost \n\nThe number of transistors per chip increases 40-55% per year. Cause:\n+ Density of transistors increases by 35% per year\n+ Die size increases by 10-20% every year\n\n> Transistors grow x4 with reduction of their feature size. The speed increases linearly with the reduction of their feature size.\n\n#### Rise of propagation delay in interconnections\n\nPropagation delay relates to wire resistance and capacitance (R·C)\n+ As feature size is reduced, wire section (width and hight) also does and so it **increases R**\n+ Although capacitance of conductor surface decreases, capacitance coupling between wires (Interwinding capacitance) increases and so **increases C**\n\n#### Power consumption and heat dissipation\n\n![Captura de pantalla 2017-10-25 a las 19.45.55.png](quiver-image-url/6ACE1151AF1E10DB17C36E97FA030380.png =581x334)\n\nThe increase in the number of transistors and frequency prevails over the reduction in voltage supply and capacitance. Implications:\n+ Microprocessor power distribution. Modern microprocessors integrate hundreds of power supply pins\n+ Heat dissipation and cooling\n+ Development of new materials to reduce the leakage current. Dielectric improvement\n\n#### Cost\n\n![Captura de pantalla 2017-10-25 a las 19.54.55.png](quiver-image-url/2B5B96958BBC01E41828012060998FA0.png =551x205)\n\nFactors decreasing the cost of components:\n+ **Learning curve:** The cost of a component decreases over time, since throughput increases (faulty component production rate decreases)\n+ **Sales volume:** Doubling the sales volume decreases costs by 10%\n\nDesign costs:\n+ Factory cost inversely proportional to *feature sizes*\n+ Size of a design team is inversely proportional to *feature size* (more than 300 workers in modern processors)"
+    },
+    {
+      "type": "markdown",
+      "data": "---\n## 4. Evolution of processor performance\n\nDivided in 3 periods:\n+ **Period I (1978 - 86)** Performance grows 25% -> technology enhacements\n+ **Perido II (1986 - 03)** Performance grows 52%:\n    + Technology enhancements\n    + Architectural improvements: RISC (reduced intruction set computer) architecture, pipelining, instuction level paralellism"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

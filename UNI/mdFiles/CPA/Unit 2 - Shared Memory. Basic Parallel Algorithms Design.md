@@ -232,8 +232,149 @@ FLOP - Floating Point Operation => measurement unit for:
 
 #### Asymptotic Notation
 
++ O Notation:
+    + It defines an upper bound, except for constants and asintotically the shape of the function growin
+    + In practical terms it is the highest order term of the cost expression without considering its coefficient
+    
++ o notation:
+    + It also considers the coefficient of the highest-order term
+    + Useful when comparing two algorithms which has the same order O
 
+#### Parameters to evaluate the performance
 
+**Absolute** parameters:
++ They enable knowing the real cost of parallel algorithms
++ They are the basis for the computation of relative parameters that are used to compare algorithms
++ They are the most important ones for real-time problems
+
+**Relative** parameters:
++ They enable comparing parallel algorithms among them and with respect to the sequential implementations
++ They provide information about the rate of usage of processors
+
+#### Absolute Parameters
++ Execution time of a sequential algorithm: t(n)
++ Execution time of a parallel  algorithm: t(n,p)
+    + Arithmetic time: ta(n,p)
+    + Communication time: tc(n,p)
++ Total cost: C(n,p)
++ *Overhead:* to(n,p)
+
+*Notation*
++ When the problem size is always n, we can avoid the n => t(p)
++ Subindices instead of functions => Tp, Cp
+
+#### Execution time 
+Time spent in the execution by the sequential algorithm (using only one processor, t(n)) or by the parallel algorithm (in p processors, t(n,p))
++ It only takes into account the number of floating point operations
++ A priori cost is measured in FLOPs
++ Experimentally the cost will be measured in seconds
+
+![Captura de pantalla 2017-10-22 a las 11.20.46.png](resources/1BC45570AF1309851EA3BFE9D3310C5C.png =641x474)
+
+#### Total cost and Overhead
+
+The execution of a parallel algorithm normally implies an extra time with respect to the sequential algorithm
+The parallel ***total cost*** accounts for the total time empoyed by a parallel algorithm.
+`C(n,p) = p.t(n,p)`
+The ***overhead*** indicates which is the added cost with respect to the sequential algorithm
+`to(n,p) = C(n,p) - t(n)`
+
+#### Speed-up and Efficiency
+The **Speed-up** denotes the speed gaining of a parallel algorithm with respect its sequential version
+`S(n,p) = t(n)/t(n,p)`
+The reference time t(n) could be: 
++ The best sequential algorithm at our knowledge
++ The parallel algorithm using 1 processor
+
+The **efficiency** measures the degree of usage of the parallel units by an algorithm
+`E(n,p) = S(n,p)/p`
+It is normally expressed as a percentage (either in the frame 0-100% or 0-1)
+
+![Captura de pantalla 2017-10-22 a las 11.53.27.png](resources/644778416B497CE82294633376EA0F9E.png =610x410)
+
+In this case, p=2 and p=3 would give the same speedup, but not the same efficiency. In p=2 processes will be group in pairs. In p=3 in two groups, where T4 which is the leftout would be asigned to the first finishing thread. In p=3 the efficiency will be much lower because threads will have to wait until T1, T2, T3 and T4 end.
+
+#### How to obtain good performance
+
+Ideally we look for p processors with a speedup of p (efficiency is 1). To achieve this:
++ Appropriate **parallelization design:**
+    + Well balance load distribution
+    + Minimize time in which processors are idle
+    + Minimum possible overhead
++ Specify aspects of the **architecture where it runs**
+    + Different in shared memory of message passing
+    + **Data access time** is not considered in the theoretical cost analysis, but it is very important in current architectures
+
+![Captura de pantalla 2017-10-22 a las 12.10.22.png](resources/0BACF1875520099A02BBF8ACE4874FBE.png =607x485)
+
+## Section 4 - Algorithm Design: Task Decomposition
+#### Parallel Algorithms Design
+
+Parallel algorithms have a higher design complexity than sequential ones
++ Concurrency (communication and synchronixation)
++ Data and code allocation to processors
++ Concurrent access to shared data
++ Scalability for an increasing number of processors
+
+#### Task decomposition
+> **Task** each one of the computation units defined by the programmer which can be potentially be executed in parallel
+
+The process of spliting computations in task is called **decomposition**
+
+Granularity:
++ The decomposition can be *fine-grained* or *coarse-grained*
++ Usually a fine grain decomposition is performed by then concurrent operations are grouped into coarser tasks
+
+#### Domain Decomposition techniques
++ Data are split in chunks of similar size (sub-domains)
++ A task is assigned to each domain, which will perform the needed operations on the sub-domain's data
++ Typically used when all sub-domains data require the same set of operations
++ These techniques are classified in:
+    + Output data centred decompositions
+    + Input data centred decompositions
+    + Block-oriented decompositions (matrix algorithms)
+
+![Captura de pantalla 2017-10-22 a las 13.07.40.png](resources/8B7C66D79B7F981DF0A57BC29EFC96F7.png =621x463)
+
+![Captura de pantalla 2017-10-22 a las 13.09.31.png](resources/3794A1A1197DCD6B930B65BA5BE35960.png =639x455)
+
+#### Functional decomposition directed by the data flow
++ It is used when a problem can be split into phases
++ Each phase executes a different algorithm
++ Typically, it involves the next steps:
+    1. Different phases are identified
+    2. A task is assigned to each phase
+    3. Data requirements for each task is analysed
+
+## Section 5 - Algorithmic Schemes (I)
+#### Algorithmic Schemes
+
+They are used parallelization approaches:
++ A schema is used to solve a wide range of problems
++ A problem may require several schemes
+
+Some schemes:
++ Data parallelism/partitioning
++ Task parallelsim (master-slave, process farm, replicated workers)
++ Tree and graph based schemes (divide and conquer)
++ Synchronous Parallelism
++ *(pipelinning)*
+
+#### Divide and Conquer
+
+A method to obtain concurrency in problems that can be solved using the *divide and conquer* technique
+1. Divide the original problem in two or more subproblems
+2. In turn these subproblems are divided in two or more subproblems, and so until the base case is reached
+3. Obtained data are appropriately combined to obtain the final result
+
+Several types of tasks:
++ **Dividing** the problem: it is performed in the inner nodes to create child nodes
++ **Solving** the base case: only in the leaves of the tree
++ **Combining** the result: performed in the inner nodes, they collapse the associated sub-tree
+
+Example:
++ *Quicksort* -> splitting stage has the largest cost
++ *Merge-sort* -> focuses work on combination
 
 
 

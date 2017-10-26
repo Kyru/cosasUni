@@ -73,11 +73,55 @@
     },
     {
       "type": "markdown",
-      "data": "#### Asymptotic Notation\n"
+      "data": "#### Asymptotic Notation\n\n+ O Notation:\n    + It defines an upper bound, except for constants and asintotically the shape of the function growin\n    + In practical terms it is the highest order term of the cost expression without considering its coefficient\n    \n+ o notation:\n    + It also considers the coefficient of the highest-order term\n    + Useful when comparing two algorithms which has the same order O"
     },
     {
       "type": "markdown",
-      "data": ""
+      "data": "#### Parameters to evaluate the performance\n\n**Absolute** parameters:\n+ They enable knowing the real cost of parallel algorithms\n+ They are the basis for the computation of relative parameters that are used to compare algorithms\n+ They are the most important ones for real-time problems\n\n**Relative** parameters:\n+ They enable comparing parallel algorithms among them and with respect to the sequential implementations\n+ They provide information about the rate of usage of processors"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Absolute Parameters\n+ Execution time of a sequential algorithm: t(n)\n+ Execution time of a parallel  algorithm: t(n,p)\n    + Arithmetic time: ta(n,p)\n    + Communication time: tc(n,p)\n+ Total cost: C(n,p)\n+ *Overhead:* to(n,p)\n\n*Notation*\n+ When the problem size is always n, we can avoid the n => t(p)\n+ Subindices instead of functions => Tp, Cp"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Execution time \nTime spent in the execution by the sequential algorithm (using only one processor, t(n)) or by the parallel algorithm (in p processors, t(n,p))\n+ It only takes into account the number of floating point operations\n+ A priori cost is measured in FLOPs\n+ Experimentally the cost will be measured in seconds\n\n![Captura de pantalla 2017-10-22 a las 11.20.46.png](quiver-image-url/1BC45570AF1309851EA3BFE9D3310C5C.png =641x474)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Total cost and Overhead\n\nThe execution of a parallel algorithm normally implies an extra time with respect to the sequential algorithm\nThe parallel ***total cost*** accounts for the total time empoyed by a parallel algorithm.\n`C(n,p) = p.t(n,p)`\nThe ***overhead*** indicates which is the added cost with respect to the sequential algorithm\n`to(n,p) = C(n,p) - t(n)`"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Speed-up and Efficiency\nThe **Speed-up** denotes the speed gaining of a parallel algorithm with respect its sequential version\n`S(n,p) = t(n)/t(n,p)`\nThe reference time t(n) could be: \n+ The best sequential algorithm at our knowledge\n+ The parallel algorithm using 1 processor\n\nThe **efficiency** measures the degree of usage of the parallel units by an algorithm\n`E(n,p) = S(n,p)/p`\nIt is normally expressed as a percentage (either in the frame 0-100% or 0-1)\n\n![Captura de pantalla 2017-10-22 a las 11.53.27.png](quiver-image-url/644778416B497CE82294633376EA0F9E.png =610x410)\n\nIn this case, p=2 and p=3 would give the same speedup, but not the same efficiency. In p=2 processes will be group in pairs. In p=3 in two groups, where T4 which is the leftout would be asigned to the first finishing thread. In p=3 the efficiency will be much lower because threads will have to wait until T1, T2, T3 and T4 end."
+    },
+    {
+      "type": "markdown",
+      "data": "#### How to obtain good performance\n\nIdeally we look for p processors with a speedup of p (efficiency is 1). To achieve this:\n+ Appropriate **parallelization design:**\n    + Well balance load distribution\n    + Minimize time in which processors are idle\n    + Minimum possible overhead\n+ Specify aspects of the **architecture where it runs**\n    + Different in shared memory of message passing\n    + **Data access time** is not considered in the theoretical cost analysis, but it is very important in current architectures\n\n![Captura de pantalla 2017-10-22 a las 12.10.22.png](quiver-image-url/0BACF1875520099A02BBF8ACE4874FBE.png =607x485)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 4 - Algorithm Design: Task Decomposition\n#### Parallel Algorithms Design\n\nParallel algorithms have a higher design complexity than sequential ones\n+ Concurrency (communication and synchronixation)\n+ Data and code allocation to processors\n+ Concurrent access to shared data\n+ Scalability for an increasing number of processors"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Task decomposition\n> **Task** each one of the computation units defined by the programmer which can be potentially be executed in parallel\n\nThe process of spliting computations in task is called **decomposition**\n\nGranularity:\n+ The decomposition can be *fine-grained* or *coarse-grained*\n+ Usually a fine grain decomposition is performed by then concurrent operations are grouped into coarser tasks"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Domain Decomposition techniques\n+ Data are split in chunks of similar size (sub-domains)\n+ A task is assigned to each domain, which will perform the needed operations on the sub-domain's data\n+ Typically used when all sub-domains data require the same set of operations\n+ These techniques are classified in:\n    + Output data centred decompositions\n    + Input data centred decompositions\n    + Block-oriented decompositions (matrix algorithms)\n\n![Captura de pantalla 2017-10-22 a las 13.07.40.png](quiver-image-url/8B7C66D79B7F981DF0A57BC29EFC96F7.png =621x463)\n\n![Captura de pantalla 2017-10-22 a las 13.09.31.png](quiver-image-url/3794A1A1197DCD6B930B65BA5BE35960.png =639x455)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Functional decomposition directed by the data flow\n+ It is used when a problem can be split into phases\n+ Each phase executes a different algorithm\n+ Typically, it involves the next steps:\n    1. Different phases are identified\n    2. A task is assigned to each phase\n    3. Data requirements for each task is analysed"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 5 - Algorithmic Schemes (I)\n#### Algorithmic Schemes\n\nThey are used parallelization approaches:\n+ A schema is used to solve a wide range of problems\n+ A problem may require several schemes\n\nSome schemes:\n+ Data parallelism/partitioning\n+ Task parallelsim (master-slave, process farm, replicated workers)\n+ Tree and graph based schemes (divide and conquer)\n+ Synchronous Parallelism\n+ *(pipelinning)*"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Divide and Conquer\n\nA method to obtain concurrency in problems that can be solved using the *divide and conquer* technique\n1. Divide the original problem in two or more subproblems\n2. In turn these subproblems are divided in two or more subproblems, and so until the base case is reached\n3. Obtained data are appropriately combined to obtain the final result\n\nSeveral types of tasks:\n+ **Dividing** the problem: it is performed in the inner nodes to create child nodes\n+ **Solving** the base case: only in the leaves of the tree\n+ **Combining** the result: performed in the inner nodes, they collapse the associated sub-tree\n\nExample:\n+ *Quicksort* -> splitting stage has the largest cost\n+ *Merge-sort* -> focuses work on combination"
     },
     {
       "type": "markdown",

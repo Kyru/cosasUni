@@ -1,0 +1,14 @@
+{
+  "title": "Unit 5 - Data Definition Language (DDL)",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "*example page 31*"
+    },
+    {
+      "type": "code",
+      "language": "sql",
+      "data": "create trigger change_rol\n  after update of papel on Actua\n  for each row\n  when (old.papel<>new.papel)\nbegin\n  if(:old.papel = 'Principal'\n  then update Pelicula set principales = principales-1\n      where cod_peli = :old.cod_peli);\n  else\n    if(:new.papel = 'Principal)\n    then update Pelicula SET principales = principales+1\n        where cod_peli = :new_peli);\n    end if;\n  end if;\nend;"
+    }
+  ]
+}

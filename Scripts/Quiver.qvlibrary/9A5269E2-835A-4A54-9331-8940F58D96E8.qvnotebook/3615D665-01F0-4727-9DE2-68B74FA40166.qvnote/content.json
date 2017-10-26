@@ -1,0 +1,161 @@
+{
+  "title": "S2 - Programming with OpenMP",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## Section 1 - Basic Concepts\n#### Programming model\n\nOpenMP programming is mainly based on: **compiler directives**\nAdvantages:\n+ It eases the adaptation\n+ It enables incremental parallelisation\n+ It enables compiler-based optimization\n\nOpenMP execution models follow the *fork-join* schema\n\n#### Execution model\n\n![Captura de pantalla 2017-10-23 a las 18.04.55.png](quiver-image-url/DB20525422554587E619B33916F8D2C2.png =497x189)\n\nDirectives define *parallel regions*\nOther directives/clauses:\n+ Type of variable: private, shared, reduction\n+ Synchronization: critical, barrier\n\n#### Execution model - Threads\n\n![Captura de pantalla 2017-10-23 a las 18.06.20.png](quiver-image-url/112A751E17146648305657EAB24EE2CC.png =511x395)\n\n#### Syntax:\n\n![Captura de pantalla 2017-10-23 a las 18.08.41.png](quiver-image-url/51AE7D11FAABEA9F7BB2CD352F6D6FB5.png =500x351)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Simple Example\n\n![Captura de pantalla 2017-10-23 a las 18.10.10.png](quiver-image-url/B80C0B9B242433BC878D1F0FF0506713.png =560x213)\n\n+ When the execution reaches the directive *parallel*, threads are created (if they have not been created previously)\n+ Loop iterations are split among the threads\n+ Be default, all the variables are shared, except for loop iteration variable (i in this case) which is always private\n+ At the end, all threads are synchronized"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Number and Identifires of Thread\n\nThe number of threads can be explicitly defined:\n+ Using the clause `num_threads`\n+ Using the function `omp_set_num_threads()` *before* the parallel region\n+ In the execution time, with `OMP_NUM_THREADS`\n\nUseful functions:\n+ `omp_get_num_threads()` -> returns number of threads\n+ `omp_get_thread_num()` -> returns thread identifier (main thread is 0)\n\nExample:\n\n![Captura de pantalla 2017-10-23 a las 18.15.08.png](quiver-image-url/49063C08CD35515573C4541B90E61B0D.png =528x157)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 2 - Loop Parallelisation\n#### Directive parallel for\n\nWhen including `#pragma omp parallel for ...` the next loop is parallelised\n\nExample: \n\n![Captura de pantalla 2017-10-23 a las 18.18.22.png](quiver-image-url/3DB188CD35FA4AFBF6CD53AAED96BFBC.png =550x372)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Variable types\n\nClassified according to their *scope:*\n+ **Private:** each thread has a different replica\n+ **Shared:** all threads can read and write\n\nThe scope can be modified with clauses added to the directives:\n+ private, shared\n+ reduction\n+ firstprivate, lastprivate"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Private, Shared\n\n> If the scope of a variable is not defined, by default it is shared\n\nExceptions for this:\n+ Index variable of the parallelised loop\n+ Local variables of the called subroutines, (except if declared as static)\n+ Automaitc variables declared inside the loop\n\n> Using `default(none)` forces to specify the scope of all variables\n\n![Captura de pantalla 2017-10-23 a las 18.24.48.png](quiver-image-url/3A3176D08682C5C3AB872F0074948F6B.png =547x395)\n\nIn this example, none of them work, so we have to use reduction"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Reduction\n\n![Captura de pantalla 2017-10-23 a las 18.29.54.png](quiver-image-url/2FC089DC2001D0A69CD49EADE206183C.png =534x167)\n\nEach thread performs a part of the sum, and all parts are combined at the end in the total sum. Works as a correctly initialized private variable.\n\nIt can be used with: +, *, -, &, |, ˆ, &&, ||, max, min"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Firstprivate, Lastprivate\n\nWhen created, private variables do not have an initial value and after the completion of the parallel block, its value is undefined.\n+ `firsprivate`: Sets up as initial value the value of the main thread at the beginning of the block\n+ `lastprivate`: The value of the variable after the block is the one of the \"last\" iteration of the loop\n\n![Captura de pantalla 2017-10-23 a las 18.43.23.png](quiver-image-url/9A0013468CB64F4403266E32A207D8F6.png =542x183)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Guarantee enough computing load\n\nLoop parallelisation introduces an *overhead*: Creation and termination of threads, synchronization.\n\nWe use the if clause to avoid this ->\n\n![Captura de pantalla 2017-10-23 a las 18.45.44.png](quiver-image-url/B9D2CBC6BAF75B8043E718C6F969A977.png =537x125)\n\nIf the expression is false, the loop is executed sequentially"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Nested loops\n\n![Captura de pantalla 2017-10-23 a las 18.47.17.png](quiver-image-url/68511092D730402FC11766361496BE5E.png =565x379)\n\n#### Nested loops - exchange\n\nThe best performance is normally obtained when parallelising the external loop. When data dependencies prevent from parallelising the external loop, **loop exchange** may be convenient. \n\n**Loop exchange:** Is basically change the order of the loops\n\n![Captura de pantalla 2017-10-23 a las 18.53.57.png](quiver-image-url/771C7E9363022C35FD3A07DADE85A9D9.png =546x275)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Scheduling\n\nIdeally, all iterations cost the same and each thread has approx. the same number of iterations. In reality however, a *workload unbalance* may appear, therefore reducing performance.\n\nWith OpenMP we can select the best *scheduling:*\n+ Static: iterations are assigned to threads at coding time\n+ Dynamic: assignment of iterations to threads progressively adapts to the current execution\n\n> The scheduling considers contiguos ranges of iterations\n\n#### Scheduling - schedule Clause\n\nSyntax: `schedule(type[, chunk]`\n\nTypes:\n+ *static* (without chunk): Each thread receives an iteration range of similar size.\n+ *static* (with chunk): cyclic (round-robin) assignment of ranges of size chunk\n+ *dynamic* (chunk optional, 1 by default): ranges are being assigned as required first-come, first-served)\n+ *guided* (chunk minimum size optional): same as *dynamic* but the size of the iteration range decreases exponentially (∝ nrest/nthreads) with the loop progress.\n+ *runtime* the scheduling is defined by the values of the environment variable `OMP_SCHEDULE`\n\nExample:\n\n![Captura de pantalla 2017-10-23 a las 19.06.21.png](quiver-image-url/7011CED420F53D3012F87DB69488413E.png =544x334)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 3 - Parallel Regions\n#### Workload splitting\n\n> Remember that some of the accepted clauses are: private, shared, default, reduction, if...\n\nAlong with the replicated execution, splitting the work among the threads is also needed often. \n+ Each thread can work on a part of the data structure\n+ Each thread can perform a different operation+\n\nPossible mechanisms for the workload splitting:\n+ Queue of parallel tasks\n+ According to the thread identifier \n+ Using OpenMP specific constructions"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Splitting according to thread identifier\n\n![Captura de pantalla 2017-10-23 a las 19.32.14.png](quiver-image-url/0EFE5D1DFD2941422041AC49C96D1E5B.png =531x167)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Splitting using a queue of parallel tasks\n\nA queue of parallel tasks is a data structure shared among the threads that store a list of \"tasks\" to be performed.\n+ Tasks can be processed concurrently\n+ Any task can be run by any thread\n\n![Captura de pantalla 2017-10-23 a las 19.44.22.png](quiver-image-url/E8E34EF7E63C823A02154B61B0B5CDF1.png =361x296)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Work splitting constructions\n\nOpenMP has specific constructions (work-sharing constructs)\nThree types:\n+ `for` construct to split iterations of loops\n+ Sections to distinguise different parts of the code\n+ Code to be executed by a single thread+\n\nImplicit barrier at the end of the block"
+    },
+    {
+      "type": "markdown",
+      "data": "#### for construction\n\n![Captura de pantalla 2017-10-23 a las 19.51.38.png](quiver-image-url/CC28DA212FA8DBF8D668A2D5AA03ACE1.png =535x191)\n\n> The loop iterations are not replicated but *shared* among the threads"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Loop construction - Clause nowait\n\nWhen several independent loops take place  int the same parallel region, nowait removes the implicit barrier at the end of the loop.\n\n![Captura de pantalla 2017-10-23 a las 19.57.07.png](quiver-image-url/CADB08FBF547DBEC20D0ECAA3D4A928F.png =529x330)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Sections Construction\n\nSuitable for independent but difficult for parallelizing code blocks\n+ Individual workload is reduced\n+ Each fragment is essentially sequential\n\n(they can be combined with `parallel`)\n(one thread can execute more than one section)\n\n![Captura de pantalla 2017-10-23 a las 20.04.02.png](quiver-image-url/81B1618E8320B0A64EC611AB31154AC1.png =533x229)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### single Construction\n\nCode fragments that can be executed by a single thread\n\n![Captura de pantalla 2017-10-23 a las 20.26.41.png](quiver-image-url/3569EE0301B574CDC6FCC23D8EAD4AFE.png =539x311)"
+    },
+    {
+      "type": "markdown",
+      "data": "## Section 4 - Synchronization\n#### Mutual exclusion\n\n*Mutual exclusion* when accessing shared variables prevents any race condition\n\nOpenMP provides three different constructions:\n+ Critical sections: `critical` directive\n+ Atomic Operations: `atomic` directive\n+ Locks: *_lock routines\n\n![Captura de pantalla 2017-10-23 a las 20.36.46.png](quiver-image-url/FAC902437F3C1A53A7C58F86B28A465D.png =570x441)\n\n![Captura de pantalla 2017-10-23 a las 20.37.59.png](quiver-image-url/DF7251756AD0376F9D73F8EC49906261.png =565x438)\n\n![Captura de pantalla 2017-10-23 a las 20.42.14.png](quiver-image-url/361C4641CCE020684F2D2BC8462DF2FE.png =568x430)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Atomic directive\n\n![Captura de pantalla 2017-10-23 a las 20.50.38.png](quiver-image-url/E1CAC9384924B5066DB23AE1F9CA46A3.png =562x397)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Event-based synchronization\n\nMutual exclusion constructions provide exclusive access but they do not impose an execution order in the critical sections. \n*Event-based synchronization* enables defining the order of the execution of the loop iterations. For example:\n+ Barriers: barrier directive\n+ Ordered sections: ordered directive\n+ master directive"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Barrier directive\n\n![Captura de pantalla 2017-10-23 a las 20.59.58.png](quiver-image-url/0AFEA2B21121BE960A2B923922F90118.png =546x404)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Ordered directive\n\n![Captura de pantalla 2017-10-23 a las 21.00.16.png](quiver-image-url/9CE582AE8EC1B6B7F611A0A379DA78AE.png =555x383)"
+    },
+    {
+      "type": "markdown",
+      "data": "#### Master directive\n\n![Captura de pantalla 2017-10-23 a las 21.01.23.png](quiver-image-url/4CA5FEDF28BEF9DB0E54FF7E4D2E95BB.png =548x387)"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}
