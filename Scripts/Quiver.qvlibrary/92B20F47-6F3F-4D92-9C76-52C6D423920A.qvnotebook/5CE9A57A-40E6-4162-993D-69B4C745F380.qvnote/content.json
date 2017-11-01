@@ -1,0 +1,73 @@
+{
+  "title": "Unit 1.2 - Performance Evaluation",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 1. Performance definition\n\n+ User -> Finish as soon as possible -> **lower** Execution time (time to complete task)\n+ System manager -> Complete many tasks as possible -> **higher** throughput (operations completed per time unit)\n\nRelationship:  $Throughput = \\frac{1}{Execution time}$\n\n#### Comparison\n\n+ When two computers (X and Y) are compared, the slowest one Y is taken as reference\n+ When a set of designs (X<sub>1</sub>, ..., X<sub>n</sub>) is studied, a computer Y (in the set or not) is selected as reference\n\nIn order, to compare computers you need to achieve similar execution conditions, so you can use:\n+ Execution time: Tx and Ty\n+ Throughput: Px and Py\n\n![Captura de pantalla 2017-10-26 a las 15.34.12.png](quiver-image-url/2F581CDD79729BB88EA5F10739C9C547.png =552x192)"
+    },
+    {
+      "type": "markdown",
+      "data": "---\n## 1.2 Quantitive Principlies of Computer Design\n\n![Captura de pantalla 2017-10-26 a las 15.36.20.png](quiver-image-url/C4BECD9A8166EDAA78533B285BC3883B.png =585x243)\n\nFor example: A more complex computer organization can reduce CPI, but can increase the number of logic gates traversed per cycle, thus increasing T.\n\n#### Amdahl's law\n\n![Captura de pantalla 2017-10-26 a las 15.38.45.png](quiver-image-url/2C1C297704EE36E988E380A9F761C48E.png =576x295)\n![Captura de pantalla 2017-10-26 a las 15.39.29.png](quiver-image-url/27DFE6EC77EE3BA2A7A26E6FF3266668.png =566x280)\n ![Captura de pantalla 2017-10-26 a las 15.41.38.png](quiver-image-url/996658AD2F2AC41C5EA2AA6C14836EED.png =583x307)\n \nExamples:\n+ In programming:\n    + *Locality principle:* 90% of the time, the computer executes 10% of the code\n    + Convenient to optimize the most frequently executed code\n+ Instruction set designs: \n    + Most executed instructions\n+ Multiprocessor systems:\n    + Which fraction can be parallelised\n\n\n> In general, Amdahl's law applies to the design of the various parts of a computer\n\n#### Relation between Cost and Performance\n\n![Captura de pantalla 2017-10-26 a las 19.19.16.png](quiver-image-url/E32972E04D397FA1CB029178C1668ECD.png =483x234)"
+    },
+    {
+      "type": "markdown",
+      "data": "---\n## 3. Measuring Performance\n\nPerformance is measured with a program or a collection of programs that are likely relevant to the user. **Real programs** are the best option. But we can opt for alternatives:\n+ *Kernels:* Fragments of code extracted from real programs\n+ *Toy benchmarks:* Simple programs with well-known execution results\n+ *Synthetic benchmarks:* Programs written in order to represent the average program typically run in a system\n\n#### Benchmarks suites\n+ Components: Kernels and real non-interactive programs defined to measure performance attending to a given user profile\n+ Updating: *At any moment* the type of tasks typically run in the system by a regular user\n+ Reproducibility: Measures must be reproducible. Hardware & Software clearly defined\n\n#### Comparison of computers\n\n![Captura de pantalla 2017-10-26 a las 19.29.42.png](quiver-image-url/A6FE506FF264A8274EF1E2D9F6E55CC9.png =495x220)\n![Captura de pantalla 2017-10-26 a las 19.30.24.png](quiver-image-url/96CA28CC21A17D1BDA8AA03FCB7E5CC2.png =565x323)"
+    },
+    {
+      "type": "markdown",
+      "data": "---\n## 4. Other performance metrics\n\n**MIPS:** (millions of instructions per second)\n\n![Captura de pantalla 2017-10-26 a las 19.35.30.png](quiver-image-url/D5C1DDD1EC9D83D4E028690086567250.png =504x131)\n\n+ Intuitive measure proportional to performance\n+ Does not account for the number of executed instructions\n+ Depends on considered programs\n    + Different programs -> different instructions (complexity and execution time) \n+ Depends on instruction set\n    + Same program -> different number of instructions (according to the complexity of instruction set)\n+ May be inversely proportional to performance\n    + Two computers, one with and one without floating point co-processor:\n        + Performance -> **With** Co-processor\n        + MIPS -> **Without** Co-processor\n\n![Captura de pantalla 2017-10-26 a las 19.40.51.png](quiver-image-url/874DC2AC32F47C6C3D40878F248D5F07.png =583x247)\n\n**MFLOPS:** (millions of floating point operations per second)\n\n![Captura de pantalla 2017-10-26 a las 19.46.53.png](quiver-image-url/07F6ABAB03997CC3A30FAB30FA30EFE4.png =532x83)\n\n+ Operations instead of instructions:\n    + Same program -> different architecutres -> different number of instructions, but same number of FP operations\n+ Can't be applied to programs that are not carrying out any FP operations (compilers)\n+ Depends on FP instruction set of each computer -> which is not always the same\n    + Solution: Rely on *source code* operations\n+ Different programs execute different FP ops and they usually have different costs\n\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

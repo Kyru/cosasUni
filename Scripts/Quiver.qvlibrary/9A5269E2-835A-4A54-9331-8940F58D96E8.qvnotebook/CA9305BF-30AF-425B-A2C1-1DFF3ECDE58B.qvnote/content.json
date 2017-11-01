@@ -3,8 +3,17 @@
   "cells": [
     {
       "type": "code",
-      "language": "java",
-      "data": ""
+      "language": "c_cpp",
+      "data": "omp_get_thread_num()  //thread ID\nomp_get_num_threads() //number of threads\n\n#pragma omp parallel \n#pragma omp for [schedule (...)]\n// with these two you can use nowait if()\n#pragma omp sections\n#pragma omp single \n// ..."
+    },
+    {
+      "type": "markdown",
+      "data": "**Schedules:** private(\\_), shared(_), reduction(op, _), lastprivate, firstprivate"
+    },
+    {
+      "type": "code",
+      "language": "c_cpp",
+      "data": "#pragma omp critical [(name]\n#pragma omp atomic\n#pragma omp barrier\n#pragma omp for ordered\n#pragma omp ordered\n#pragma omp maste"
     }
   ]
 }

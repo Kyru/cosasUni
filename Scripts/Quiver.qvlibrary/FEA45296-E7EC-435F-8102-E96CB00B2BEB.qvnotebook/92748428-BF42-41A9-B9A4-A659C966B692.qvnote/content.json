@@ -1,0 +1,9 @@
+{
+  "title": "Unit 4 - Service Deployment",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "**Standalone apps**\n+ Process:\n    + Program -> Static entity\n    + Service -> A progam being run -> Dynamic entity\n+ Application life cycle\n    1. Analysis   \n    2. Design\n    3. Development (executable files)\n    4. Installation\n    5. Activation (License verification)\n    6. Usage (A service is provided)\n    7. Deactivation\n    8. Removal\n\n**Distributed system**\nMultiple programs compose an application "
+    }
+  ]
+}

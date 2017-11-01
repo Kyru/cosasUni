@@ -4,7 +4,47 @@
     {
       "type": "code",
       "language": "sql",
-      "data": "-- List the name of the youngest cyclist\n\nselect c.nombre \nfrom ciclista c\nwhere c.edad <= ALL(Select edad\n                    from ciclista)\n                    \n-- List the value of the attribute netapa and the departure city for those \n-- stages with no mountain passes\n\nselect e.netapa, e.salida\nfrom   etapa e, puerto p\nwhere  e.netapa NOT IN (select etapa\n                        from puerto)\n\n-- List the name of the departure and the arrival of the stages where the\n-- steepest mountain passes (\"puerto\") are located\n\nselect e.salida, e.llegada\nfrom   Etapa e\nwhere  e.netapa = (select p.netapa\n                   from   puerto p\n                   where  p.pendiente <= ALL(select pendiente\n                                             from puerto)\n                                             \nselect e.salida, e.llegada\nfrom etapa e, puerto p\nwhere e.netapa = p.netapa \nAND p.pendiente"
+      "data": "-- List the name of the youngest cyclist\n\nselect c.nombre \nfrom ciclista c\nwhere c.edad <= ALL(Select edad\n                    from ciclista)\n                    \n-- List the value of the attribute netapa and the departure city for those \n-- stages with no mountain passes\n\nselect e.netapa, e.salida\nfrom   etapa e, puerto p\nwhere  e.netapa NOT IN (select etapa\n                        from puerto)\n\n-- List the name of the departure and the arrival of the stages where the\n-- steepest mountain passes (\"puerto\") are located\n\nselect e.salida, e.llegada\nfrom   Etapa e\nwhere  e.netapa = (select p.netapa\n                   from   puerto p\n                   where  p.pendiente <= ALL(select pendiente\n                                             from puerto)\n                                             \nselect e.salida, e.llegada\nfrom etapa e, puerto p\nwhere e.netapa = p.netapa \nAND p.pendiente\n\n-- List the name of the cyclist who belong to a team which has more than five cyclist and have also won one or more stages. Please indicate the number of stages he has won --\n\nselect c.nombre, count(e.dorsal)\nfrom ciclista c, etapa e\ngroup by c.nomeq, c.nombre\nwhere c.dorsal = e.dorsal\nhaving 5 < (select count(nomeq)\n            from equipo eq, etapa e\n            where c.nomeq = eq.nomeq)\n\n-- List the name of all cyclists who belong to a team which has more than five cyclists indicating how many stages he has won --\n\nselect c.nombre, count(e.dorsal)\nfrom ciclista c left join etapa e on (c.dorsal = e.dorsal)\nwhere 5 < (select count(*)\n           from ciclista c2\n           where c2.nomeq = c.nomeq)\ngroup by c.nombre, c.dorsal\n\n-- List the cyclist number (dorsal) and the name of the cyclist who have not worn all the jerseys (maillots) worn by the cyclist with number 20 --\n\nselect c.dorsal, c.nombre\nfrom ciclista c,  a\nwhere\n\n-- List the name of the teams and the average age of the cyclist of those teams who have the highest average age of all the teams --\n\nselect\nfrom\nwhere\n"
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
     }
   ]
 }
