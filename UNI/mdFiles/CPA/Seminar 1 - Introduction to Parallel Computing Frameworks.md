@@ -120,7 +120,7 @@ When executing *return* or leaving the function, the whole context created is de
 Consists of:
 + *Preprocessing:* The C source is modified according to a set of instructions 
 + *Compiling:* The object code (binary) is created from the already preprocessed code
-+ *Linking:* It merges teh object codes from different modules and external libraries to generate the final executable
++ *Linking:* It merges the object codes from different modules and external libraries to generate the final executable
 
 #### Preprocessing
 + include: It inserts the content from other file

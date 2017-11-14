@@ -12,10 +12,10 @@ omp_get_num_threads() //number of threads
 **Schedules:** private(\_), shared(_), reduction(op, _), lastprivate, firstprivate
 
 ```c++
-#pragma omp critical [(name]
+#pragma omp critical [(name)]
 #pragma omp atomic
 #pragma omp barrier
 #pragma omp for ordered
 #pragma omp ordered
-#pragma omp maste
+#pragma omp master
 ```

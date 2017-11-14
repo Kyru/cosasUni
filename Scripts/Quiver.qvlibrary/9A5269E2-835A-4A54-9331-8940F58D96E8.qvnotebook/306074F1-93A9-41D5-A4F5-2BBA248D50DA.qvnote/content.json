@@ -44,7 +44,7 @@
     },
     {
       "type": "markdown",
-      "data": "#### Development Cycle\nConsists of:\n+ *Preprocessing:* The C source is modified according to a set of instructions \n+ *Compiling:* The object code (binary) is created from the already preprocessed code\n+ *Linking:* It merges teh object codes from different modules and external libraries to generate the final executable"
+      "data": "#### Development Cycle\nConsists of:\n+ *Preprocessing:* The C source is modified according to a set of instructions \n+ *Compiling:* The object code (binary) is created from the already preprocessed code\n+ *Linking:* It merges the object codes from different modules and external libraries to generate the final executable"
     },
     {
       "type": "markdown",

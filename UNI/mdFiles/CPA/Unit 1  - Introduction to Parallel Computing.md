@@ -71,7 +71,7 @@ Also known as parallel computing or High preformance computing => Consists on th
     +  Symmetric (or not) multiprocessing in a single chip
     +  Several cache levels in the same chip
         + Adv: Cost
-        + Dis: Low efficiency (badnwidth)
+        + Dis: Low efficiency (bandwidth)
 + Many-Core Processors - massively parallel, with a large number of single cores
     + GPU
     + Many Cores
@@ -86,7 +86,7 @@ Also known as parallel computing or High preformance computing => Consists on th
 + Non-uniform latency networks: cheaper and latency depending on the distance 
 
 #### Clusters
-Is simple a set of PCs or workstations connected in a network to execute parallel computing algorithms. Currently:
+Its simply a set of PCs or workstations connected in a network to execute parallel computing algorithms. Currently:
 + Rack Structure
 + A set of nodes: 2 multi-cores, 1 disk (optional GPU)
 + Network infraestructure
@@ -103,7 +103,7 @@ Is simple a set of PCs or workstations connected in a network to execute paralle
 *p* Processors, each one with its won address space (local memory)
 + All processes share the same code (with parts depending on the process index)
 + Information is exchanged explicitly using messages
-+ Local processing and communication instructions (sends/recieve through "interconnection network")
++ Local processing and communication instructions (sends/receive through "interconnection network")
 
 #### Parallel Programming Methodologies
 + Automatic Parallelisation 

@@ -1,0 +1,45 @@
+{
+  "title": "Chapter 2 - The software Process",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "![Captura de pantalla 2017-11-12 a las 11.00.37.png](quiver-image-url/AC75977923B3D782BFDA668525A61957.png =604x298)\n\n**The Development process:** Collection of activities towards the development or evolution of software. Also known as ***lifecycle***.\n\n---\n\n### Lifecycle Models\n#### Code-and-fix\nBasically no planning, just \"coding and fixing\"\n\n#### Classic or Waterfall\n\n![Captura de pantalla 2017-11-12 a las 11.07.34.png](quiver-image-url/24F184E03FC37C75282B097724C94003.png =622x359)\n\n#### Classic Model with Prototyping\n\n> Remember: A prototype is the first version of a product in which only some features are integrated or all of them are featured but unfinished.\n\nTypes of prototypes:\n+ ***Vertical:*** some functionality of the system is fully developed\n+ ***Horizontal:*** All views of the system are shown (simulated)\n\n![Captura de pantalla 2017-11-12 a las 11.15.41.png](quiver-image-url/8741111D22AEC93F2650CE83DDB9BFC9.png =536x357)\n\nAdvantages: \n+ Reduces the risk of patching on the final product (you fix before release)\n+ Heps both the customers and developers to understand requirements\n\nDisadvantages:\n+ Customer sees a version of the final product\n+ Requires additional investment\n+ Bad decisions taken during a rapid development of the prototype are usually transferred to the final product \n\n#### Automatic Code Generation\n*Goal:* Automatize the software development process\n\nBasic Features:\n+ Use of formal specification languages\n+ The specification is a prototype of the product\n+ The requirements are discussed by running the specification\n+ The application is derived semi-automatically\n\n![Captura de pantalla 2017-11-12 a las 11.24.12.png](quiver-image-url/60E9C73E8E4588BBB2260083DB10B99A.png =610x265)\n\nAdvantages:\n+ Hepls reducing human errors\n+ Reduces development costs\n\nDisadvantages:\n+ Is difficult to use formal languages\n\n#### Incremental Model \n+ Sequence of applications of the classical model\n+ Each iteration produces a delta of the product\n+ Ends when final product delivery\n\n![Captura de pantalla 2017-11-12 a las 11.28.58.png](quiver-image-url/03E6931C7F4ADD14E53E86C8043545FB.png =622x171)\n\nAdvantages:\n+ Useful when not enough human resources for a complete deliverable\n+ Each deliverable may be evaluated by the customer -> Highly interactive\n\nDisadvantages:\n+ Difficult to know the required increase for each iteration\n\n<br><br>\n<br><br>\n<br><br>\n\n#### Spiral Model\n![Captura de pantalla 2017-11-12 a las 12.15.03.png](quiver-image-url/3A95A9F6A7A2B49CA0B252A1CAB76C00.png =453x271)\n\nAdvantages: \n+ Each time more complete versions of the product are obtained\n+ Each version is evaluated by the customer -> Highly interactive\n\nDisadvantages:\n+ Difficult to assess risks\n+ Hard to guarantee path towards the final product \n\n---\n\n### Methodology\n\n*Defines an explicit process of software development*\n\n#### Agile Methodologies\n\n+ Interaction with team > activities and tools\n+ Software that works > Good documentation\n+ Collaboration with customer > Negotiation of a contract\n+ Fast response to changes > Strict planning\n\n*Principles:*\n1. Main priority is to satisfy the customer with early and continuos releases of usable software\n2. Welcome changes. Upadtes to remain competitive\n3. Release the developed software frequently\n4. Business people and devs work as a team\n5. Build project driven by personal motivations\n6. Face to face dialogue -> most efficient and effective\n7. Developed software is the first metric of progress\n8. Promote a bearable development -> peaceful ambient\n9. Continuos attention to technical quality and good design\n10. Simplicity is key\n11. Best architectures, requirements and designs arise from the organization of the team\n12. At regular intervals, the team reflects about how to be more effective and how to synchronize and adjust their work\n\n#### Extreme Programming XP \n+ The customer selects the next version to be built, choosing the functional features that he considers more valuable (known as Stories) from a set of possible stories, being informed about costs and the required time of their implementation.\n+ Coders convert stories into tasks to be done and then convert tasks into a set of test cases to demonstrate that the tasks have been completed\n+ Working with a teammate, the coder runs the test cases and updates the design (evolution) trying to keep it simple\n\n#### Traditional Methodologies\n#### Rational Unified Process (RUP)\n**Phases:**\n+ Inception (opportunities study)\n    + Scope and goals are defined\n    + Functionalities and capabilities are defined\n+ Elaboration\n    + The problem domain and desired functionality are studied in depth\n    + Basic architecture is defined\n    + Project plan is defined according to the available resources\n+ Construction:\n    + On each iteration analysis, design and implementation tasks are performed\n    + Architecture is defined\n    + Important part of the work is dedicated to coding and testing\n    + System and its use is documented\n    + Phase provides a built product and a documentation\n+ Transition:\n    + Product delivered\n    + Marketing, packaging, installation, config, training...\n    + User, installation -> guides are completed and refined\n\n<br><br>\n<br><br>\n<br><br>\n<br><br>\n<br><br>\n\n**Workflows:**\n\n![Captura de pantalla 2017-11-12 a las 12.13.22.png](quiver-image-url/E88B9A91F4D7ACBE32D0A68006FE56EE.png =610x285)\n\n![Captura de pantalla 2017-11-12 a las 12.13.28.png](quiver-image-url/BCEFA9E0B9DE2B31C474C4299035224D.png =578x161)\n\n#### Scrum\n+ Scrum is an agile process that allows us to focus on delivering the highest business value in the shortest time\n+ It allows us to rapidly and repeatedly inspect actual working software\n+ The business sets the priorities. Teams self-organize to determine the best way to deliver the highest priority features\n+ Every two weeks to a month anyone can see real working software and decide to release it as it is or continue to enhance it for another sprint."
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    },
+    {
+      "type": "markdown",
+      "data": ""
+    }
+  ]
+}

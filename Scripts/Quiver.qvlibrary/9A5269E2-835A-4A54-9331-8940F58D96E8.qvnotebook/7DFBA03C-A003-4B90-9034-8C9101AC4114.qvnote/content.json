@@ -27,7 +27,7 @@
     },
     {
       "type": "markdown",
-      "data": "#### Memory Architectures\n+ Shared Memory - Single address space for all the processors\n    + Adv: Easy Programming\n    + Dis: Scalability, price\n+ Distributed Memory - requires a communication network to let processors access to data outside of the local space\n    + There is no global memory of concept\n    + Independent processors\n    + Data exchange explicitly programmed\n        + Adv: Scalability, cost\n        + Dis: Programming effort\n+ *Hybrid Architectures* - Distributed-Shared Memory\n    + Each node is a multiprocessor\n    + Communiaction to move data from one node to another\n    + `Super computers follow often this model`\n\n+ Multi-Core Processors - Current tendency in the design of processors\n    +  Symmetric (or not) multiprocessing in a single chip\n    +  Several cache levels in the same chip\n        + Adv: Cost\n        + Dis: Low efficiency (badnwidth)\n+ Many-Core Processors - massively parallel, with a large number of single cores\n    + GPU\n    + Many Cores\n    + Light threads, very quick context change\n        + Adv: Cost, power\n        + Dis: Complex Programming"
+      "data": "#### Memory Architectures\n+ Shared Memory - Single address space for all the processors\n    + Adv: Easy Programming\n    + Dis: Scalability, price\n+ Distributed Memory - requires a communication network to let processors access to data outside of the local space\n    + There is no global memory of concept\n    + Independent processors\n    + Data exchange explicitly programmed\n        + Adv: Scalability, cost\n        + Dis: Programming effort\n+ *Hybrid Architectures* - Distributed-Shared Memory\n    + Each node is a multiprocessor\n    + Communiaction to move data from one node to another\n    + `Super computers follow often this model`\n\n+ Multi-Core Processors - Current tendency in the design of processors\n    +  Symmetric (or not) multiprocessing in a single chip\n    +  Several cache levels in the same chip\n        + Adv: Cost\n        + Dis: Low efficiency (bandwidth)\n+ Many-Core Processors - massively parallel, with a large number of single cores\n    + GPU\n    + Many Cores\n    + Light threads, very quick context change\n        + Adv: Cost, power\n        + Dis: Complex Programming"
     },
     {
       "type": "markdown",
@@ -35,7 +35,7 @@
     },
     {
       "type": "markdown",
-      "data": "#### Clusters\nIs simple a set of PCs or workstations connected in a network to execute parallel computing algorithms. Currently:\n+ Rack Structure\n+ A set of nodes: 2 multi-cores, 1 disk (optional GPU)\n+ Network infraestructure\n    + ethernet and low-latency network (infiniband, myrinet)\n+ Node *front-end*"
+      "data": "#### Clusters\nIts simply a set of PCs or workstations connected in a network to execute parallel computing algorithms. Currently:\n+ Rack Structure\n+ A set of nodes: 2 multi-cores, 1 disk (optional GPU)\n+ Network infraestructure\n    + ethernet and low-latency network (infiniband, myrinet)\n+ Node *front-end*"
     },
     {
       "type": "markdown",
@@ -43,7 +43,7 @@
     },
     {
       "type": "markdown",
-      "data": "#### Distributed memory model\n*p* Processors, each one with its won address space (local memory)\n+ All processes share the same code (with parts depending on the process index)\n+ Information is exchanged explicitly using messages\n+ Local processing and communication instructions (sends/recieve through \"interconnection network\")"
+      "data": "#### Distributed memory model\n*p* Processors, each one with its won address space (local memory)\n+ All processes share the same code (with parts depending on the process index)\n+ Information is exchanged explicitly using messages\n+ Local processing and communication instructions (sends/receive through \"interconnection network\")"
     },
     {
       "type": "markdown",
